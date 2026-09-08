@@ -14,18 +14,18 @@
 #Clear environment  
 rm(list = ls())
 
-# Comment out
-# all 
-# this
-# text with 
-# 'ctrl (or cmd)+shift+c'
-# then undo with 'ctrl (or cmd) z'
+Comment out
+all
+this
+text with
+'ctrl (or cmd)+shift+c'
+then undo with 'ctrl (or cmd) z'
 
 #line numbers are to the left. Go to line 83
 
-#I forgot how to spell, correct all misspellings of 'apple' 'apple'
+#I forgot how to spell, correct all misspellings of 'aple' to 'apple'
 
-#delineate sections like this, and can be collapsed
+#delineate sections like this, and they be collapsed
 
 #----Example section----
 #Hide this with the arrow
@@ -76,7 +76,7 @@ b<-8
 #Naming conventions
 This_name_is_too_long = TRUE
 
-##these are non-descript and probably bad
+##these are nondescript and probably bad
 plot = '...'
 plot2 = '...'
 data_final_2 = '...'
@@ -112,7 +112,6 @@ is.numeric('b')
 
 
 #Exercise 1: test whether a variable, "c" is more than 30 and divisble by 12, or less than 800 and a perfect square
-(c > 30 & c%%12 ==0) | (c<800 & sqrt(c) %% 1 == 0)
 
 #booleans are also binary
 TRUE + TRUE
@@ -125,7 +124,7 @@ T+c
 
 
 #----Vectors----
-letter_vec<-c('x','y','apple','z')
+letter_vec<-c('x','y','aple','z')
 int_vec<- seq(0,90,3)
 
 mixed_vec<-c(a,'b',log(3),letter_vec,int_vec)
@@ -142,7 +141,7 @@ length(int_vec)
 #Vectors of logic
 letter_vec == 'y'
 
-letter_vec[3] == 'apple'
+letter_vec[3] == 'aple'
 
 int_vec > b
 
@@ -154,7 +153,6 @@ int_vec_subset<-int_vec[int_vec>b*2]
 
 #Exercise 2: Make every third entry in int_vec copy the entry before it. Make it robust to changes in the length of int_vec
 
-int_vec[seq(3,length(int_vec),3)]<-int_vec[seq(2,length(int_vec)-1,3)]
 
 
 #Accessing "everything but" uses negative values
@@ -171,12 +169,10 @@ int_vec+int_vec
 int_vec_subset+int_vec[-10]
 
 
-#Exercise 3: what is the intersect of the following vectors? What is the union?
+#Exercise 3: what is common to both of following vectors (intersect)? What is in either vector (uinon)?
 int_vec
 evens<-seq(0,30,2)
 
-union<-unique(c(int_vec,evens))
-intersect<-unique(int_vec[int_vec %in% evens])
 
 #----Matrices----
 #Generating
@@ -202,7 +198,6 @@ diag_mat+examp_mat
 diag_mat==0
 
 #Exercise 4: Create a 3x8 matrix that alternates between the first 3 positive integers and the first 3 letters
-runif(1,1,9)|>round(0)
 
 
 
@@ -243,11 +238,8 @@ students[4,]
 
 #Exercise 5: Extract Charlie's age by 
   #a) indexing numerically
-students[3,2]
   #b) extracting his entry from the age vector
-students$age[3]
   #c) indexing to the row with "Charlie" in it, and the 'age' column
-students[students$name=='Charlie',2]
   #d) same as c), but extract all of Charlie's information except whether he's graduated
 
 
@@ -255,13 +247,12 @@ students[students$name=='Charlie',1:4]
 students[students$name=='Charlie',-5]
 
 #We can add new columns
-students$fruit<-c('apple','pear',NA,'banana')
+students$fruit<-c('aple','pear',NA,'banana')
 
 #and modify specific cells
 students[3,'fruit']<-'orange'
 
 #Exercise 6: Boost every bio major's GPA by 10%
-students[students$major=='bio',] <- students$gpa*1.1
 
 #Fruits are irrelevant, let's remove them
 students[,-6]
@@ -270,7 +261,7 @@ students[,-6]
 #----Lists----
 #lists can contain anything...much like sets!
 example_list<-list(students = students, 
-                   fruit = 'apple', 
+                   fruit = 'aple', 
                    numbers= int_vec)
 
 #indexing is a little more complicated. 
@@ -282,7 +273,7 @@ example_list[[1]][3,2]
 example_list$students$major
 
 #Lists can contain anything...even messes.
-big_list<-list(example_list,list(students,example_list,list('apple',example_list)))
+big_list<-list(example_list,list(students,example_list,list('aple',example_list)))
 
 
 #Lists are a lot like sets
@@ -332,9 +323,11 @@ zoo<-list('snakes' = snakes,
 
 
 #Exercise 7: 
-#Return all the bipeds
-#Return all carnivorous mammals
-#Return non-large, adult, non-mammals
-#Return everything but the kangaroos
+#How many legs do kangaroos have?
+#Return everything but the seals
+#Return the age of the third frog 
+#Return the names of the male snakes
+
+
 
 #There are other object types, including functions, plots, and many more...
