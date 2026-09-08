@@ -1,0 +1,82 @@
+---
+title: "Assignment for Week 6"
+author: "Author: Your name here!"
+date: "2/3/2017"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+```{r setup, include=FALSE}
+# This code changes "global" settings, here it makes the computer `echo` which refers to 
+# printing the code as well as the output into the pdf document when you knit.
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Change the following code to be your working folder for R
+
+knitr::opts_knit$set(root.dir = '~/Dropbox/mathCamp/Code/data/')
+# The following allows the computer to always get the same result for random stuff.
+set.seed(100)
+
+```
+
+## Package Loading
+
+```{r Package Loading}
+library(ggplot2)
+
+```
+
+# Assignment
+<!-- Please Put \newpage commands between long answers.  Avoid allowing answers to spill over pages. --> 
+1) Let $E, F,$ and $G$ be events.  Find the expressions (using $\cap$ $\cup$ and $^c$) for the events that of $E, F,$ and $G$
+  a) only $F$ occurs,
+  b) both $E$ and $F$ but not $G$ occur,
+  c) at least one event occurs,
+  d) at least two events occur,
+  e) all three events occur,
+  f) none occurs,
+  g) at most one occurs,
+  h) at most two occur.
+  
+2)  1.17 (p. 57)
+
+3)  1.19 (p. 57)
+
+4)  1.20 (a) (b) (p. 57) 
+
+5)  1.39 (p. 62)
+
+6)  1.56 (a) (b) (p. 68)
+
+\newpage
+
+7) Use R to simulate the following problems:
+
+(a) If three players are dealt five cards from a standard 52 card deck, how what is the probability that at least one person gets exactly two aces?
+
+(b) Suppose that $n$ letters are placed randomly in $n$ envelopes, what is the probability that $n-1$ letters will be placed in the correct envelope?
+
+(c) Suppose that $n$ letters are placed at random in $n$ envelopes, if $q_n$ is the probability that no letter is placed in the correct envelope, which of the following has the largest $q_n$? $n=10$, $n=21$, $n=53$, $n=100$.  
+
+(d) If the $n$ letters are placed in $n$ envelopes, what is the expected number of letters that go to the correct destination if $n=10$, $n=20$, $n=50$?  
+
+8) Plot the pmf of each distribution in the following list, with at least one variation in the listed parameter(s), using either a histogram or with a custom `table` and a `persp` plot.
+
+- bernoulli, $p$
+- binomial, $p$
+- Poisson, $\lambda$
+- Geometric, $p$
+- Hypergeometric, $m$, $n$
+- negative binomial, $p$
+- Multinomial, size, $p=(p_1,p_2)$
+
+9) Using `str()` and the R help file and worksheet, describe in words each of the elements of the object chisqt1.
+```{r}
+x <- c(89,37,30,28,2)
+p <- c(.40,.20,.20,.15,.05)
+chisqt1 <- chisq.test(x, p = p)
+```
+
+
+

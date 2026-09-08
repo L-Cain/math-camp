@@ -1,0 +1,127 @@
+Topics by Lecture
+
+1) 
+Sets
+Vectors, functions
+[Meta Lessons: Mathematical notation]
+
+2)
+Logic, truth tables
+Proof strategies (contrapositive, etc)
+[Meta Lessons: Mathematical reasoning]
+
+3) 
+Sequences, Limits, Cauchy Criterion
+Limits of functions, 
+Continuity, Intermediate Value Theorem
+[Meta Lessons: Why Calculus is important]
+
+4)
+Derivatives and properties
+Rolle's Theorem, Mean Value Theorem
+[Meta Lessons: What is a derivative, really?]
+
+5)
+Taylor Approximation
+Binomial Formula
+Monotonicity,
+Concavity, Convexity, max, min
+[Meta Lessons: Approximation and extrapolation]
+
+6) 
+Matrix Algebra
+Inverse, Rank
+Solving systems of equations
+[Meta Lessons: OLS Regression]
+
+7) 
+Determinant
+Eigenvalue
+Multivariate Derivatives
+Hessian
+Comparative Statics
+[Meta Lessons: PCA data reduction]
+
+8) 
+Quadratic Form
+Jacobian
+Positive Definiteness to test global min/max
+Lagrange method
+[Meta Lessons: Ridge Regression]
+
+9) 
+Integration
+Integration Methods
+Fundamental Theorem of Calculus
+[Meta Lessons: Fearon 1998 continuous time discounting]
+
+10)
+Axiomatic Probability Theory
+Probability Law
+Counting
+Inclusion Exclusion Rule
+Factorials and Gamma
+Boole's Inequality
+Conditional Probability
+Law of Total Probability
+Bayes
+Independence
+Conditional Independence
+[Meta Lessons: Probability needs mathematical models]
+
+
+11)
+Bernoulli distribution
+Expectations
+Variances
+Binomial distribution
+Poisson distribution
+[Meta Lessons: Weighted values]
+
+12)
+PDF vs CDF
+Poisson distribution
+Joint distributions
+Linearity of Expectations
+Conditional Distributions
+Independence of RV
+Normal distribution
+Derivation of Gamma distribution
+Students t distribution
+[Meta Lessons: Information and expectations]
+
+13)
+Correlation
+Best Linear Predictor
+Multivariate Normal
+Law of Iterated Expectations
+Law of Total Variance
+[Meta Lessons: What is conditioning?]
+
+14)
+Markov
+Chebyshev
+WLLN
+[Meta Lessons: What is statistical inference?]
+
+15)
+Moment Generating Functions
+Convergence in Probability
+Convergence Almost Surely
+Convergence in Distribution
+CLT
+[Meta Lessons: Long run behavior]
+
+
+16)
+Estimaters
+Sample sizes
+Confidence Intervals
+Hypothesis Tests
+Regression
+[Meta Lessons: How do we communicate statistical inferences?]
+
+17)
+(Optional)
+MLE, Bernoulli
+

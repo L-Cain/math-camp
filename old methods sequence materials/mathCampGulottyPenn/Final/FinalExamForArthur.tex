@@ -1,0 +1,159 @@
+\documentclass[11pt,letterpaper]{article}
+% === graphic packages ===
+\usepackage{epsf,graphicx,psfrag}
+% === bibliography package ===
+\usepackage{natbib}
+% === margin and formatting ===
+\usepackage{setspace}
+%\usepackage{palatino}[1]
+%\usepackage[T1]{fontenc}
+%\usepackage{palatino}
+%\renewcommand{\familydefault}{cmss}
+%\usepackage{cmbright}
+%\usepackage[T1]{fontenc}
+%\usepackage{arev}
+%\usepackage[LGR,T1]{fontenc} %% LGR encoding is needed for loading the package gfsneohellenic
+%\usepackage[default]{gfsneohellenic}
+%\usepackage{times}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage{endnotes}
+% === math packages ===
+\usepackage[reqno]{amsmath}
+%\usepackage[pdftex]{hyperref}
+\usepackage{amsthm}
+\usepackage{amssymb,enumerate}
+\usepackage[all]{xy}
+\usepackage{lscape}
+\usepackage[compact]{titlesec}
+%\newtheorem{lem} {Lemma}
+%\newtheorem{prop}{Proposition}
+%\newtheorem{thm}{Theorem}
+%\newtheorem{defn}{Definition}
+%\newtheorem{cor}{Corollary}
+%\newtheorem{obs}{Observation}
+ \numberwithin{equation}{section}
+% === dcolumn package ===
+\usepackage{dcolumn}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+% === additional packages ===
+\usepackage{url}
+\newcommand{\makebrace}[1]{\left\{#1 \right \} }
+\newcommand{\determinant}[1]{\left | #1 \right | }
+\title{Mathematical Foundations}
+\date{March 13, 2017}
+\begin{document}
+\maketitle
+\subsection*{Instructions}
+This exam has 6 sections.  Provide the answers to each section on a new page, labeling the part of the question for each answer.  
+\begin{enumerate}[I]
+\item \textsc{Probability and Mathematical Logic }
+\begin{enumerate}[1)]
+\item If $P(A\cap B)=0$, which of these are false? (there may be more than one)
+\begin{enumerate}
+\item[a)] $P(A|B)=P(A)$
+\item[b)] $P(A|B^c)=\frac{P(A)}{P(B^c)}$
+\item[c)] $P(A)+P(B)=P(A\cup B)$
+\end{enumerate}
+\item  Why is it that: 
+\begin{enumerate}
+\item[a)] If $A \subset B$ then $P(B|A) = 1$ 
+\item[b)] If $A \subset B$ then $P(A|B) = \frac{P(A)}{P(B)}$
+\end{enumerate}
+\item Roll three six-sided dice. Find the probability that there are at least two sixes given that there is at least one six. (hint: use the equation in question 2.b).
+\item TRUE or FALSE, if false, explain in one sentence.
+\begin{enumerate}
+\item[a)] $\bar{X}=\mu$
+\item[b)] If $X$ and $Y$ are independent, $Var(X-Y)=Var(X)+Var(Y)$
+\item[c)] $\bar{X}\sim N(0,1)$
+\item[d)] $Var(\mu)=0$
+\item[e)] $Var(\bar{X})=\frac{\sigma^2}{n}$
+\end{enumerate}
+
+\end{enumerate}
+\pagebreak
+\item \textsc{Basketball!} 
+
+Since 2010, the Women's National Basketball Association has a best of five series for the National Championship.  This means that the series can end only when one team wins 3 games.  We are interested in the number of games that are played for one team to be named Champion.
+\begin{enumerate}[1)]
+\item If both teams are equally likely to win, what is the probability that the series lasts to exactly 4 games?
+\item What is the probability that the series lasts less than 5 games?
+\item What is the expected number of games played? 
+\end{enumerate}
+
+
+\item \textsc{Triangle Distribution} 
+
+Suppose that 
+$$f(x)=\begin{cases} 0 & \text{for } x< 0\\ 4x & \text{for } 0\leq x < 1/2 \\ 4-4x  & \text{for }  1/2 \leq x\leq 1\\ 0 &\text{for } 1<x
+\end{cases}$$
+\begin{enumerate}[1)]
+\item  Verify that f(x) is a pdf.  Draw f(x).
+\item What is the probability that $X > .7$?
+\item Calculate the median of X.
+\end{enumerate}
+\item \textsc{Surveying Sensitive Information.}
+
+  It is difficult to conduct surveys on sensitive issues because many people will refuse to give answers that might embarrass them. ``Randomized response'' is a method designed to ensure anonymity when asking about topics such as drug use. To ask a sample of college students whether they have used an illegal drug, have each student toss a coin in private. If the coin lands heads and they have not used illegal drugs, they are to answer ``no.'' Otherwise, they are instructed to answer ``yes.'' Only the student knows whether the answer reflects the truth or the coin toss.
+
+\begin{enumerate}[1)]
+\item Suppose 25\% of the students have used illegal drugs. What is the probability of a `no'? 
+\item  Now suppose that you conduct the survey and find that 35\% of the students give a `no' answer. What would be your estimate of the percent of students who have used illegal drugs?
+\end{enumerate}
+\pagebreak
+\item \textsc{Calculating Expectations}
+\begin{enumerate}[1)]
+\item Suppose that the sample space S contains three elements $\{1, 2, 3\}$, with probabilities .5, .2, and .3 respectively.  Define a random variable X as follows:
+$$X(s) = s^2 - 4 \text{ for } s \in S$$ 
+\begin{enumerate}[a)]
+\item What is E[X]? 
+\item What is Var(X)?
+\end{enumerate}
+
+\item In class we examined a random variable $Z\sim N(0,1)$ 
+\begin{enumerate}[a)]
+\item What is E$[Z^2]$?
+\item What is E$[Z^3]$?
+\end{enumerate}
+
+\item Suppose you enter a casino, and they offer you one of two bets:
+
+\begin{enumerate}
+\item[\textbf{A}] Roll a six-sided die 5 times, with sides printed $\{1,\ 2,\ 3,\ 4,\ 5,\ 6\}$, take the average of your rolls and receive the number of dollars equal to the average, translated by the following equation:
+$$e^{\bar{x}-3.5}$$
+\item[\textbf{B}] Roll a six-sided die 5 times, where each of the sides of the die has $e^{x-3.5},\ \ x\in\{1,\ 2,\ 3,\ 4,\ 5,\ 6\}$ written on it.  i.e. $\{e^{-2.5},\ e^{-1.5},\ e^{-.5},\ e^{.5},\ e^{1.5},\ e^{2.5}\}$, and receive the average of the number of dollars on its face.
+\end{enumerate}
+\begin{enumerate}
+\item[a)]  Which of these bets would you take, \textbf{A} or \textbf{B}?  Why?
+
+\item[b)] What if the equation were  $\sqrt{x}?$ $log(x)?$
+\end{enumerate}
+\end{enumerate}
+
+
+\item \textsc{Limit Theorems} 
+
+\begin{enumerate}[1)]
+
+\item Suppose $\bar{X}$ is the sample mean of 100 observations from a population with mean $\mu$ and variance $\sigma^2$.  Find 90\% confidence limits for $\bar{X}$.
+\begin{enumerate}
+\item[a)] Using Chebychev.
+\item[b)] Using Central Limit Theorem.
+\item[c)] Compare the two limits.
+\end{enumerate}
+
+\item Suppose $\bar{X}_1$ and $\bar{X}_2$ are two independent surveys of size $n$ from the same population.  Assume we further know that for the individual responses, $Var(X_i)=\sigma^2$.
+\begin{enumerate}[a)]
+\item What is the distribution of $\bar{X}_1-\bar{X}_2$? (hint: see problem 4 from section I)
+\item Suppose you had to pick a sample size such that: $$P(|\bar{X}_1-\bar{X}_2| < \sigma/5) \approx .99$$
+ Use the fact that $\Phi^{-1}(.995)=2.576$ to decide how big of a sample you should use.
+\end{enumerate}
+
+
+\end{enumerate}
+
+
+\end{enumerate}
+\end{document}
+

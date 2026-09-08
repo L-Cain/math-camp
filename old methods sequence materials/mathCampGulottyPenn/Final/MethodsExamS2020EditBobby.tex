@@ -1,0 +1,278 @@
+\documentclass[12pt]{article}
+\usepackage{fullpage}
+\usepackage{amsfonts,amssymb,amsmath}
+%\usepackage{graphicx, setspace, url, comment,  dcolumn, natbib, amsmath, amssymb}
+
+\newcommand{\Y}{\mathbf{Y}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\W}{\mathbf{W}}
+\newcommand{\w}{\mathbf{w}}
+\newcommand{\A}{\mathbf{A}}
+\newcommand{\D}{\mathbf{D}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\G}{\mathbf{G}}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\s}{\mathbf{s}}
+\newcommand{\bi}{\mathbf{b}_i}
+\renewcommand{\S}{\mathbf{S}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\Sig}{\boldsymbol{\Sigma}}
+\renewcommand{\a}{\boldsymbol{\alpha}}
+\renewcommand{\b}{\boldsymbol{\beta}}
+\renewcommand{\t}{\boldsymbol{\theta}}
+\newcommand{\mb}{\mathbf}
+\newcommand{\RD}{\mathbf{R}^{D}}
+\newcommand{\e}{\boldsymbol{\varepsilon}}
+\renewcommand{\r}{\rho}
+\newcommand{\g}{\boldsymbol{\gamma}}
+\renewcommand{\O}{\boldsymbol{\Omega}}
+\renewcommand{\d}{\boldsymbol{\delta}}
+\newcommand{\bs}{\boldsymbol}
+\newcommand{\normdist}[2]{\ensuremath{\mathcal{N}(#1,#2)}}
+\newcommand{\normdistk}[3]{\ensuremath{\mathcal{N}_{#3}(#1,#2)}}
+\newcommand{\wish}[2]{\ensuremath{\mathcal{W}(#1,#2)}}
+\newcommand{\invwish}[2]{\ensuremath{\mathcal{IW}(#1,#2)}}
+\newcommand{\gamdist}[2]{\ensuremath{\mathcal{G}(#1,#2)}}
+\newcommand{\invgam}[2]{\ensuremath{\mathcal{IG}(#1,#2)}}
+\newcommand{\studt}[3]{\ensuremath{t_{#3}(#1,#2)}}
+\newcommand{\binomial}[2]{\ensuremath{\mathcal{B}in(#1,#2)}}
+\newcommand{\bern}[1]{\ensuremath{\mathcal{B}ernoulli(#1)}}
+\newcommand{\diri}[1]{\ensuremath{\mathcal{D}irichlet(#1)}}
+\newcommand{\unif}[2]{\ensuremath{\mathcal{U}(#1,#2)}}
+\newcommand{\chisqr}[1]{\ensuremath{\chi_{#1}^{2}}}
+\newcommand{\invchisqr}[1]{\ensuremath{\mathcal{I}nv}\textnormal{-}\ensuremath{\chi_{#1}^{2}}}
+\newcommand{\betadist}[2]{\ensuremath{\mathcal{B}eta(#1,#2)}}
+\newcommand{\poisson}[1]{\ensuremath{\mathcal{P}oisson(#1)}}
+\newcommand{\expo}[1]{\ensuremath{\mathcal{E}xp(#1)}}
+\def\meanx{\bar{x}}
+\def\meany{\bar{y}}
+\def\Real{\mathbb{R}}
+\def\bfbeta{{\mbox{\boldmath $\beta$}}}
+\def\bfeps{{\mbox{\boldmath $\epsilon$}}}
+\def\bfupsilon{{\mbox{\boldmath $\upsilon$}}}
+\def\bfOmega{{\mbox{\boldmath $\Omega$}}}
+\def\bfx{\mbox{\boldmath $x$}}
+\def\bfX{\mbox{\boldmath $X$}}
+\def\bfy{\mbox{\boldmath $y$}}
+\def\bfepsilon{\mbox{\boldmath $\epsilon$}}
+\def\rank{\mbox{\rm rank}}
+\def\bfzero{\mbox{$0$}}
+\def\bfI{\mbox{$I$}}
+\def\bfe{\mbox{$e$}}
+
+\parindent 0pt
+\parskip 12pt
+
+\title{Quantitative Methods Exam (June 2020)}
+\date{} % delete this line to display the current date
+
+%%% BEGIN DOCUMENT
+\begin{document}
+\maketitle
+
+This exam consists of two parts. The first part is a closed-book exam and the second part is an open-book exam. Once you finish the first part and turn it in, you cannot return to the closed book question. Should you find these necessary, the exam packet also includes a set of appropriate statistical distributions ($t,$ $z,$ $F,$ and $\chi^2$).
+
+Kathy will send you a zip file containing the Stata data file for the open book portion of the exam by 1pm. You need to turn in your answer to the second part by 5 pm. You should be able to answer the questions with either Stata, or with the library {\tt zeligverse} or all of the various libraries that the Ward and Ahlquist book recommends (which are listed at the end of each relevant chapter under "R notes" or "Package notes").
+
+\section{Closed Book Questions}
+
+\begin{enumerate}
+\item Suppose $X_1,\ X_2,\ \ldots X_n$ are Bernoulli random variables with parameter $\theta$, $0<\theta<1$.  Suppose we observe $T(\mathbf{X})=X_1+X_2+X_3\ldots+X_n$.   Do we learn anything additional about $\theta$ if we also observe that $X_5=1$?  Why or why not?
+
+\item What happens to a regression with an interaction if we leave out the ``main effect''?
+
+\item Suppose 
+    \begin{equation}  y_i = \beta_1 x_i +\beta_2 z_i +\epsilon_i \end{equation}
+and 
+    \begin{equation} z_i = \gamma x_i + \upsilon_i. \end{equation}
+A researcher estimates (1) ignoring (2).  
+\begin{enumerate}
+  \item Show that the coefficient estimates for $\beta_1$ and $\beta_2$ are biased and characterize the bias.
+  \item Derive the two reduced form equations, that is, the equations for the two endogenous variables expressed solely in terms of the exogenous variable.
+  \item The coefficients for the reduced form equations may be estimated consistently by least squares.  Show that the structural coefficients for (2) can be derived uniquely from the reduced form coefficient estimates but the structural coefficients for (1) cannot be.  (This means that equation 2 is identified but equation 1 is not.)
+  \end{enumerate}
+
+\item Derive BOTH the expected mean and variance of the Poisson distribution, where the Poisson distribution of $x$ is given by:
+\begin{eqnarray*}
+f(x|\lambda) & = & \frac{\lambda^x e^{-\lambda}}{x!}
+\end{eqnarray*}
+It may be handy for you to recall the definition of $e$ is the Taylor series expansion:
+\begin{eqnarray*}
+e^\lambda = \sum_{j\ge0} \frac{\lambda^j}{j!}
+\end{eqnarray*}
+
+\item Stated both mathematically and in words, what assumption does the general linear model make regarding serial autocorrelation? Which estimates of the OLS model are affected by violations in this assumption, and how do these violations affect the estimates? 
+
+\end{enumerate}
+
+\newpage
+\section{Open Book Questions}
+
+The second part of the exam asks you answer a number of questions about civil wars. The data are drawn from an article by Christian Houle (2016), and found in the Stata file {\tt Houle\_Dataset.dta.}\footnote{The full reference to the article is Christian Houle, ``Why class inequality breeds coups but not civil wars,'' {\em Journal of Peace Research,} 53:5:680-695, 2016.} It is emphatically {\em not} a good idea for you to spend your time reading that article while you are taking the exam. Please treat the data in the file as sufficient for the questions that we ask. In fact, it may well behoove you to develop a completely different model than Houle uses, or (for purposes of the exam) a substantially truncated list of variables, as his model is a kitchen sink of plausibly related or not that related variables).
+
+The dataset contains the following variables:
+\begin{verbatim}
+cowcode                                                                ccode
+                                    (same as usual; use cname for countries)
+                                    
+cname                                                             State Name
+western                   Western Europe, Canada, US, New Zealand, Australia
+lpopulation                                        Population, lagged 1 year
+
+year                                                                    year
+dec60                                                                 Dec-60
+                                                      (1=1960s, 0=otherwise)
+                                                         
+dec70                                                                 Dec-70
+dec80                                                                 Dec-80
+dec90                                                                 Dec-90
+
+cold                                                                Cold war
+                       (Defective: just use a dummy variable for year>=1989)
+
+polity                                                          Polity score
+                        (continous measure, -10:authoritarian, 10:democracy)
+                           
+politysq                                                polity score squared
+lpolity                                          Polity score, lagged 1 year
+lpolity                                  Polity score squared, lagged 1 year
+regch3         Change in Polity score of at least 3 points pver last 3 years
+
+dempol                                                             democracy
+                                                (1:polity >= 7, 0 otherwise)
+
+ldempol                                             democracy, lagged 1 year
+lmilitary                                     Military regime, lagged 1 year
+
+oecd                                                                    OECD
+                                               (1:OECD country in year, 0:otherwise)
+
+oecdcurrent                                                      OECDcurrent
+                                                  (1:OECD country in 2008, 0:otherwise)
+
+econfree                                                    economic freedom
+                           (Heritage Fdn's Eonomic Freedom Index, higher is
+                                                                    "freer")
+
+civprio                                                      Civil war, PRIO
+            (1:Country had a civil war, 0:otherwise, by PRIO classification)
+
+peaceyearssmallprio                                  Time since last civprio
+_spline1smallprio                             (peaceyearssmallprio-k1) cubed
+_spline2smallprio                             (peaceyearssmallprio-k2) cubed
+_spline3smallprio                             (peaceyearssmallprio-k3) cubed
+
+civpitf                                                      Civil war, PITF
+                 (1:country had a civil war, according to PITF, 0:otherwise)
+
+civpitfyears                                         Time since last civpitf
+revpitf                                              Revolutionary war, PITF
+                       (1:revolutionary war, according to PITF, 0:otherwise)
+
+revpitfyears                                         Time since last revpitf
+_spline1revpitf                                      (revpitfyears-k1) cubed
+_spline2revpitf                                      (revpitfyears-k2) cubed
+_spline3revpitf                                      (revpitfyears-k3) cubed
+_spline1civpitf                                      (civpitfyears-k1) cubed
+_spline2civpitf                                      (civpitfyears-k2) cubed
+_spline3civpitf                                      (civpitfyears-k3) cubed
+
+success_pow                                                 Successful coups
+            (1:country had a successful coup, 0:otherwise; Powell and Thyne)
+
+failed_pow                                       Successful and failed coups
+                                 (1:country had a successful OR failed coup)
+
+succpowyears                                     Time since last success_pow
+
+_spline1sucpow                                       (succpowyears-k1) cubed
+_spline2sucpow                                       (succpowyears-k2) cubed
+_spline3sucpow                                       (succpowyears-k3) cubed
+
+strikes                                                              Strikes
+                                                         (number of strikes)
+
+riots                                                                  Riots
+                                                           (number of riots)
+
+revolutions                                                      Revolutions
+                                                     (number of revolutions)
+
+demonstrations                                                Demonstrations
+                                                  (number of demonstrations)
+
+conflictindex                                                  ConflictIndex 
+                 (Taken from Banks (2014): combines assassinations, guerilla
+                    warfare, crises and purges, higher=>more state conflict)
+
+lcap                                       Financial openness, lagged 1 year
+lcapshare                                       Capital share, lagged 1 year
+lcapsharesq                             Capital share squared, lagged 1 year
+lcapshare_orig                   Capital share, original data, lagged 1 year
+lshare1                                   Share top 1 percent, lagged 1 year
+lshare1sq                         Share top 1 percent squared, lagged 1 year
+lcapshare_lcap                                                lcapshare*lcap
+lshare1_lcap                                                    lshare1*lcap
+lagrshare                           agricultural share of GDP, lagged 1 year
+lcapshare_lagrshare                                      lcapshare*lagrshare
+lshare1_lagrshare                                          lshare1*lagrshare
+
+lopen                                          trade openness, lagged 1 year
+
+lethnic                                             ethnic fractionalization
+
+mountains                                                          Mountains
+                                  (percent of country that is 'mountainous')
+                                     
+lonegrowthtreis                                                  growth rate
+lgdptreis                             GDP per capita (logged), lagged 1 year
+
+effective_number                          "effective number of ground-combat
+                                           compatible military organization" for organization $j$, country $i$, battle year $t$
+                                       		$\frac{1}{\sum_j s^2_{jit}$, 
+                                       
+leffective_number                            effective_number, lagged 1 year
+
+paramilitary                                Ratio of Paramilitary/Military Personnel
+                                  
+
+gini                                                                net Gini
+                                          (0 (each unit receives equal share
+                                  -> 100 (only one unit receives all shares)
+
+ginisq                                                      net Gini squared
+lgini                                                net Gini, lagged 1 year
+lginisq                                      net Gini squared, lagged 1 year
+lgini_lagrshare                                              lgini*lagrshare
+lgini_lcap                                                        lgini*lcap
+
+lnoil_gas_valuePOP_2009               Oil and gas income per capita (logged)
+lcapshare_origsq         Capital share squared, original data, lagged 1 year
+llnoil_gas_valuePOP_2009             Oil and gas income per capita (logged),
+                                                               lagged 1 year
+                                                                            
+edu                                                    education expenditure
+publichealth                                       Public health expenditure
+spend                                                 government expenditure
+lmilexgdp                            Military expenditure/GDP, lagged 1 year
+logmilperpc                        Military personal (logged), lagged 1 year
+
+icrgpropind                                                      International Country Risk Guide
+                                                                        IP Index+2*Law and Order ranges from 0 to 24
+
+\end{verbatim}
+
+\begin{enumerate}
+\item Treating the data as pooled, model the incidence of civil wars (use the PRIO classification, {\tt civprio}) using an appropriate maximum likelihood technique, with special attention to the hypothesis that class inequality does not cause civil war. Be sure to justify your formulation of the model, and interpret the results using one of the methods we discussed in class. (Remember, that log-odds are not very informative when the variables are skewed, and you lose points for relying on that approach.)
+
+\item Using the model you developed in the answer to the first question, apply an appropriate fixed effects model. Interpret the results of your model, and additionally answer the question of whether the fixed effects or pooled model is an appropriate choice using an appropriate statistical test.
+
+\item Houle argues that class inequality predicts coups, but not civil war. Using the model you used for civil wars, estimate and interpret the new dependent variable ({\tt success\_cow}). Do your data and model support Houle's conclusions?
+
+\item An alternative consideration along lines similar to the study in Houle's paper, one might argue that the incidence of less virulent forms of civil unrest (riots, demonstrations, strikes) are precursors to coups and civil wars. Choose a measure of one of those forms of civil unrest, and model that measure appropriately. Be sure to interpret model with respect to the incidence of lesser forms of violence.
+\end{enumerate}
+\end{document}

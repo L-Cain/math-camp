@@ -1,0 +1,181 @@
+\documentclass[11pt,letterpaper]{article}
+% === graphic packages ===
+\usepackage{epsf,graphicx,psfrag}
+% === bibliography package ===
+\usepackage{natbib}
+% === margin and formatting ===
+\usepackage{setspace}
+%\usepackage{palatino}[1]
+%\usepackage[T1]{fontenc}
+%\usepackage{palatino}
+%\renewcommand{\familydefault}{cmss}
+%\usepackage{cmbright}
+%\usepackage[T1]{fontenc}
+%\usepackage{arev}
+%\usepackage[LGR,T1]{fontenc} %% LGR encoding is needed for loading the package gfsneohellenic
+%\usepackage[default]{gfsneohellenic}
+%\usepackage{times}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage{endnotes}
+% === math packages ===
+\usepackage[reqno]{amsmath}
+%\usepackage[pdftex]{hyperref}
+\usepackage{amsthm}
+\usepackage{amssymb,enumerate}
+\usepackage[all]{xy}
+\usepackage{lscape}
+\usepackage[compact]{titlesec}
+%\newtheorem{lem} {Lemma}
+%\newtheorem{prop}{Proposition}
+%\newtheorem{thm}{Theorem}
+%\newtheorem{defn}{Definition}
+%\newtheorem{cor}{Corollary}
+%\newtheorem{obs}{Observation}
+ \numberwithin{equation}{section}
+% === dcolumn package ===
+\usepackage{dcolumn}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+% === additional packages ===
+\usepackage{url}
+\newcommand{\makebrace}[1]{\left\{#1 \right \} }
+\newcommand{\determinant}[1]{\left | #1 \right | }
+\title{Mathematical Foundations\\Do not distribute}
+\begin{document}
+\maketitle
+\subsection*{Instructions}
+This exam has 5 sections.  Provide the answers to each section on a new page, labeling the part of the question for each answer.  
+\begin{enumerate}[I]
+\item \textsc{Probability and Mathematical Logic }
+\begin{enumerate}[1)]
+\item If $P(A\cap B)=P(A)P(B)$, which of the following statements are true?
+\begin{enumerate}
+\item[a)] $P(A|B)=P(B)$ 
+%\item FALSE
+\item[b)] $P(A|B^c)=P(A)$ 
+%\item TRUE
+\item[c)] $P(A)+P(B)=P(A\cup B)$ 
+%\item FALSE
+\item[d)] $A\cap B=\emptyset$
+%\item FALSE
+\end{enumerate}
+
+
+\item Roll a fair four-sided die twice. What is the probability that the minimum of the two die rolls is 3?
+%\item 4/16 or 1/4 by enumeration.
+
+\item Suppose that we are in charge of an alien detection system for the defense of Earth.  A scientist proposes the adoption of a system that will reveal an alien invasion with probability .99.  If there is no alien invasion, the system will nonetheless mislabel a flock of birds, swamp gas, or a passing cloud as an alien invasion with probability .05. 
+ 
+\begin{enumerate}[a)]
+\item If $P(aliens)=.01$ and we hear an alarm, what is the probability that an alien invasion is here? 
+
+%$$\frac{.99*.01}{.99*.01+.05*.99}=\frac{1}{6}$$
+\item How much better would we do if the system were able to reveal aliens that are here with probability .999?
+%$$\frac{.999*.01}{.999*.01+.05*.99}=0.1679274$$
+%So $0.1679274-.1666666=.001260733$
+\item How much better would we do if the system would mislabel with probability .04?
+%$1/5$, or $1/5-1/6$.  
+\end{enumerate}
+
+
+\item TRUE or FALSE, if false, explain in one sentence.
+\begin{enumerate}
+\item[a)] If $X$ and $Y$ are independent, $Var(X+Y)=Var(X)+Var(Y)$
+%\item TRUE
+\item[b)] $P(A|\Omega)=P(A)$
+%\item TRUE
+\item[c)] $P(A\cap B)\geq P(B|A)$
+%\item TRUE
+\item[d)] $P(A\cup B)\leq P(A)+P(B)$
+%\item TRUE
+\item[e)] $\bar{X}=E(X)$
+%\item FALSE because the sample mean is a random variable.
+\end{enumerate}
+
+\end{enumerate}
+\pagebreak
+\item \textsc{Election Night!} 
+
+ABC is planning its Midterm election night coverage.  The directors know that the audience doesn't care about individual races, just which party (Republicans or Democrats) will have control of the Senate.  Calling the control of the US Senate is down to 5 key battleground states:  Nevada, Missouri, North Dakota, Texas and Florida.  ABC will call the race for the first party that wins three.   
+\begin{enumerate}[1)]
+\item  If both parties are equally likely to win, what is the probability that one party or the other sweeps, that is, wins all 5 races?
+%\item $2*.5^5=0.0625$
+\end{enumerate}
+
+The states are in four time zones and have variously efficient election systems, so each of the listed races come in one hour past each other, with Nevada at 7PM, Missouri at 8PM, North Dakota at 9PM, Texas at 10 PM, all the way to Florida at 11PM.
+\begin{enumerate}
+\item[2)] If both parties are equally likely to win, what is the probability that ABC will have to wait until 10PM?
+%\item $3*2*(1-p)*p*p*p=3/8$ for 10,  $3*2*(1-p)*p*p*p=3/8$ for 11, so 6/8 for waiting till 10 or later.
+\item[3)] What is the expected time to call control of the Senate?
+%\item $1/4*9+3/8*10+3/8*11=10:07.30$
+\end{enumerate}
+
+
+\item \textsc{Double Triangle Distribution} 
+
+Suppose that X is a random variable distributed as follows:
+$$f(x)=\begin{cases} x+k & \text{for } -k\leq x \leq -\frac{k}{2}\\  -x & \text{for } -\frac{k}{2} \leq x \leq 0\\ x  & \text{for } 0<x\leq\frac{k}{2}\\ -x+k \text{for } \frac{k}{2}<x<k \end{cases}$$
+\begin{enumerate}[1)]
+\item What is k?
+
+\item Using your answer from above, if we know that X is less than 1/2, what is the probability that X is greater than .25? 
+\end{enumerate}
+
+\pagebreak
+\item \textsc{Calculating Expectations}
+\begin{enumerate}[1)]
+
+\item Suppose that X is a random variable distributed as follows:
+$$f(x)=\begin{cases} 0 & \text{for } 0\leq x < 3 \\ 6/x^2  & \text{for }  3\leq x\leq 6\\ 0 &\text{for } 6< x
+\end{cases}$$
+\begin{enumerate}[1)]
+\item Verify f(x) is a valid pdf. %$\int_3^6  6/x^2 =1$, $f(x)\geq0$
+\item What is E$[X]$? % $\int_3^6 x 6/x^2=\int_3^6  6/x=6ln(6)-6ln(3)=6ln(2)$
+\item What is Var$[X]$?% $\int_3^6 x^2 6/x^2=6*6-6*3=18$, $var(x)=18-(6ln(2))^2=0.7036915$
+
+\end{enumerate}
+\item Suppose X and Y are random variables that are jointly distributed 
+$$f(x,y)=\begin{cases} \frac{16y}{x^3} \text{, if }x>2, 0<y<1\\ 0, \ \text{ otherwise }\end{cases}$$
+
+\begin{enumerate}[a)]
+\item What is the formula for $f(x)$?  What is $f(y)$? 
+\item Are X and Y independent? %No.
+\item What is E$[Y]$? 
+\item What is E$[Y|X=3]$? 
+\end{enumerate}
+
+\end{enumerate}
+
+
+\item \textsc{Inference} 
+
+\begin{enumerate}[1)]
+
+\item A survey is done asking people if they support war with Eastasia.  55\% of the men in the survey answer yes (with a standard error of 10\%), and 70\% of the women answer yes (with a standard error of 10\%).
+\begin{enumerate}
+\item[a)]  Give an estimate and standard error for the difference in support between men and women.
+%\item Estimate is .15 with a standard error of sqrt ($.1^2$+$.1^2$) = .14.
+\item[b)]  Assuming the data were collected using a simple random sample, how many people responded to the survey?
+%\item To get sample size: .5/sqrt(n) = .1, thus approx n=25 in each group, or 50 total. (You could be more exact using sqrt(.55*.45) and sqrt(.7*.3), but this is not really necessary.)
+
+\item[c)]  How large would the sample size have to be for the difference in support between men and women for the sample mean to have a standard deviation of 1\%?
+%\item To get se of difference to be 1\%, you have to reduce the se by a factor of $.14/.01=14$, thus increase sample size by $14^2=200$. Total sample size needed is then 50*200=10000.
+\end{enumerate}
+\item Suppose you have a sample size n=50 and a mean $\bar{X}=55$ and standard deviation s=3.  Using Chebyshev, what is the largest number of observations that could be outside the interval $(49,\ 61)$?
+%$$P(\bar{X}-\mu|\geq t)\leq \frac{Var(x)}{t^2}$$
+
+%$$P(\bar{X}-55|\geq 2*3)\leq \frac{3^2}{(2*3)^2}$$
+
+%$$50/4=12.5\rightarrow 12$$
+
+\end{enumerate}
+
+
+\end{enumerate}
+\end{document}
+
+
+
+
+

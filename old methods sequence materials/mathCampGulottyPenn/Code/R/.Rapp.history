@@ -1,0 +1,532 @@
+install.packages("languageserver")
+install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'))#
+devtools::install_github('IRkernel/IRkernel')#
+IRkernel::installspec()
+install.packages('IRkernel')
+IRkernel::installspec()
+library(tidyverse)#
+#
+dta<-read_csv("~/Dropbox/mathCamp/Code/data/VideoStats_final.csv")#
+df1<-dta%>%select(Session=`Session Name`, UID=`User ID`, Name, Email, completed=`Percent Completed`)#
+#
+PHDstudents<-c("Olafur Bjornsson","Ari Weil", "Lautaro Cella", "Lingnan He","Megan Maxwell", "Caroline Ferguson", "Maya Nandakumar", "Gabrielle Bozarth", "Audrey Simpson", "Randall Conway")#
+df2<-df1%>%filter(Name%in%PHDstudents)%>%complete(Session, nesting(Name, Email, UID), fill=list(completed=0))#
+#
+df2%>% group_by(Name, Email)%>%summarise(mean=mean(completed>0, na.rm=T))%>%arrange(desc(mean))%>%data.frame()
+views<-read_csv("~/Dropbox/mathCamp/Code/data/Views_final.csv")
+unique(views$Name)#
+PHDstudents<-c("Olafur Bjornsson","Ari Weil", "Lautaro Cella", "Lingnan He","Megan Maxwell", "Caroline Ferguson", "Maya Nandakumar", "Gabrielle Bozarth", "Audrey Simpson", "Randall Conway")#
+#
+views2<-views%>%select(Timestamp,Session=`Session Name`, Name,UID=`User ID`,delivered=`Minutes Delivered`)%>%filter(Name%in%"Zheng He")#
+#
+views2$datetime<-parse_date_time(views2$Timestamp, "mdyHMS",tz = "America/Chicago")#
+views2%>%filter(Session=="L13pt5MultivariateNormal")#
+#
+views2%>%count(Session)%>%arrange(n)#
+#
+viewscum<-views2%>%arrange(datetime)%>%group_by(Name)%>%mutate(cumdelivered=cumsum(delivered))
+library(lubridate)
+views<-read_csv("~/Dropbox/mathCamp/Code/data/Views_final.csv")#
+#
+unique(views$Name)#
+PHDstudents<-c("Olafur Bjornsson","Ari Weil", "Lautaro Cella", "Lingnan He","Megan Maxwell", "Caroline Ferguson", "Maya Nandakumar", "Gabrielle Bozarth", "Audrey Simpson", "Randall Conway")#
+#
+views2<-views%>%select(Timestamp,Session=`Session Name`, Name,UID=`User ID`,delivered=`Minutes Delivered`)%>%filter(Name%in%"Zheng He")#
+#
+views2$datetime<-parse_date_time(views2$Timestamp, "mdyHMS",tz = "America/Chicago")#
+views2%>%filter(Session=="L13pt5MultivariateNormal")#
+#
+views2%>%count(Session)%>%arrange(n)#
+#
+viewscum<-views2%>%arrange(datetime)%>%group_by(Name)%>%mutate(cumdelivered=cumsum(delivered))#
+ggplot(viewscum, aes(datetime, cumdelivered))+geom_point()+theme_bw()+facet_wrap(~Name)
+views2$Timestamp
+views2$datetime<-parse_date_time(views2$Timestamp, "mdyHMS",tz = "America/Chicago")
+views2$datetime<-parse_date_time(views2$Timestamp, "mdyHM",tz = "America/Chicago")
+views<-read_csv("~/Dropbox/mathCamp/Code/data/Views_final.csv")#
+#
+unique(views$Name)#
+PHDstudents<-c("Olafur Bjornsson","Ari Weil", "Lautaro Cella", "Lingnan He","Megan Maxwell", "Caroline Ferguson", "Maya Nandakumar", "Gabrielle Bozarth", "Audrey Simpson", "Randall Conway")#
+#
+views2<-views%>%select(Timestamp,Session=`Session Name`, Name,UID=`User ID`,delivered=`Minutes Delivered`)%>%filter(Name%in%"Zheng He")#
+#
+views2$datetime<-parse_date_time(views2$Timestamp, "mdyHM",tz = "America/Chicago")#
+views2%>%filter(Session=="L13pt5MultivariateNormal")#
+#
+views2%>%count(Session)%>%arrange(n)#
+#
+viewscum<-views2%>%arrange(datetime)%>%group_by(Name)%>%mutate(cumdelivered=cumsum(delivered))#
+ggplot(viewscum, aes(datetime, cumdelivered))+geom_point()+theme_bw()+facet_wrap(~Name)
+library(tidyverse)#
+library(lubridate)#
+#
+views<-read_csv("~/Dropbox/mathCamp/Code/data/Views_final.csv")#
+#
+unique(views$Name)#
+PHDstudents<-c("Olafur Bjornsson","Ari Weil", "Lautaro Cella", "Lingnan He","Megan Maxwell", "Caroline Ferguson", "Maya Nandakumar", "Gabrielle Bozarth", "Audrey Simpson", "Randall Conway")#
+#
+views2<-views%>%select(Timestamp,Session=`Session Name`, Name,UID=`User ID`,delivered=`Minutes Delivered`)#
+#
+views2$datetime<-parse_date_time(views2$Timestamp, "mdyHM",tz = "America/Chicago")#
+views2%>%filter(Session=="L13pt5MultivariateNormal")#
+#
+views2%>%count(Session)%>%arrange(n)#
+#
+viewscum<-views2%>%arrange(datetime)%>%group_by(Name)%>%mutate(cumdelivered=cumsum(delivered))#
+ggplot(viewscum, aes(datetime, cumdelivered))+geom_point()+theme_bw()+facet_wrap(~Name)#
+ggsave("studentlevel.png")
+library(tidyverse)#
+library(lubridate)#
+#
+views<-read_csv("~/Dropbox/mathCamp/Code/data/Views_final.csv")#
+#
+unique(views$Name)#
+PHDstudents<-c("Olafur Bjornsson","Ari Weil", "Lautaro Cella", "Lingnan He","Megan Maxwell", "Caroline Ferguson", "Maya Nandakumar", "Gabrielle Bozarth", "Audrey Simpson", "Randall Conway")#
+#
+views2<-views%>%select(Timestamp,Session=`Session Name`, Name,UID=`User ID`,delivered=`Minutes Delivered`)%>%filter(Name%in%PHDstudents)#
+#
+views2$datetime<-parse_date_time(views2$Timestamp, "mdyHM",tz = "America/Chicago")#
+views2%>%filter(Session=="L13pt5MultivariateNormal")#
+#
+views2%>%count(Session)%>%arrange(n)#
+#
+viewscum<-views2%>%arrange(datetime)%>%group_by(Name)%>%mutate(cumdelivered=cumsum(delivered))#
+ggplot(viewscum, aes(datetime, cumdelivered))+geom_point()+theme_bw()+facet_wrap(~Name)#
+ggsave("studentlevel.png")
+x<-seq(0,2,by=.001)
+pdfpt1<-3/8-x/4
+x<-seq(0,2,by=.001)#
+pdfpt1<-3/8-x/4#
+#
+pdfpt2<-.5+3/8-x/4
+data.frame(cbind(x, pdfpt1, pdfpt2))
+x<-seq(0,2,by=.001)#
+pdfpt1<-3/8-x/4#
+#
+pdfpt2<-.5+3/8-x/4#
+#
+df<-data.frame(cbind(x, pdfpt1, pdfpt2))
+library(ggplot2)
+df<-data.frame(cbind(x, pdf=ifelse(x<1,pdfpt1, pdfpt2))
+)
+ggplot(df, aes(x, pdf))
+ggplot(df, aes(x, pdf))+geom_line()
+###House Distribution#
+library(ggplot2)#
+x<-seq(0,2,by=.001)#
+pdfpt1<-3/8+x/4#
+#
+pdfpt2<-.5+3/8-x/4#
+#
+df<-data.frame(cbind(x, pdf=ifelse(x<1,pdfpt1, pdfpt2)))#
+#
+ggplot(df, aes(x, pdf))+geom_line()
+ggplot(df, aes(x, pdf))+geom_line()+ylimc(0,1)
+ggplot(df, aes(x, pdf))+geom_line()+ylim(c(0,1))
+ggplot(df, aes(x, pdf))+geom_line()+ylim(c(0,1))+geom_segment(x=0,xend=3/8)
+ggplot(df, aes(x, pdf))+geom_line()+ylim(c(0,1))+geom_segment(x=0,yend=3/8)
+ggplot(df, aes(x, pdf))+geom_line()+ylim(c(0,1))+geom_segment(x=0,xend=0, y=0,yend=3/8)
+ggplot(df, aes(x, pdf))+geom_line()+ylim(c(0,1))+geom_segment(x=0,xend=0, y=0,yend=3/8)+geom_segment(x=2,xend=2, y=0,yend=3/8)
+ggplot(df, aes(x, pdf))+geom_line()+ylim(c(0,1))+geom_segment(x=0,xend=0, y=0,yend=3/8)+geom_segment(x=2,xend=2, y=0,yend=3/8)+theme_bw()
+ggsave("housedist.png")
+x<-seq(0,1,.01)#
+y<-seq(0,1,.01)
+x<-seq(0,1,.01)#
+y<-seq(0,1,.01)#
+#
+z<- outer(x,y, function(x,y){x + y})#
+pdf("~/Dropbox/mathCamp/BobbyLectures/5-CovarianceCorrelation/roof.pdf")#
+persp(x, y, z)#
+#
+dev.off()#
+pdfx<-function(x){x+1/2}#
+#
+cdfx<-function(x){x^2/2+x/2}#
+xlist<-rep(x, 15)#
+ydraws<-c()#
+for(i in 1:length(xlist)){#
+udraw<-runif(1)#
+xdraw<-xlist[i]#
+ydraws[i] <- sqrt(xdraw^2+2*xdraw*udraw+udraw)-xdraw#
+}
+ydraws
+xdraws
+xdraw
+xlist
+mean(xlist)
+mean(ydraws)
+7/12
+cov(xlist, ydraws)
+cor(xlist, ydraws)
+-1/11
+density(ydraws)
+plot(density(ydraws))
+xlist
+plot(density(ydraws))
+invcdfx<- function(y){1/2*(sqrt(8*y+1)-1)}
+udrawx<-runif(1000)
+xlist<-invcdfx(udrawx)
+xlist
+for(i in 1:length(xlist)){#
+udrawy<-runif(1)#
+xdraw<-xlist[i]#
+ydraws[i] <- sqrt(xdraw^2+2*xdraw*udrawy+udrawy)-xdraw#
+}
+cor(xlist, ydraws)
+length(ydraws)
+length(xlist)
+ydraws<-c()#
+#
+for(i in 1:length(xlist)){#
+udrawy<-runif(1)#
+xdraw<-xlist[i]#
+ydraws[i] <- sqrt(xdraw^2+2*xdraw*udrawy+udrawy)-xdraw#
+}
+length(xlist)
+length(ydraws)
+cor(xlist, ydraws)
+plot(density(ydraws))
+plot(xlist, ydraws, cex=.1,pch=10)#
+lines(x, (2+3*x)/(3+6*x), lty=2)#
+abline(a=84/132, b=-1/11)
+lines(lm(ydraws~xlist))
+ablin(lm(ydraws~xlist))
+abline(lm(ydraws~xlist),lwd=2)
+plot(xlist, ydraws, cex=.1,pch=10)#
+lines(x, (2+3*x)/(3+6*x), lty=2)#
+abline(lm(ydraws~xlist),lwd=2)#
+abline(a=84/132, b=-1/11)#
+dev.off()
+plot(xlist, ydraws, cex=.1,pch=10)#
+lines(x, (2+3*x)/(3+6*x), lty=2)#
+abline(lm(ydraws~xlist),lwd=2)#
+abline(a=84/132, b=-1/11)
+abline(lm(ydraws~xlist),lwd=2)
+plot(xlist, ydraws, cex=.1,pch=10)
+abline(lm(ydraws~xlist),lwd=2)
+abline(a=84/132, b=-1/11)
+invcdfygivenx<-function(xdraw, udraw){sqrt(xdraw^2+2*xdraw*udrawy+udrawy)-xdraw}
+library(map)
+ydraws<-map(xlist, ~invcdfygivenx)
+library(purrr)
+ydraws<-map_dbl(xlist, ~invcdfygivenx)
+xlist
+ydraws<-map_dbl(xlist, ~invcdfygivenx())
+ydraws<-map_dbl(xlist, ~invcdfygivenx(udrawy))
+ydraws
+ydraws<-map_dbl(xlist, ~invcdfygivenx(.x,udrawy))
+ydraws
+cor(xlist, ydraws)
+ydraws<-map_dbl(xlist, ~invcdfygivenx(.x,udrawy))
+cor(xlist, ydraws)
+xlist
+invcdfygivenx(xlist, udrawy)
+ydraws<-invcdfygivenx(xlist, udrawy)
+cor(xlist, ydraws)
+ydraws<-invcdfygivenx(xlist, udrawy)
+cor(xlist, ydraws)
+mean(xlist)
+invcdfygivenx<-function(xdraw, udrawy){sqrt(xdraw^2+2*xdraw*udrawy+udrawy)-xdraw}
+ydraws<-invcdfygivenx(xlist, udrawy)
+cor(xlist, ydraws)
+invcdfygivenx<-function(xdraws, udrawys){sqrt(xdraws^2+2*xdraws*udrawys+udrawys)-xdraws}
+ydraws<-invcdfygivenx(xlist, udrawy)
+cor(xlist, ydraws)
+ydraws
+cov(xlist, ydraws)
+cor(xlist, ydraws)
+pdfx<-function(x){x+1/2}#
+#
+cdfx<-function(x){x^2/2+x/2}#
+#
+udrawx<-runif(1000)#
+#
+invcdfx<- function(y){1/2*(sqrt(8*y+1)-1)}#
+#
+xlist<-invcdfx(udrawx)#
+udrawy<-runif(1000)#
+#
+invcdfygivenx<-function(xdraws, udrawys){sqrt(xdraws^2+2*xdraws*udrawys+udrawys)-xdraws}#
+ydraws<-invcdfygivenx(xlist, udrawy)
+cor(xlist, ydraws)
+cov(xlist, ydraws)
+-1/11
+pdfx<-function(x){x+1/2}#
+#
+cdfx<-function(x){x^2/2+x/2}#
+#
+udrawx<-runif(10000)#
+#
+invcdfx<- function(y){1/2*(sqrt(8*y+1)-1)}#
+#
+xlist<-invcdfx(udrawx)#
+udrawy<-runif(10000)#
+#
+invcdfygivenx<-function(xdraws, udrawys){sqrt(xdraws^2+2*xdraws*udrawys+udrawys)-xdraws}#
+ydraws<-invcdfygivenx(xlist, udrawy)#
+cov(xlist, ydraws)
+cor(xlist, ydraws)
+pdfx<-function(x){x+1/2}#
+#
+cdfx<-function(x){x^2/2+x/2}#
+#
+udrawx<-runif(10000)#
+#
+invcdfx<- function(y){1/2*(sqrt(8*y+1)-1)}#
+#
+xlist<-invcdfx(udrawx)#
+udrawy<-runif(10000)#
+#
+invcdfygivenx<-function(xdraws, udrawys){sqrt(xdraws^2+2*xdraws*udrawys+udrawys)-xdraws}#
+ydraws<-invcdfygivenx(xlist, udrawy)#
+cor(xlist, ydraws)
+cor(xlist, ydraws)
+plot(xlist, ydraws, cex=.1,pch=10)#
+lines(x, (2+3*x)/(3+6*x), lty=2)#
+abline(lm(ydraws~xlist),lwd=2)#
+abline(a=84/132, b=-1/11)
+plot(xlist, ydraws, cex=.1,pch=10, ylim=c(.5,.7))#
+lines(x, (2+3*x)/(3+6*x), lty=2)#
+abline(a=84/132, b=-1/11)
+plot(xlist, ydraws, cex=.1,pch=10, ylim=c(.5,.7))#
+lines(x, (2+3*x)/(3+6*x), lty=2)#
+abline(a=84/132, b=-1/11)#
+abline(lm(ydraws~xlist),lty=3)
+plot(xlist, ydraws, cex=.1,pch=10)#
+lines(x, (2+3*x)/(3+6*x), lty=2)#
+abline(lm(ydraws~xlist),lty=3)#
+abline(a=84/132, b=-1/11)
+plot(density(qnorm(runif(10000)))
+)
+lines(density(rnorm(10000)), lty=2)
+plot(density(qnorm(runif(10000))))#
+lines(density(rnorm(10000)), lty=2)
+summary(lm(ydraws~xlist))
+cor(xlist, ydraws)
+cov(xlist, ydraws)
+plot(xlist, ydraws, cex=.1,pch=10)#
+lines(x, (2+3*x)/(3+6*x), lty=2)#
+abline(lm(ydraws~xlist),lty=3)#
+abline(a=84/132, b=-1/11)
+plot(xlist, ydraws, cex=.1,pch=10, ylim=c(.5,.7))#
+lines(x, (2+3*x)/(3+6*x), lty=2)#
+abline(a=84/132, b=-1/11)#
+abline(lm(ydraws~xlist),lty=3)
+df<-data.frame(x=xlist, y=ydraws)
+library(ggplot2)
+ggplot(df, aes(x, y))+geom_point()+ylim(c(.5,.7))
+geom_abline(a=84/132, b=-1/11)
+geom_abline(intercept=84/132, slope=-1/11)
+ggplot(df, aes(x, y))+#
+geom_point()+#
+ylim(c(.5,.7))+#
+geom_abline(intercept=84/132, slope=-1/11)
+geom_smooth(method="lm")
+ggplot(df, aes(x, y))+#
+geom_point()+#
+ylim(c(.5,.7))+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_smooth(method="lm", se=F)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)
+ggplot(df, aes(x, y))+#
+geom_point()+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_smooth(method="lm", se=F)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)
+ggplot(df, aes(x, y))+#
+geom_point()+#
+ylim(c(.5,.7))+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_smooth(method="lm", se=F)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)
+?geom_smooth
+ggplot(df, aes(x, y))+#
+geom_point()+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_smooth(method="lm", se=F)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+ylim(c(.5,.7))
+ggplot(df, aes(x, y))+#
+geom_point()+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+ stat_summary(fun.data=mean_cl_normal) + #
+  geom_smooth(method='lm', formula= y~x)#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+ylim(c(.5,.7))
+ggplot(df, aes(x, y))+#
+geom_point()+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+ stat_summary(fun.data=mean_cl_normal) + #
+  geom_smooth(method='lm', formula= y~x, se=F)#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+ylim(c(.5,.7))
+ggplot(df, aes(x, y))+#
+geom_point()+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+ stat_summary(fun.data=mean_cl_normal) + #
+  geom_smooth(method='lm', formula= y~x, se=F)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+ylim(c(.5,.7))
+geom_smooth(method="lm", se=F)
+ggplot(df, aes(x, y))+#
+geom_point()+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+geom_smooth(method="lm", se=F)+#
+coord_cartesian(ylim=c(.5,.7))
+ggplot(df, aes(x, y))+#
+geom_point()+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+geom_smooth(method="lm", se=F)
+ggplot(df, aes(x, y))+#
+geom_point(alpha=.5)+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+geom_smooth(method="lm", se=F)
+ggplot(df, aes(x, y))+#
+geom_point(alpha=.2, size=.1)+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+geom_smooth(method="lm", se=F)
+ggplot(df, aes(x, y))+#
+geom_point(alpha=.2, size=.2)+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+geom_smooth(method="lm", se=F)
+ggplot(df, aes(x, y))+#
+geom_point(alpha=.2, size=.2)+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+geom_smooth(method="lm", se=F)+coord_cartesian(ylim=c(.5,.7))
+ggplot(df, aes(x, y))+#
+geom_point(alpha=.2, size=.2)+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+geom_smooth(method="lm", se=F,lty=3)+#
+coord_cartesian(ylim=c(.5,.7))
+gplot(df, aes(x, y))+#
+geom_point(alpha=.2, size=.2)+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+geom_smooth(method="lm", se=F,lty=4)+#
+coord_cartesian(ylim=c(.5,.7))
+ggplot(df, aes(x, y))+#
+geom_point(alpha=.2, size=.2)+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+geom_smooth(method="lm", se=F,lty=4)+#
+coord_cartesian(ylim=c(.5,.7))
+ggplot(df, aes(x, y))+#
+geom_point(alpha=.2, size=.2)+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+geom_smooth(method="lm", se=F,lty=4)
+ggplot(df, aes(x, y))+#
+geom_point(alpha=.2, size=.2)+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+geom_smooth(method="lm", se=F,lty=4)+#
+coord_cartesian(ylim=c(.5,.75))
+udrawx<-runif(10000)#
+#
+invcdfx<- function(y){1/2*(sqrt(8*y+1)-1)}#
+#
+xdraws<-invcdfx(udrawx)#
+#
+histogram(xdraws)
+hist(xdraws)
+library(ggplot2)#
+#
+# Part 1: Making a perspective plot#
+#
+x <- seq(0, 1,.01)#
+#
+y <- seq(0, 1,.01)#
+#
+z<- outer(x, y, function(x,y){x + y})#
+#
+pdf("roof.pdf")#
+persp(x, y, z)#
+dev.off()#
+#
+# Part 2: Simulate marginal distribution:#
+#
+#Simulate the marginal with the inverse cdf:#
+udrawx<-runif(10000)#
+#
+invcdfx<- function(y){1/2*(sqrt(8*y+1)-1)}#
+#
+xdraws<-invcdfx(udrawx)#
+#
+hist(xdraws)#
+#
+#Part 3: Simulate the conditional with the inverse cdf:#
+#
+udrawy<-runif(10000)#
+#
+invcdfygivenx<-function(xdraws, udrawys){sqrt(xdraws^2+2*xdraws*udrawys+udrawys)-xdraws}#
+#
+ydraws<-invcdfygivenx(xdraws, udrawy)#
+#
+hist(ydraws)#
+#
+#Part 4: Simulate the conditional with the inverse cdf:#
+#
+cov(xdraws, ydraws)#
+cor(xdraws, ydraws)#
+#
+summary(lm(ydraws~xdraws))#
+#
+pdf("~/Dropbox/mathCamp/BobbyLectures/5-CovarianceCorrelation/ConditionalExp.pdf")#
+plot(xdraws, ydraws, cex=.1,pch=10)#
+lines(x, (2+3*x)/(3+6*x), lty=2)#
+abline(lm(ydraws~xdraws),lty=3)#
+abline(a=84/132, b=-1/11)#
+dev.off()#
+#
+pdf("~/Dropbox/mathCamp/BobbyLectures/5-CovarianceCorrelation/ConditionalExpZoom.pdf")#
+plot(xdraws, ydraws, cex=.1,pch=10, ylim=c(.5,.7))#
+lines(x, (2+3*x)/(3+6*x), lty=2)#
+abline(a=84/132, b=-1/11)#
+abline(lm(ydraws~xdraws),lty=3)#
+dev.off()#
+df<-data.frame(x=xdraws, y=ydraws)#
+#
+ggplot(df, aes(x, y))+#
+geom_point(alpha=.2, size=.2)+#
+geom_abline(intercept=84/132, slope=-1/11)+#
+geom_line(aes(x, (2+3*x)/(3+6*x)), lty=2)+#
+geom_smooth(method="lm", se=F,lty=4)+#
+coord_cartesian(ylim=c(.5,.75))
+ggsave("HW1CEF.png")
+qqplot(qnorm(runif(10000)),rnorm(10000))
+library(tidyverse)
+dta<-read_csv("~/Downloads/datapca.csv")
+dta
+dtamat<-scale(dta[,-1])
+dtamat
+dtamatcov<-t(dtamat)%*%dtamat/(nrow(dtamat)-1)
+dtaeigens<-eigen(dtamatcov)
+eigenvalues <-  dtaeigens$values#
+#
+eigenvectors <- Udtaeigens$vectors
+plot(1:51, eigenvalues, type="o", log="y", main="Magnitudes")
+plot(13, eigenvalues, type="o", log="y", main="Magnitudes")
+plot(1:3, eigenvalues, type="o", log="y", main="Magnitudes")
+sum(eigenvalues[1:2])/sum(eigenvalues)
+dtamatcov_score<-dtamatcov%*%eigenvectors
+dtamatcov_score<-dtamatcov%*%eigenvectors
+eigenvectors <- dtaeigens$vectors
+dtamatcov_score<-dtamatcov%*%eigenvectors
+plot(dtamatcov_score[,1],dtamatcov_score[,2], pch="" )#
+text(dtamatcov_score[,1],dtamatcov_score[,2], #
+     labels=rownames(dtamatcov_score))
+autoplot(pca_res, data = dta, loadings = TRUE)
+pca_res <- prcomp(dta, scale. = TRUE)#
+#
+autoplot(pca_res, data = dta, loadings = TRUE)
+pca_res <- prcomp(dta, scale. = TRUE)#
+#
+autoplot(pca_res, data = dta, loadings = TRUE)
+library(ggfortify)
+install.packages("ggfortify")

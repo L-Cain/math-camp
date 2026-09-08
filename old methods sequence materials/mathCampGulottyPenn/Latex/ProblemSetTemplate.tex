@@ -1,0 +1,30 @@
+
+\documentclass[12pt]{article}
+\usepackage{amsmath} % AMS Math Package
+\usepackage{amsthm} % Theorem Formatting
+\usepackage{amssymb}    % Math symbols such as \mathbb
+\usepackage{bm}
+\usepackage{graphicx} % Allows for eps images
+\usepackage[dvips,letterpaper,margin=1in,bottom=0.7in]{geometry}
+\usepackage{tensor}
+\newtheorem{p}{Problem}[section]
+\usepackage{amsmath}
+
+\begin{document}
+
+{\noindent\Huge\bf  \\[0.5\baselineskip] {\fontfamily{cmr}\selectfont  Problem Set I}         }\\[2\baselineskip] % Title
+{ {\bf \fontfamily{cmr}\selectfont Political Science 30100}\\ {\textit{\fontfamily{cmr}\selectfont     November 7, 2021}}}\hfill   {\large \textsc{Robert Gulotty}\footnote{With Mark Hansen}} % Author name
+\\[1.4\baselineskip] 
+
+
+
+\section{Problem Set Part I}
+ 
+\begin{p} Let $L = a p^r (1 - p)^{n-r}$. Find $\log_{e}L$.
+\end{p}
+\begin{align*}
+\log_{e}L&=\log_{e} a p^r (1 - p)^{n-r} \tag{by definition of $L$}\\
+&=\log_{e} a +\log_{e} p^r +\log_{e} (1 - p)^{n-r} \tag{$\log(ab)=\log(a)+\log(b)$}\\
+&=\log_{e} a +r\log_{e} p +(n-r)\log_{e} (1 - p) \tag{$\log(a^b)=b\log(a)$}
+\end{align*}
+\end{document}

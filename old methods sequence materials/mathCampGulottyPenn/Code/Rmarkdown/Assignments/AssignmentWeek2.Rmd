@@ -1,0 +1,100 @@
+---
+title: "Assignment for Week 2"
+author: "Author: Your name here!"
+date: "12/14/2016"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+```{r setup, include=FALSE}
+# This code changes "global" settings, here it makes the computer `echo` which refers to 
+# printing the code as well as the output into the pdf document when you knit.
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Change the following code to be your working folder for R
+knitr::opts_knit$set(root.dir = '~/Dropbox/mathCamp/Code/data/')
+# The following allows the computer to always get the same result for random stuff.
+set.seed(100)
+
+# install.packages("dplyr")
+# install.packages("ggplot2")
+# install.packages("nycflights13")
+```
+
+## Package Loading
+
+```{r Package Loading}
+library(dplyr, warn.conflicts = FALSE)
+library(ggplot2)
+library(haven)
+```
+
+# Assignment
+<!-- Please Put \newpage commands between long answers.  Avoid allowing answers to spill over pages. --> 
+
+1) 6.3.2 (p. 114)
+2) 6.3.3 (p. 114)
+3) 7.1.1 (b) (p. 121)
+4) 7.1.2 (b) (p. 121)
+5) 7.2.6 (p. 125)
+6) 7.3.2 (a) (p. 130)
+7) 8.1.2 (p. 141)
+8) 8.2.4 (p.145)
+9) 8.4.4 (p. 161)
+
+\newpage
+10) Using the world religion dataset, what country experience the largest percentage increase in Islam over the dataset?
+
+11) Without using R, how many rows and columns does df1, df2, and df3 have?
+
+```{r, eval=FALSE}
+dfA <- data.frame(x = 0:10, yA = rnorm(11,-1))
+dfB <- data.frame(x = 5:15, yB = rnorm(11, 1))
+
+df1 <- left_join(dfA, dfB)
+df2 <- na.omit(df1)
+df3 <- anti_join(dfA, dfB)
+```
+
+12) Turn the following code into a beautify dplyr piped code.
+
+```{r, eval=FALSE}
+dfFondue <- data.frame(Ingredient=c("Gruyère", "vacherin", "Kirsch","Garlic",
+            "White Wine", "cornstarch"))
+            
+dfFondue$Origin <- c("Gruyères", "Fribourg", "Zürich", "Lucern", "Jura", "Iowa")
+
+dfFondue$Price <- c(12.99, 14.99, 15.00, 1.50, 12.00, .90)
+
+dfFondue$Amount <- c(1, 1, .01, 1, .2, .05)
+
+dfFondue$Proportionoftotal <- dfFondue$Price*dfFondue$Amount/sum(dfFondue$Price*dfFondue$Amount) 
+
+ggplot(dfFondue, aes(reorder(Ingredient,Proportionoftotal), Proportionoftotal))+geom_col()
+```
+
+13) Create a stacked barplot of the Fondue data with the incredients sorted into alcohol (Wine and Kirsch), Cheese (Gruyere and Vacherin) and Other. Make sure the labels are correct.
+
+14) Go to ICPSR, sign up, download the China Multi-Generational Panel Dataset, Shuangcheng (ID 35292).  What is the number of sampled individuals in 1867 that Absconded (escaped from indentured servitude)?  What was their average age?
+
+\newpage
+
+15) Suppose we want to study the association between religiosity and civil war.  Be sure to specify both the independent and dependent variables.  Write and present a table that combines information from the religiosity dataset and the following dataset on civil war.  Be creative.  There are two ways to study civil war, the first is whether or not that country is experiencing a civil war (war), and the other is the onset of such a war (onset).  The main predictor of being in a civil war this year is having been in one last year, so some people restrict their study to onset.
+```{r}
+
+fldta <- read_dta("FearonLaitin.dta")
+
+fldta <- fldta %>%
+select(
+cowcode = ccode,
+year = year,
+cname = cname,
+onset = onset,
+war = war,
+polity2 = polity2,
+Oil = Oil,
+GDPpercap = gdpen
+)
+# str(fldta)
+```

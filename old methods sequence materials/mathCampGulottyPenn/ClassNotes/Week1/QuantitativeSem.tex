@@ -1,0 +1,22 @@
+    \documentclass{minimal}
+    \usepackage{tikz}
+    \usetikzlibrary{graphs,quotes}
+    \begin{document}
+
+    \tikz \graph [nodes = {rectangle, draw},
+                  circular placement,
+                  radius = 2cm] {
+       MFPM/"\bfseries{43401: MFPM}" [blue, xshift = -5cm] ->
+          piano [xshift = -2cm];
+       strings/"\bfseries{strings}" [xshift = 2cm] --
+          [dotted, bend right, thick] piano;
+       strings -> guitar;
+       guitar ->[red, "ancestor"] chitarra;
+       strings -> violin;
+       strings -> viola [yshift = 1cm];
+       strings -> cello [xshift = -2cm];
+       percussion -> xylophone [xshift = -1cm];
+       percussion -> timpani [xshift = -3cm, yshift = 1cm];
+    };
+
+    \end{document}

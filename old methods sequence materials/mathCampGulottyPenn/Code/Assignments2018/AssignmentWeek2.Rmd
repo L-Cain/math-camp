@@ -1,0 +1,55 @@
+---
+title: "Assignment for Week 2"
+author: "Author: Your name here!"
+date: "12/14/2016"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+```{r setup, include=FALSE}
+# This code changes "global" settings, here it makes the computer `echo` which refers to 
+# printing the code as well as the output into the pdf document when you knit.
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Change the following code to be your working folder for R
+knitr::opts_knit$set(root.dir = '~/Dropbox/mathCamp/Code/data/')
+# The following allows the computer to always get the same result for random stuff.
+set.seed(100)
+
+# install.packages("dplyr")
+# install.packages("ggplot2")
+# install.packages("nycflights13")
+```
+
+## Package Loading
+
+```{r Package Loading}
+library(dplyr, warn.conflicts = FALSE)
+library(ggplot2)
+library(haven)
+```
+
+# Assignment
+<!-- Please Put \newpage commands between long answers.  Avoid allowing answers to spill over pages. --> 
+0) [5.1.3] In each of the following cases, state whether the sequence $\{u_n\}$ tends to a limit, and find the limit if it exists:
+
+\begin{itemize}
+\item[(a)] $u_n=1+\frac{1}{2}n$
+\item[(b)] $u_n=1-\frac{1}{2}n$
+\item[(c)] $u_n=(\frac{1}{2})^n$
+\item[(d)] $u_n=-(\frac{1}{2})^n$
+\end{itemize}
+
+1) 6.3.2 (p. 114)
+2) 6.3.3 (p. 114)
+3) 7.1.1 (b) (p. 121)
+4) 7.1.2 (b) (p. 121)
+5) 7.2.6 (p. 125)
+6) 7.3.2 (a) (p. 130)
+7) 8.1.2 (p. 141)
+8) 8.2.4 (p.145)
+9) 8.4.4 (p. 161)
+10) 10.4.2 (p. 196)
+
+Answer the problems in Foundations of R Chapter 2.

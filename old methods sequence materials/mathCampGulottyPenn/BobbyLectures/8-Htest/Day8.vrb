@@ -1,0 +1,5 @@
+\frametitle{Simulations}
+\begin{verbatim}
+> library(animation)
+> conf.int()
+\end{verbatim}

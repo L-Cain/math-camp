@@ -1,0 +1,153 @@
+---
+title: "R Lab:  Week 8"
+author: "Robert Gulotty"
+date: "1/31/2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=80),tidy=TRUE)
+set.seed(120)
+
+```
+******
+There are a ton of required R packages for today.  Take a minute to install each one, then restart R, and continue from there.  Install using the command `install.packages("ggmap", type = "source")`
+
+```{r}
+library(maptools)
+library(stringr)
+library(ggplot2)
+library(readr)
+library(dplyr, warn.conflicts = F)
+library(ggmap)
+library(maps)
+library(mapdata)
+library(rgeos)
+library(sp)
+library(rgdal)
+
+```
+
+Today we will learn about geographic information systems (GIS) and how to interact with them in R.  
+
+- The maps package contains the outlines of continents, countries, states, and counties.
+
+- The mapdata package contains a few more, higher-resolution outlines.
+
+- We will use ggplot2 to plot, along with ggmap, which draws on google maps.
+
+\newpage
+We will work with shape files, provided on Chalk.  To use them, please be sure to download all of the files and keep them in a folder together.  You will use R to load in the .shp file, but the others need to be kept in the same directory.  Here we use the maptools function, `readShapeSpatial`.
+
+```{r, fig.width=5, fig.height=4}
+
+shape1<-readShapeSpatial("~/Dropbox/mathCamp/Code/data/ShapeFile/neweuropemap.shp")
+
+```
+
+You can learn a bunch of features of this file using the summmary command.  There are `r length(shape1$NAME)` countries: `r shape1$NAME`.  R deals well with data.frames, but this object is substantially more complicated.  The shape file includes`@` is like `$` in that it allows you to pull out elements in an object.  We will not cover the details about why we need a more complicated object for maps, but you can read more about it if you search for the S4 system.
+\newpage
+Here we are placing a variable called id in the data slot of the shape object.  Here we are using the rownames of the data object.  Once we do that, we can use the ggplot function `fortify` to make a data.frame out of the shape file.  Recall that ggplot2 operates on data frames. Therefore we need some way to translate the maps data into a data frame format the ggplot can use.  Here we are making a variable called region from the id variable, then we use it to tag each row in the dataframe, creating a column called "id".
+
+```{r}
+shape1@data$id <- rownames(shape1@data)
+
+shape.fort <- fortify(shape1, region = "id")
+```
+
+
+
+Now, we can recombine this dataframe with the covariates from the shape file.
+
+```{r}
+shape.data <- shape.fort %>% left_join(data.frame(shape1))
+```
+In general, it is here that you could add in new data, using the IDs from the file to join in things that might vary by country.  We will use the built in population data, but of course you can use data that you collect yourself.
+
+\newpage
+
+Shape files can be used to plot things as a `geom_polygon`.  This takes a lat long, and plots by the group variable.  We are also filling these shapes with `POP_EST`.  
+
+
+```{r, fig.width=5, fig.height=4}
+ggplot(data = shape.data, aes(long, lat, group = group)) +
+  geom_polygon(colour = "black", aes(fill = POP_EST)) +
+  scale_fill_gradient(low = "lightblue",
+  high = "darkblue",
+  na.value = "lightyellow") +
+  theme_bw() +
+  xlim(-20, 40) +
+  ylim(30, 71)
+```
+
+\newpage
+
+# Google map integration
+
+We can integrate these shapes with google maps as follows:
+
+```{r, fig.width=5, fig.height=4}
+Europe <- get_map(location = 'Switzerland', zoom = 3)
+
+ggmap(Europe) +
+  geom_polygon(
+  colour = "black",
+  data = shape.data,
+  aes(long, lat, group = group, fill = POP_EST),
+  alpha = .5) +
+  scale_fill_gradient(low = "lightblue",
+  high = "darkblue",
+  na.value = "lightyellow")
+
+```
+
+\newpage
+
+We can do some descriptive analysis using tools from the `sp` package.  Here we are loading all of the bombs dropped in Europe during WW1 by the Western Powers.
+
+```{r}
+df <- read_csv("~/Dropbox/mathCamp/Code/data/THOR_WW1.csv")
+
+ggplot()+
+  geom_polygon(data = shape.data,
+  colour = "black",
+  aes( long, lat, group = group,fill = POP_EST),
+  alpha = .5) +
+  scale_fill_gradient(low = "lightblue",
+  high = "darkblue",
+  na.value = "lightyellow")+
+  geom_point(data=df, aes(as.numeric(Lon), as.numeric(Lat)), size=.2)+
+   xlim(-20, 40) +
+  ylim(30, 71)+theme_bw()+ggtitle("Bombs in World War I")
+```
+
+Suppose we want to know how many bombs were dropped in France.  We can use the `point.in.polygon` command:
+
+```{r}
+Francefile<-shape.data[shape.data$NAME=="France",]
+
+bombsinFrance<- point.in.polygon(point.x=as.numeric(df$Lon), point.y=as.numeric(df$Lat), pol.x=Francefile$long, pol.y=Francefile$lat)
+
+table(bombsinFrance)
+```
+
+\newpage
+
+# How to simulate a random variable
+
+We can simulate any continuous random variable $X$ with CDF $F_X(x)$ by calculating $F_X^{-1}(U)$ where $U\sim U(0,1)$.  For intuition, consider the following CDF.
+
+```{r, fig.width=4, fig.height=4}
+curve(pt(x, df=1),from=-4,to=4)
+```
+Examining the Y axis, we see numbers from 0 to 1.  The mapping from that to the x axis is the inverse of the CDF.  Here the equation for the students-t CDF with one degree of freedom is:
+$$F(x)=\frac{1}{\pi}arctan(x)+\frac{1}{2}$$
+$$F^{-1}(p)=tan[\pi (p-1/2)]$$
+This inverse CDF is called the quantile function, and it is built into R with $qt$.
+So, if we plug in a uniform in for p in the above equation, we will get back a random variable that is distributed $t$ with one degree of freedom.  See why the Cauchy distribution has no mean or variance?
+```{r}
+udraws <- runif(100)
+tsims<- tan(pi*(udraws-1/2))
+ggplot()+geom_histogram(aes(tsims), bins=20)
+```
+We can examine whether a continuous distribution is equal to a theoretical distribution using a qqplot.  

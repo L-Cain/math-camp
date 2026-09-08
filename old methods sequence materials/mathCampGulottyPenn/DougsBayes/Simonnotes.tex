@@ -1,0 +1,42 @@
+Subjects i =1...n
+Test items j= 1...m
+
+each response y_ij  =1 if correct else 0
+
+there is some latent trait \xi_i, usually in R^1  
+
+PCA
+IRT has more theory, and is connected to the binary setting
+
+teaches us about subjects and item parameters.
+
+ordinal data
+
+p_ij\equiv Pr(y_ij=1)=F(\xi_i\beta_i-a_j)
+
+\beta is the item discrimination paramter
+a_j is the item difficulty parameter.
+
+F: is like a logit or something.
+
+a_j/\beta_j is cutpoint, which is the .5 level, and you are equally likely to get question right or wrong.  these are the questions that they give you.
+lots of parameters:
+n*d ability parameters
+m*(d+1)
+
+
+\xi_i\beta_j is unidentified, set \xi to have mean 0, variance 1.    Scale relative to a reference item, or set a discrimination parameter on some of the questions.
+
+NOMINATE
+"alternating maximum likelihood"
+estimate conditional on item parameters
+estimate item parameters on abilities.
+
+Incidental parameter problem
+
+EM 
+vs 
+MCMC
+M step Regress Y on X
+E step E(Y|x\beta y-1)
+Bayes visits the location proportional to the posterior

@@ -1,0 +1,128 @@
+---
+title: "Assignment for Week 3"
+author: "Author: Your name here!"
+date: "12/14/2016"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+```{r setup, include=FALSE}
+# This code changes "global" settings, here it makes the computer `echo` which refers to 
+# printing the code as well as the output into the pdf document when you knit.
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Change the following code to be your working folder for R
+
+setwd("~/Dropbox/mathCamp/Code/R")
+# The following allows the computer to always get the same result for random stuff.
+set.seed(100)
+
+# install.packages("dplyr")
+# install.packages("ggplot2")
+# install.packages("nycflights13")
+```
+
+## Package Loading
+
+```{r Package Loading}
+library(dplyr, warn.conflicts = FALSE)
+library(ggplot2)
+library(haven)
+```
+
+# Assignment
+<!-- Please Put \newpage commands between long answers.  Avoid allowing answers to spill over pages. --> 
+
+1) 19.2.3 (a) (p. 405)
+2) 19.2.6 (p. 406)
+3) 11.1.4 (c, e, f) (p. 207)
+4) 11.2.4 (p. 213)
+5) 11.2.6 (p. 213)
+6) 11.3.1 (p. 217)
+
+\newpage
+
+
+7) Which of the following plots of the same data is clearer?  Why? 
+
+```{r, echo=FALSE, fig.width=3.5, fig.height=3}
+library(ggplot2)
+df<- data.frame(y=c(10,11,13,12,14), Answers=c("Very bad", "Somewhat bad","Not great", "Mediocre","Average" ))
+ggplot(df, aes(x=factor(1), y=y, fill=Answers))+geom_col()+coord_polar(theta="y")+xlab("")+ylab("")+theme_bw()+theme(axis.line=element_blank(),axis.text.x=element_blank(),
+          axis.text.y=element_blank(),axis.ticks=element_blank(),
+          axis.title.x=element_blank(),
+          axis.title.y=element_blank(),
+          panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+          panel.grid.minor=element_blank(),plot.background=element_blank())+ggtitle("Plot A")
+
+ggplot(df, aes(x=factor(1), y=y, fill=Answers))+geom_col(position="dodge")+xlab("")+ylab("")+theme_bw()+theme(axis.line=element_blank(),axis.text.x=element_blank(),
+          axis.text.y=element_blank(),axis.ticks=element_blank(),
+          axis.title.x=element_blank(),
+          axis.title.y=element_blank(),
+          panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+          panel.grid.minor=element_blank(),plot.background=element_blank())+ggtitle("Plot B")
+
+
+```
+
+\vspace{1 cm}
+8)  Use the Afghanistan dataset to answer the following:
+
+    - What if we take the average elevation of each language, which is spoken in the second highest altitudes on average?
+    - What language's speakers are farthest away from Kabul on average?
+    - (Extra Credit) What is the most geographically isolated city with a population more than 1000 in Afghanistan?
+
+9) Correct the common mistakes in the following code snippets
+
+  a)  Make the following TRUE
+  
+      ```
+      mean(c(3, 2, 1, NA)) == 2
+      ```
+  b)  Make the following TRUE
+  
+      ```
+      df <- data.frame(var1 = c(35, 40, 45));
+      length(df[1])==3
+      ```
+  c)  Make the following TRUE
+  
+      ```
+      df <- data.frame(var1 = c(35, 40, 45));
+      dplyr::filter(df, "var1"==40)==40
+      ```
+  d)  Make the following produce a plot of the points described in x and y.
+  
+      ```
+      x <- c(3, 10, 4);
+      y <- c(2, 3, 4);
+      ggplot()+geom_point(x, y)
+      ```
+  e)  Produce the string `Iowa' 
+    ```
+    library(dplyr);
+    df <- data.frame(var1 = c(35, 40, 45), var2=c("Iowa", "France","Mexico"));
+    dfs <- df%>%filter(var2="Iowa")%>%select("var2");
+    as.character(dfs[[1]])
+    ```
+    
+10)  Make a plot of Afghanistan which tells us about the geography of language diversity.  Avoid overplotting, where the points overlap to much.  Make sure to label your x and y axis, and to make a nice title.  Check out https://cran.r-project.org/web/packages/ggthemes/vignettes/ggthemes.html and http://shinyapps.org/apps/RGraphCompendium/index.php for ideas.
+
+
+```{r, include=FALSE, eval=FALSE}
+# SOLUTION
+NlanguagesPerRegion <-
+  afg %>% group_by(MISTI_PROV_CODE) %>% summarise(ndistinct = n_distinct(LANGUAGE))
+  
+  afg <- afg %>% left_join(NlanguagesPerRegion)
+  
+  pdf("~/Google Drive/ChicagoSyllabi/SSI131/AfghanistanOut.pdf",
+  width = 10)
+  ggplot(afg, aes(LON_X, LAT_Y, color = ndistinct)) + geom_point(size = .1) +
+  guides(color = guide_legend(override.aes = list(size = 5))) +
+  theme_bw() +
+  ggtitle("Provincial Language Diversity in Afghanistan")
+  dev.off()
+
+```

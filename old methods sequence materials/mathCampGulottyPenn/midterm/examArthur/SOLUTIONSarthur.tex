@@ -1,0 +1,145 @@
+\documentclass[11pt]{article}
+\pagestyle{empty}
+
+%\setlength{\topmargin}{.25in}
+
+\setlength{\textwidth}{6in}
+\setlength{\oddsidemargin}{.25in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.25in}
+
+
+\renewcommand{\baselinestretch}{1.1}
+\usepackage{amsmath}
+\usepackage{epsfig}
+\usepackage{amssymb}
+\usepackage{amscd}
+\usepackage{times}
+\usepackage{graphics}
+%\usepackage{chicago}
+%\usepackage{fullpage}
+%\usepackage{apalike}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{example}{Example}
+\newtheorem{claim}{Claim}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\def\argmax{\mathop{\rm argmax}\limits}
+\def\max{\mathop{\rm max}\limits}
+
+
+\begin{document}
+
+
+\noindent \large Exam for Zeyang (Arthur) Yu, ``The Mathematical Foundations of Political Methodology"
+
+\normalsize
+\ \\You have 3 hours for this exam.  You may use a calculator and refer to your two class books (Pemberton \& Rau  and Bertsekas \& Tsitsiklis).  Please do not use the internet during the exam.  Show your work: solutions without work may receive no credit.
+
+\begin{enumerate}
+
+\item Given the following hold, what (if anything) do we know about the relationship between sets $A$ and $C$?
+
+\begin{enumerate}
+\item $A\cap B= A$ and $B\cap C\not=\emptyset$
+
+\ \\ Nothing.
+\item $A\cup B= A$ and $B\cap C\not=\emptyset$
+
+\ \\ $A\cap C\not=\emptyset$.
+\item $C \cup D=B$ and $B\cap C=A$
+
+\ \\ $A = C$.
+
+\end{enumerate}
+
+\vspace{.2in}
+
+\item Find the limit of each of the following sequences as $n\rightarrow \infty$, if the limit exists.
+\begin{enumerate}
+\item $${{4n^3-1}\over{(n+1)^3}}$$
+
+\ \\It's 4.
+\item $${{(-1)^n n^{5\over 8}}\over{7+n^{7\over 8}}}$$
+
+\ \\ It's 0.
+\item $${{(-1)^n n^{1\over 2}}\over{n^{1\over 2}+n^{2\over 5}}}$$
+
+\ \\ It doesn't exist.
+\end{enumerate}
+
+\vspace{.2in}
+
+\item Use the $(\delta, \epsilon)$ definition of a limit to prove that the function $$f(x)={1/2}x-10$$ is everywhere continuous.
+
+\ \\We need that limit as $x\rightarrow x_o$ of $f(x)$ equals ${1\over 2}x_o-10$ for all $x_o$.  For any $\epsilon>0$, we can find a $\delta>0$ such that $|{1\over 2}x-10-{1\over 2}x_o+10|<\epsilon$ whenever $|x-x_o|<\delta$.  Rearranging, we get ${1\over 2}|x-x_o|<\epsilon$ when $|x-x_o|<\delta$.  Setting $\delta={2} \epsilon$ proves the result.
+
+\vspace{.2in}
+\item Let $$f(x)=x^2/(x+4)$$
+\begin{enumerate}
+\item Find the critical points of $f$ and characterize them as maxima, minima, or inflection points.
+
+\ \\Critical points at $x=0, x=-8; -8$ is a local maximum, $0$ is a local minimum.
+\item Find the regions on which $f$ is convex and concave.
+
+\ \\ $f$ is concave when $x< -4$ and is convex when $x>-4$. $f$ is undefined at $x=-4$.
+\item Find any asymptotes that $f$ may have.
+
+\ \\ As $x\rightarrow \pm\infty$ $f$ approaches the line $y=x$. As $x\rightarrow -4$ from above $y\rightarrow \infty$.  From below, $y\rightarrow -\infty$.
+
+\end{enumerate}
+
+\item Perform the following matrix operations:
+
+\begin{enumerate}
+\item Find the inverse of $$\begin{bmatrix}1 & 1& 4\\ 0& 1& 1\\0&0&1
+\end{bmatrix}$$
+
+\ \\ It is $$\begin{bmatrix}1 & -1& -3\\ 0& 1& -1\\0&0&1 \end{bmatrix}$$
+
+\newpage
+
+\item Find the rank of 
+$$\begin{bmatrix} 
+1& 1& 5\\
+0& 2& 4\\
+-2& 0& -6\\
+1& 9& 21
+\end{bmatrix}$$
+
+\ \\It is 2.
+
+\item Check whether the following matrix is positive definite, positive semidefinite, negative definite, negative semidefinite, or none of the above.
+$$\begin{bmatrix}
+1& 1& 2\\1& 0& 1\\2& 1& 0
+\end{bmatrix}$$
+\ \\It is none of the above (the 2X2 principal minors aren't positive for $A$ or non-negative for $-A$).
+\end{enumerate}
+
+\vspace{.2in}
+
+\item Find and classify all of the critical points of the following functions:
+
+\begin{enumerate}
+
+\item  $$f(x, y)=-10x^2+4xy-{{2y^2}\over 5}$$
+
+\ \\There are a continuum of critical points: all points of the form $(C, 5C)$ with $C\in \mathbb{R}$.  They are all global optima, because $f$ is globally concave: Its Hessian is $$\begin{bmatrix}-20 & 4\\4& -{4\over 5}\end{bmatrix}$$ so it has determinant 0 and its diagonals are negative.  Thus the Hessian is negative semidefinite.
+
+\item $$f(x, y, z)=-x^2+{\log}(x)-{1\over y}-y-z^2+z \hspace{.1in}\hbox{ for }x, y, z>0$$
+
+\ \\ There is one critical point: $({1\over \sqrt{2}}, 1, {1\over 2})$.  It is a global optimum because the function is the sum of concave functions of one variable.  No Hessian required.
+
+\newpage 
+
+\item $$f(x, y)=x^2+y^2-xy \hbox{ subject to the constraint that }2x-y=3$$
+
+\ \\The Lagrangian is $$L(x, y, \lambda)=x^2+y^2-xy-\lambda(2x-y-3).$$  The first order conditions imply that $2x-y-2\lambda=0$, $2y-x+\lambda=0$, and $2x-y-3=0$.  Solving for $x$ and $y$ we get $({3\over 2},0)$ as a critical point (incidentally, $\lambda={3\over 2}$).  It is a constrained (global) minimum.  We know this because $x^2+y^2-xy$ is globally convex and our constraint is linear. The Hessian of $f$ is $$\begin{bmatrix}2& -1\\-1& 2\end{bmatrix}$$ which has determinant $3>0$ and positive diagonals. 
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

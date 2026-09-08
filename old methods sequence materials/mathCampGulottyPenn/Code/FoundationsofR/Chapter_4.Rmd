@@ -1,0 +1,557 @@
+---
+title: "Foundations of R Chapter 4"
+author: "Robert Gulotty"
+date: "9/30/2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+******
+
+
+# The Data Science Workflow
+
+```{r, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(nycflights13)
+library(stargazer)
+```
+
+In this chapter, we will formally introduce the data science workflow.  This means pipes, join commands, and the other tools of getting from raw data to a usable dataste.  We will emphasize tools that scale with larger datasets, enable more replicable code, and are less likely to produce significant errors.
+
+A key lesson of this chapter is that robustness requires transparency.  While quantitative research is no more subject to errors than other approaches, the power of the claims can make even small errors problematic.  In addition, many steps of the quantitative process can be done transparently, enabling criticism and scientific progress.
+
+This chapter walks through data analysis using a linear model.  We begin with a brief return to the flights data before turning to a substantive analysis of cross-country data on changes in religious identification.  The last of these will introduce some of the tools of regression, which we will cover in detail.
+
+## The Length of flights
+
+We begin with a brief and final discussion of the flights data.  Recall we found that there were some problems with flight times, namely that there is an issue of time zones in the destination.  Recall the following operations:
+
+```{r}
+
+flightscomparison <- mutate(flights,  
+                  flighttime = arr_time - dep_time, 
+                  flighttime24 = ifelse( flighttime < 0, flighttime+2400, flighttime))
+```
+
+Recall we found one hour peaks in the density for the flights plots, such as the following.
+ 
+```{r,fig.height=3, fig.width=7}
+ggplot(flightscomparison, aes(flighttime24))+geom_density()+theme_bw()
+```
+
+ One of the things that is going on here is the time zone changes.  Luckily, there is a dataset of the location of each of the airports in the nycflights13 package, called `airports`.  Here we will join the airports data to the flights data to correct for the timezone.
+
+
+# How to Join Data
+
+If two dataframes are identical in terms of columns, they can be combined with a `bind_rows`.  If they are identical in terms of rows, they can be combined with `bind_columns`.  If they are neither, we can still combine datasets if there is shared information, an index columns or possibly multiple columns, that share values across each dataset.
+
+```{r}
+names(airports)
+names(flightscomparison)
+```
+
+It looks like the `faa` column of airports is similar to that of the `origin` and `dest` columns of flightscomparison.  Because these are all flights originating in New York and have the same time zone, we will join on the destination.
+
+\pagebreak
+
+
+
+In order to combine the two dataframes, we need a column in each dataframe with the same name.  To accomplish this, we add a column to airports using the "mutate" command. 
+
+Recall, the default behavior of `%>%` is to place lhs as the first argument, i.e. `x %>% f(y)` is equivalent to `f(x, y)`. 
+
+```{r}
+airports <- airports %>% mutate( dest = faa)
+```
+
+Here we pass the thing on the left to the first argument in the next function.  You will see that it makes code much nicer.  Consider the following:
+
+```{r, eval=FALSE}
+airportsTZ4 <- filter(airports, tz == -5)
+
+airportsTZ4 <- mutate(airportsTZ5, 
+                      squardist = sqrt((lat - 40.7)^2+(lon-74)^2)) 
+
+ggplot(airportsTZ5, aes(squardist, alt))+geom_point()
+
+```
+
+Notice how many times airpotsTZ5 is written.  We can use the `%>%` operator to save typing.
+
+```{r, eval=FALSE}
+airports %>% 
+  
+  filter( tz == -5) %>%
+
+  mutate( squardist = sqrt((lat - 40.7)^2+(lon-74)^2)) %>%
+  
+  ggplot(aes(squardist, alt))+geom_point()
+
+```
+
+Learning how to use pipes will save time and energy.  In general pipe works best with dplyr commands and others that have the input as the first argument of the function.  However, it can be used generically.  If this purpose you can use the dot (.) as placeholder. `y %>% f(x, .)` is equivalent to `f(x, y)` and `z %>% f(x, y, arg = .)` is equivalent to `f(x, y, arg = z)`.
+
+\newpage
+
+# Left join
+
+Join commands come in several flavors, each corresponding to different assumptions about the relations between two datasets.  The most common is the `left_join`, which keeps all the data in the original dataset, and matches the rows it can find in the right.
+
+```{r}
+
+flightsandairports <- flightscomparison%>%left_join(airports)
+
+```
+
+Notice, that this offers a nice warning to tell you what columns it used to join, but it does not tell you how many rows of airports it dropped to make the final dataset.  To do so, we can use the `anti_join`.  `anti_join` returns the columns that are not shared.  The following code snippet creates two fake datasets, and then joins the data. 
+
+```{r}
+Administrations <- data.frame(years=2001:2010, 
+                              Presidents=c(rep("R", 8), rep("D",2)))
+Troops <- data.frame(years=c(2000, 2001:2004, 2006, 
+                             2007, 2009,2010,2012), 
+                  troops=c(0,2500,9700,13100,20300,
+                           20300,25000,67000, 100000, 77000))
+AdminTroops<- Administrations%>%left_join(Troops)
+missingTroops<-Administrations%>%anti_join(Troops)
+missingAdmin<-Troops%>%anti_join(Administrations)
+missingTroops
+missingAdmin
+```
+
+
+\newpage
+ Great, now we can the plot, but correct for the timezone.
+
+```{r,fig.height=3, fig.width=7}
+
+flightsandairports <- flightsandairports%>%
+                  mutate(  flighttime24c = flighttime24 - 500 - tz*100)
+
+ggplot(flightsandairports, aes(flighttime24c))+
+  geom_density()+theme_bw()
+
+```
+
+
+
+
+Combining data is a powerful tool of analysis, but often data is dispersed across dozens or hundreds of data frames.  We have already seen in chapter 2 how loops can perform these repetitive tasks, in later chapters we will learn tools to integrate vectorized code into your work flow to enable analysis at scale.
+
+
+
+## A join example: Religious adherence over time
+
+Often joins are integrated into an analysis, rather than as a mechanism of preparing data. Here we will analyze changes in the faiths of people across time in the World Religion Dataset, which is in STATA format.  
+
+
+We can read STATA format with the `haven` library:
+
+```{r, fig.height=3, fig.width=4}
+library(haven)
+
+religions<-read_dta("~/Dropbox/mathCamp/Code/data/WorldReligion.DTA")
+
+#str(religions)
+```
+
+
+Here we have the percent of Christians (All denominations) by year.
+
+```{r, fig.height=3, fig.width=4}
+ggplot(religions, aes(year,chgenpct))+geom_point()
+```
+
+\newpage 
+
+
+I notice that the years are actually being treated like categorical data, because of some commas in the year variable.  Get rid of the commas in the year variable, and tranform it into a numeric data type.  We do so with the `gsub()` command.
+
+
+```{r, fig.height=3, fig.width=4}
+religions <- religions %>% 
+    mutate(year = as.numeric(gsub(",", "", year)))
+
+ggplot(religions, aes(year, chgenpct, group = country)) + 
+  geom_point(alpha = .1) + 
+  geom_line(alpha = .1)
+
+ggplot(religions, aes(year, isgenpct, group = country)) + 
+  geom_point(alpha = .1) + 
+  geom_line(alpha = .1)
+```
+
+\newpage
+
+Ok, now we can try to isolate those countries that have a big change.  Do do so, we group_by country so that when we calculate differences and find the max or min we return that for each country.
+
+```{r, collapse=TRUE}
+religionchange <- religions %>%
+  group_by(country) %>%
+  summarise(
+    maxinc = max(c(diff(isgenpct), 0), na.rm = T),
+    maxdec = min(c(diff(isgenpct), 0), na.rm = T)) %>%
+  arrange(maxdec)
+  
+  
+  religionchange <- religionchange %>%
+  mutate(bigchange = ifelse(maxinc > .1 |  maxdec < -.1, 1, 0))
+```
+
+\newpage
+
+We can recombine our analyzed data this with the original dataset so that we can use it as a variable in plots:
+```{r}
+religions<-religions%>%left_join(religionchange)
+```
+
+Here we plot the extent that a country's respondents report to follow any form of Islam and the maximum change in the whole dataset, and the same for Christians:
+```{r, fig.height=3, fig.width=4}
+ggplot(religions, aes(isgenpct, maxdec, group = "country")) + geom_point()
+
+
+
+ggplot(religions, aes(chgenpct, maxdec, group = "country")) + geom_point()
+```
+
+\newpage
+
+I notice a few outliers, which we can isolate using the filter command, followed by a select command, which identifies columns
+```{r}
+religions%>%
+  filter(maxdec< -.1)%>%
+  select(year, country, reliab)
+```
+
+One thing I noticed was that the data also includes an indicator for the reliability of the data.  It is categorical.  Very often we have two categorical data and it is difficult to visualize it.  One way to do so is in a table:
+
+```{r}
+table(religions$reliab, religions$bigchange)
+```
+
+Tables are nice, but what we are really looking for is the relative percentages.  Is the big change coming along with unreliable data?  What we can do is wrap the table in a `prop.table`, which essentially divides by the total of the rows (if we set margin=1), or the columns (if we set margin = 2).
+
+```{r}
+prop.table(table(religions$reliab, religions$bigchange), margin=1)
+```
+
+ Whenever reporting such a table, it is best to round the results, and or multiply by 100.
+ 
+```{r}
+round(prop.table(table(religions$reliab, religions$bigchange), margin=1),3)
+```
+ If you want the prop.table to be nicely printed, one option is to use xtable, and write the object to html.
+ 
+```{r}
+library(xtable)
+
+out.table <-
+xtable(
+  prop.table(
+    table(religions$reliab, religions$bigchange), 
+          margin = 1), 
+  digits = 2)
+
+print(out.table, type = "html", file = "~/Dropbox/mathCamp/Code/data/religiousreliability.html")
+```
+ There is also the excellent stargazer package.
+```{r, eval=FALSE}
+library(stargazer)
+
+stargazer(out.table, summary = F, type = "text")
+```
+\newpage
+
+# Linear Models
+
+ In addition to making a table, we could fit a regression to the data, here we use the "probit" regression, but first, a little background.
+ 
+When we want to predict the value of something, say Condominium prices, given a set of data, say 10 past purchases, we can use the average of the past prices as our prediction of the future price.  Our best guess is the average.  
+
+$$E(price)= \alpha$$
+
+For example, consider the following:
+
+```{r,fig.height=4, fig.width=5}
+prices <- c(252539, 211620, 274491, 197712, 223979, 244161, 
+            231741, 242225, 298309, 289457)
+plot(prices)
+abline(h = mean(prices), lty=2)
+```
+
+Our best guess for some new point is just the average.  In linear model terminology, this would be a model with just the intercept.
+
+```{r}
+
+mean(prices)
+
+summary(lm(prices ~ 1))
+
+```
+\pagebreak
+
+Now, suppose that we learn something new, and that is that the Condos are a certain distance from the lake.  Now perhaps we want to take advantage of this information, and use the average in three "bins".  Here we take the average for lake distances between 0 and 400, between 400 and 800, and above
+
+```{r,fig.height=4, fig.width=5}
+library(tidyverse)
+Lake.data= data.frame(
+  prices=c(252539, 211620, 274491, 197712, 223979, 244161, 
+            231741, 242225, 298309, 289457),
+  Lake.distance = c(229, 519, 1037, 1636, 667, 564, 1863, 663, 113, 118))
+  
+Lake.data<- Lake.data%>%mutate(
+  Lake.groups = cut(Lake.distance, c(0,400,900, 1900)))
+
+groupmeans<-Lake.data%>%
+  group_by(Lake.groups)%>%
+  summarise(mean.prices=mean(prices))%>%
+  mutate(cutstarts=c(0,400,800),
+  cutends=c(400, 800, 1900))
+
+ggplot(Lake.data)+
+  geom_point( aes(Lake.distance,prices))+
+  geom_segment( data=groupmeans, 
+  aes(x=cutstarts, xend=cutends ,y=mean.prices,yend=mean.prices), lty=2)
+  
+```
+
+
+Pretty good, but it seems that the last bin is driven a bit by one point.  We might expect that the price is some linear function of the lake distance, a model which adds predictive power.  To do so, lets model price as a linear function, with both a slope and an intercept.  The intercept is the price when the lake distance is 0.
+
+$$E(price|lake.distance) = \alpha+ \beta lake.distance$$
+
+```{r,fig.height=4, fig.width=5}
+
+Lake.distance <- c(229, 519, 1037, 1636, 667, 564, 1863, 663, 113, 118)
+
+plot(Lake.distance,prices)
+abline(lm(prices~Lake.distance), lty=2)
+```
+
+
+
+\newpage
+ 
+A regression is a statistical model which estimates the relationship between one variable, called the _dependent variable_ and one or more other variables, called the _independent variables_.  Regressions require writing down a model, which relates these independent variables to the dependent variable in a formula that describes both the observable and systematic part of the relationship, and the unobservable ideosyncratic component.  If we call an observation of the dependent variable $y_i$, and the observation of the independent variable $x_i$, we can say they are related in the following linear model.
+
+$$y_i = \alpha+ \beta x_i + \epsilon_i$$
+Where $\alpha$ and $\beta$ are called parameters.  These are systematic, and apply for all observations.  $\epsilon$ is ideosynchratic, and is unique to each individual.  The purpose of the regression model is to estimate $\alpha$ and $\beta$, either to make predictions, or to discover the amount of $y$ that we should expect a change in $x$ to produce:
+$$\frac{dy}{dx} =\frac{d}{dx}[\alpha+ \beta x_i + \epsilon_i]$$
+$$\frac{dy}{dx} =\frac{d}{dx}\alpha+ \beta\frac{d}{dx} x_i + \frac{d}{dx}\epsilon_i$$
+
+$$\frac{dy}{dx} =\beta$$
+Which is consistent with $\beta$ being the slope of the line produced by the regression.  The standard regression practice is to assume a distribution for $\epsilon$, usually $\epsilon\sim N(0,\sigma^2)$.  This and the other assumptions of regression will be covered in the following course.  For now, there is one that makes the standard linear model inappropriate for our purposes, there is an assumption that the relationship is _linear_.  
+
+\newpage
+
+For example, suppose we get another sample of Condos.  We want to predict the value of condo in the South Loop, and we observe the distance to the \# 2 bus in feet, and the price of each condo.  
+
+```{r, fig.height=3, fig.width=4}
+distance<- c( 22, 120, 400 ,102,22, 620, 100 ,202,222, 130, 800 ,852)
+price<-c(465600, 431000, 329700, 412000, 498300, 223200,
+         356200, 360500, 402000, 279500, 259500, 270900)
+modcondo<-lm(price~distance)
+plot(distance, price)
+abline(modcondo)
+```
+\begin{table}[!htbp]  
+\begin{tabular}{@{\extracolsep{5pt}}lc}
+\\[-1.8ex]\hline
+\hline \\[-1.8ex]
+& \multicolumn{1}{c}{\textit{Dependent variable:}} \\
+\cline{2-2}
+\\[-1.8ex] & price \\
+\hline \\[-1.8ex]
+distance & $-$231$^{***}$ \\
+& (57) \\
+& \\
+Constant & 426,554$^{***}$ \\
+& (23,524) \\
+& \\
+\hline \\[-1.8ex]
+Observations & 12 \\
+R$^{2}$ & 0.623 \\
+Adjusted R$^{2}$ & 0.585 \\
+Residual Std. Error & 56,239 (df = 10) \\
+F Statistic & 16.517$^{***}$ (df = 1; 10) \\
+\hline
+\hline \\[-1.8ex]
+\textit{Note:}  & \multicolumn{1}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+\end{tabular}
+\end{table}
+
+This looks like for every foot that the condo is away from the bus stop, the price declines by about \$231.  Our best guess for the price of a condo that is 600 feet away from the bus is about 426000-231*600
+\newpage
+
+ Suppose, rather than the price, we just had a categorical outcome, like the bigchange variable from above?  Lets say rather than the price, we just had an indicator for whether my real estate agent would show it to me, after being told that I need to use the bus.  Lets say that we have a `1` if the real estate agent shows it, and a `0` if he does not.  Here I show both the linear model, as well as the prediction from that linear model if the line falls above .5 or below .5.
+
+
+```{r, fig.height=3, fig.width=7}
+distance<- c( 22, 120, 400 ,102,22, 620, 100 ,202,222, 130, 800 ,852)
+
+RealEstateAgent <- c("show", "show", "don't show", "show", "show", 
+                     "don't show", "don't show", "show", "show", 
+                     "don't show", "don't show", "don't show")
+
+show <- ifelse(RealEstateAgent=="show", 1 , 0)
+
+modshow <- lm(show~distance)
+modpredictions <- data.frame(distance, show, 
+           predictionshow= ifelse(predict(modshow)>.5, "P_show","P_noshow"))
+
+coefmodshow <- coef(modshow)
+ggplot(modpredictions, aes(distance, show, color=predictionshow) )+
+  geom_point()+
+  geom_abline(intercept=coefmodshow[1], slope=coefmodshow[2])
+
+
+```
+
+This model works just fine, but the misses above and below the line are quite uneven, and the line never really makes a sensible prediction for any distance.  
+
+\newpage
+
+The solution is to not fit a straight line.  Rather, we will use a transformation of the linear model. Below, we introduce a broad outline of the use and some of the properties of such a model.
+
+```{r, fig.height=3, fig.width=7}
+distance<- c( 22, 120, 400 ,102,22, 620, 100 ,202,222, 130, 800 ,852)
+
+RealEstateAgent <- c("show", "show", "don't show", "show", "show", 
+                     "don't show", "don't show", "show", "show", 
+                     "don't show", "don't show", "don't show")
+
+show <- ifelse(RealEstateAgent=="show", 1 , 0)
+
+modshowprobit <- glm(show~distance, family=binomial(link="probit"))
+
+modpredictions <- data.frame(distance, show, 
+           predictionshow = ifelse(predict(modshowprobit, type="response") >.5, 
+                                  "P_show","P_noshow"))
+
+simulatelatent <- data.frame(distance=0:900,
+                           predictmod = predict(modshowprobit, 
+                                            newdata=data.frame(distance=0:900), 
+                                            type="response"))
+
+ggplot(modpredictions, aes(distance, show) )+
+  geom_point(aes( color=predictionshow))+
+  geom_line(data=simulatelatent,
+             aes(distance, predictmod))
+
+```
+
+\newpage
+
+##Probit for categorical dependent variables
+
+In the case of the reliablitiy of the religion measurements, the dependent variable is binary, the independent variable is a 3 category vector, which we can indicate as follows:
+```{r}
+probitmod <-
+  glm(bigchange ~ reliab,
+  data = religions,
+  family = binomial(link = "probit"))
+```
+
+Implicitly the computer takes `reliab`, and splits it into two category indicators.  The first is the omitted reference category, the other two are entered linearlly.  You could force the model to do the same thing explicitly as well, using the `I(x == "category")`, which takes on 1 if x takes on that category and 0 otherwise:
+
+```{r}
+probitmod <-
+  glm(
+  bigchange ~ I(reliab == 3) + I(reliab == 2),
+  data = religions,
+  family = binomial(link = "probit")
+  )
+```
+
+The formula can be described notationally as follows:
+
+$$Pr(y_i=1|x_i) = \Phi(\alpha+ \beta_{low}I(x_i=`Low')+\beta_{medium}I(x_i=`Medium'))$$
+You read this as the probability that y is equal to 1 given x is equal to the standard normal CDF evaluated at $\alpha$ plus $\beta_{low}$ if the observation is low reliability, $\alpha$ plus $\beta_{medium}$ if the observation is medium reliability, and just $\alpha$ if the observation is high reliability. We will learn more about the normal CDF later in this course, but suffice it to say that it is an `S` or backward `S` shaped curve.  You can explore it in R using the `pnorm()` command.
+
+\newpage
+ Just as with a linear model, the coefficients can be returned either directly or in a summary command.
+
+```{r}
+coef(probitmod)
+
+summary(probitmod)
+```
+
+The difference is that the coefficients are on the latent, non-linear cumulative normal distribution.  To interpret them, we can pass it through R's `cdf` function for the normal.  
+
+\newpage
+
+Suppose we want the probability of a big change when the reliability of the data is high.  This is just the intercept, $\alpha$, as the other two coefficients are set to 0.  Reading the regression table, we see that $\alpha= -1.61687$. We pass the value into the `pnorm` function, which is R's calculator for the normal CDF.
+
+```{r}
+pnorm(coef(probitmod)[1])
+```
+
+If the the reliability is medium, then we add the intercept to the coefficient on medium, which is the third element in the coef command, and then pass the result to the `pnorm` command:
+```{r}
+# pnorm(coef(probitmod)[1] + coef(probitmod)[3])
+pnorm( - 1.61687 -0.09783)
+```
+
+ If we compare these to the table of proportions, we see the similarity.  Here I round to the nearest fourth digit.
+ 
+```{r}
+round(prop.table(table(religions$reliab, religions$bigchange), margin=1),4)
+```
+The second row, second column indicates that among medium reliable data, 4.32 percent experience a big change.  This is exactly the interpretation we can give to the tranformed coefficient from the probit model.  You can read more about these and other related models in J. Scott Long's __Regression Models for Categorical and Limited Dependent Variables__ or in a course on Maximum Likelihood Estimation (MLE).
+
+\newpage
+
+Other than tables, a useful way to present discrete data is with bar charts.  Try each of the following commands
+
+
+```{r}
+# ggplot(religions, aes(reliab))+
+# geom_bar()
+
+# ggplot(religions, aes(reliab, group=as.factor(bigchange),fill=as.factor(bigchange)))+
+# geom_bar()
+
+# ggplot(religions, aes(reliab, group=as.factor(bigchange),fill=as.factor(bigchange)))+
+# geom_bar(position="dodge")
+
+ggplot(religions, aes( reliab,
+  group = as.factor(bigchange),
+  fill = as.factor(bigchange))) +
+geom_bar(position = "dodge") +
+guides(fill = guide_legend(title = "Big Changes")) +
+theme(legend.position = "bottom")
+```
+\newpage
+
+# Problems
+
+1) Using the world religion dataset, what country experience the largest percentage increase in Islam over the dataset?
+
+2) Go to ICPSR, sign up, download the China Multi-Generational Panel Dataset, Shuangcheng (ID 35292).  What is the number of sampled individuals in 1867 that Absconded (escaped from indentured servitude)?  What was their average age?
+
+
+3) Suppose we want to study the association between religiosity and civil war.  Be sure to specify both the independent and dependent variables.  Write and present a table that combines information from the religiosity dataset and the following dataset on civil war.  Be creative.  There are two ways to study civil war, the first is whether or not that country is experiencing a civil war (war), and the other is the onset of such a war (onset).  The main predictor of being in a civil war this year is having been in one last year, so some people restrict their study to onset.
+```{r, eval=F}
+
+fldta <- read_dta("FearonLaitin.dta")
+
+fldta <- fldta %>%
+select(
+cowcode = ccode,
+year = year,
+cname = cname,
+onset = onset,
+war = war,
+polity2 = polity2,
+Oil = Oil,
+GDPpercap = gdpen
+)
+# str(fldta)
+```

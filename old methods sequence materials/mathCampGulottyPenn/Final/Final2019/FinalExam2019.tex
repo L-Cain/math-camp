@@ -1,0 +1,245 @@
+\documentclass[11pt,letterpaper]{article}
+% === graphic packages ===
+\usepackage{epsf,graphicx,psfrag}
+% === bibliography package ===
+\usepackage{natbib}
+% === margin and formatting ===
+\usepackage{setspace}
+\usepackage{palatino}
+%\usepackage{palatino}[1]
+%\usepackage[T1]{fontenc}
+%\usepackage{palatino}
+%\renewcommand{\familydefault}{cmss}
+%\usepackage{cmbright}
+%\usepackage[T1]{fontenc}
+%\usepackage{arev}
+%\usepackage[LGR,T1]{fontenc} %% LGR encoding is needed for loading the package gfsneohellenic
+%\usepackage[default]{gfsneohellenic}
+%\usepackage{times}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage{endnotes}
+% === math packages ===
+\usepackage[reqno]{amsmath}
+%\usepackage[pdftex]{hyperref}
+\usepackage{amsthm}
+\usepackage{amssymb,enumerate}
+\usepackage[all]{xy}
+\usepackage{lscape}
+\usepackage[compact]{titlesec}
+%\newtheorem{lem} {Lemma}
+%\newtheorem{prop}{Proposition}
+%\newtheorem{thm}{Theorem}
+%\newtheorem{defn}{Definition}
+%\newtheorem{cor}{Corollary}
+%\newtheorem{obs}{Observation}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{proposition}{Proposition}[section]
+\DeclareMathOperator*{\var}{Var}
+\DeclareMathOperator*{\cov}{Cov}
+\DeclareMathOperator*{\diag}{diag}
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+\newtheorem{remark}{Remark}[section]
+\newtheorem{assumption}{Assumption}[section]
+\newtheorem{algorithm}{Algorithm}[section]
+\usepackage{bbm} % mathbb for number
+ \numberwithin{equation}{section}
+% === dcolumn package ===
+\usepackage{dcolumn}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+% === additional packages ===
+\usepackage{url}
+\newcommand{\makebrace}[1]{\left\{#1 \right \} }
+\newcommand{\determinant}[1]{\left | #1 \right | }
+
+\begin{document}
+
+\subsection*{Instructions}
+This exam has 5 sections.  Provide the answers to each section on a new page, labelling the part of the question for each answer.  
+\begin{enumerate}[I]
+\item \textsc{Probability and Mathematical Logic }
+\begin{enumerate}[1)]
+\item If $P(A\cap B)=P(A)P(B)$, which of the following statements are true?
+\begin{enumerate}
+\item[a)] $P(A|B)=P(B)$ 
+%\item FALSE
+\item[b)] $P(A|B^c)=P(A)$ 
+%\item TRUE
+\item[c)] $P(A)+P(B)=P(A\cup B)$ 
+%\item FALSE
+\item[d)] $A\cap B=\emptyset$
+%\item FALSE
+\end{enumerate}
+
+
+\item Roll a fair four-sided die twice. What is the probability that the maximum of either roll is 2?
+\bigskip
+
+\item Suppose we have two sets of states, one with voter ID laws, one without.  We have a bunch of state level characteristics, average income, percentage of white population, and electoral turnout.  Our goal is to test whether each of these characteristics are statistically different than one another in our sample.
+\bigskip
+\item[] Suppose that even if the two groups of states are similar, there is some chance of a \emph{false positive}, or type I error.  Suppose that our test is set up so that we will only reject the null hypothesis of equality in average incomes, percentage of white population, with probability 0.1.  For example, 1/10 of the time, we will falsely find that the two groups of states are different in income, even if they are not really different.  
+\begin{enumerate}[a)]
+\item With no other information, what can we say about probability that we fail to detect a single difference in these three measures?
+%Call detection A B C, and from the inequalities, we know P(A\cup B \cup C)\leq P(A)+P(B)+P(C)= .1+.1+.1= .3, so at worst we have a 70\% chance of passing.
+\item What if we knew that the percentage of the white population, turnout and average incomes were independent? 
+%Call detection A B C, and from the inequalities, we know P(A\cup B \cup C)= P(A)+P(B)+P(C)= .1+.1+.1= .3, so have exactly a 70\% chance of passing.
+\end{enumerate}
+\bigskip
+
+\item TRUE or FALSE, if false, explain in one sentence.
+\begin{enumerate}
+\item[a)] If $X$ and $Y$ are independent, $Var(X+Y)=Var(X)+Var(Y)$
+%\item TRUE
+\item[b)] $P(A|\Omega)=P(A)$
+%\item TRUE
+\item[c)] $P(A\cap B) \leq P(B|A)$
+%\item TRUE
+\item[d)] $P(A\cup B)\leq P(A)+P(B)$
+%\item TRUE
+\item[e)] $\bar{X}=E(X)$
+%\item FALSE because the sample mean is a random variable.
+\end{enumerate}
+
+\end{enumerate}
+\pagebreak
+\item \textsc{Election Night!} 
+
+ABC is planning its election night coverage.  The directors know that the audience doesn't care about individual races, just which party (Republicans or Democrats) will have control of the Senate. Calling the control of the US Senate is down to 5 key battleground states:  Nevada, Missouri, North Dakota, Texas and Florida.  ABC will call the race for the first party that wins three.   
+\begin{enumerate}[1)]
+\item  If both parties are equally likely to win, what is the probability that one party or the other sweeps, that is, wins all 5 races?
+%\item $2*.5^5=0.0625$
+\end{enumerate}
+
+The states are in four time zones and have variously efficient election systems, so each of the listed races come in one hour past each other, with Nevada at 7PM, Missouri at 8PM, North Dakota at 9PM, Texas at 10 PM, all the way to Florida at 11PM.
+\begin{enumerate}
+\item[2)] If both parties are equally likely to win, what is the probability that ABC will have to wait until 10PM?
+%\item $3*2*(1-p)*p*p*p=3/8$ for 10,  $3*2*(1-p)*p*p*p=3/8$ for 11, so 6/8 for waiting till 10 or later.
+\item[3)] What is the expected time to call control of the Senate?
+%\item $1/4*9+3/8*10+3/8*11=10:07.30$
+\end{enumerate}
+
+
+\item \textsc{Double Triangle Distribution} 
+
+Suppose that X is a random variable distributed as follows:
+$$f(x)=\begin{cases} x+k & \text{for } -k\leq x \leq -\frac{k}{2}\\  -x & \text{for } -\frac{k}{2} \leq x \leq 0\\ x  & \text{for } 0<x\leq\frac{k}{2}\\ -x+k& \text{for } \frac{k}{2}<x<k \end{cases}$$
+\begin{enumerate}[1)]
+\item What is k?%sqrt(2)
+\item Draw f(x).
+\item Draw the conditional probability density unction, $f_X(X|X>1)$,
+\item Using your answer from above, if we know that X is greater than 1, what is the formula for the expectation of X?  Note: you do not need to evaluate the integral.
+\end{enumerate}
+
+\pagebreak
+\item \textsc{Calculating Expectations}
+\begin{enumerate}[1)]
+
+\item Suppose that X is a random variable distributed as follows:
+$$f(x)=\begin{cases} 0 & \text{for } 0\leq x < 3 \\ 6/x^2  & \text{for }  3\leq x\leq 6\\ 0 &\text{for } 6< x
+\end{cases}$$
+\begin{enumerate}[1)]
+\item Verify f(x) is a valid pdf. %$\int_3^6  6/x^2 =1$, $f(x)\geq0$
+\item What is E$[X]$? % $\int_3^6 x 6/x^2=\int_3^6  6/x=6ln(6)-6ln(3)=6ln(2)$
+\item What is Var$[X]$?% $\int_3^6 x^2 6/x^2=6*6-6*3=18$, $var(x)=18-(6ln(2))^2=0.7036915$
+
+\end{enumerate}
+\item Suppose X and Y are random variables that are jointly distributed 
+$$f(x,y)=\begin{cases} \frac{16y}{x^3} \text{, if }x>2, 0<y<1\\ 0, \ \text{ otherwise }\end{cases}$$
+
+\begin{enumerate}[a)]
+\item What is the formula for $f(x)$?  What is $f(y)$? 
+\item Are X and Y independent? %Yes.
+\item What is E$[Y]$? 
+\item What is E$[Y|X=3]$? % The same.  
+\end{enumerate}
+
+\end{enumerate}
+
+
+
+\item \textsc{Inference} 
+
+\begin{enumerate}[1)]
+
+\item A survey is done asking people if they support war with Eastasia.  55\% of the men in the survey answer yes (with a standard error of 10\%), and 70\% of the women answer yes (with a standard error of 10\%).
+\begin{enumerate}
+\item[a)]  Give an estimate and standard error for the difference in support between men and women.
+%\item Estimate is .15 with a standard error of sqrt ($.1^2$+$.1^2$) = .14.
+\item[b)]  Assuming the data were collected using a simple random sample, how many people responded to the survey?
+%\item To get sample size: .5/sqrt(n) = .1, thus approx n=25 in each group, or 50 total. (You could be more exact using sqrt(.55*.45) and sqrt(.7*.3), but this is not really necessary.)
+
+\item[c)]  How large would the sample size have to be for the difference in support between men and women for the sample mean to have a standard deviation of 1\%?
+%\item To get se of difference to be 1\%, you have to reduce the se by a factor of $.14/.01=14$, thus increase sample size by $14^2=200$. Total sample size needed is then 50*200=10000.
+\end{enumerate}
+\item Suppose you have a sample size n=50 and a mean $\bar{X}=55$ and population standard deviation s=3.  
+\begin{enumerate}
+\item Using Chebyshev, what is the probability that the sample mean is greater than six?
+\item Given your previous answer, in expectation what is the largest number of observations that would fall outside the interval $(49,\ 61)$?
+
+\end{enumerate}
+
+%$$P(\bar{X}-\mu|\geq t)\leq \frac{Var(x)}{n*t^2}$$
+
+%$$P(\bar{X}-55|\geq 2*3)\leq \frac{3^2}{n (2*3)^2}$$
+
+%$$50/4=12.5\rightarrow 12$$
+
+\end{enumerate}
+
+\pagebreak
+
+\item \textsc{BONUS: Will Trump Win 2020 Election?} 
+
+\begin{enumerate}
+	
+	\item Before you use CLT to construct confidence interval, please state the CLT that we had covered in class.
+	%\textbf{Solution}:
+%	\begin{theorem}
+%		\rm Suppose $\{X_{1}, X_{2}, \dots \}$ is a sequence of i.i.d. random variables with $\mathbb{E}[X_{i}] = \mu$ and $\var(X_{i}) = \sigma^{2} < \infty$. Then, as $n \rightarrow \infty$, we have:
+%		\begin{equation*}
+%		\sqrt{n} (\frac{ \sum_{i = 1}^{n} X_{i} }{n} - \mu) \xrightarrow[]{d} N(0, \sigma^{2}).
+%		\end{equation*}
+%	\end{theorem}
+\bigskip
+    \item Arthur is interested in whether or not Trump will win the 2020 presidential election. To answer this question, Arthur has collected his own data. Specifically, he designed a survey asking whether or not voters will vote for Trump in 2020 election, and constructs a random variable measuring support for Turmp.  That is, for each respondent $i$, $X_{i} = 1$ if voter says he/she will vote for Trump, $X_{i} = 0$ if voter says he/she will not vote for Trump. Using a grant that he got from a legitimate US research organization, Arthur collects a sample with size $n$, where $n$ is very large. Suppose the sample is i.i.d. and people respond honestly.
+    
+    Suppose the fraction of voters vote for Trump is $p$, which is unknown to Arthur and everybody else. Therefore, we have: $\mathbb{E}[X_{i}] = p$ and $\var[X_{i}] = p (1 - p)$. To estimate $p$, Arthur uses the following estimator: $M_{n} = \frac{X_{1} + ... + X_{n}}{n}$. In addition, Arthur estimates $\var[X_{i}]$ by $M_{n} \times (1 - M_{n})$.
+    
+    Arthur wants to use CLT to construct a 95\% confidence interval for $p$, however, Arthur does not how to do it. Therefore, your task is to help Arthur \textbf{use CLT to construct a 95\% confidence interval for $p$}. By the way, Arthur thanks for your help in advance.
+    
+  %  \textbf{Solution}:
+    
+ %   By CLT, we have:
+   % \begin{equation*}
+   % 	\sqrt{n} \frac{M_{n} - p}{\sqrt{M_{n} (1 - M_{n})}} \xrightarrow[]{d} N(0, 1)
+   % \end{equation*}
+%	Therefore, we want to find $c$ such that:
+  %  \begin{equation*}
+    %\mathbb{P}[| \sqrt{n} \frac{M_{n} - p}{ \sqrt{M_{n} (1 - M_{n})} } | \leq c] \xrightarrow{} 0.95
+    %\end{equation*}	
+	
+%	Since $\sqrt{n} \frac{M_{n} - p}{ \sqrt{M_{n} (1 - M_{n})} }$ is asymptotically normal, under the null, we have:
+%	\begin{equation*}
+%	\mathbb{P}[| \sqrt{n} \frac{M_{n} - p}{ \sqrt{M_{n} (1 - M_{n})} } | \leq \Phi^{-1}(0.975)] \xrightarrow{} 0.95
+%	\end{equation*}
+	
+%	Therefore, the confidence interval for $p$ is: $M_{n} - \frac{ \sqrt{M_{n} (1 - M_{n})} }{\sqrt{n}} \Phi^{-1}(0.975) \leq p \leq M_{n} + \frac{ \sqrt{M_{n} (1 - M_{n})} }{\sqrt{n}} \Phi^{-1}(0.975)$.
+	
+\end{enumerate}
+
+
+
+
+
+\end{enumerate}
+\end{document}
+
+
+
+
+

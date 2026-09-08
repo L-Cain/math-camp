@@ -1,0 +1,202 @@
+\documentclass[11pt,letterpaper]{article}
+% === graphic packages ===
+\usepackage{epsf,graphicx,psfrag}
+% === bibliography package ===
+\usepackage{natbib}
+% === margin and formatting ===
+\usepackage{setspace}
+%\usepackage{palatino}[1]
+%\usepackage[T1]{fontenc}
+%\usepackage{palatino}
+%\renewcommand{\familydefault}{cmss}
+%\usepackage{cmbright}
+%\usepackage[T1]{fontenc}
+%\usepackage{arev}
+%\usepackage[LGR,T1]{fontenc} %% LGR encoding is needed for loading the package gfsneohellenic
+%\usepackage[default]{gfsneohellenic}
+%\usepackage{times}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage{endnotes}
+% === math packages ===
+\usepackage[reqno]{amsmath}
+%\usepackage[pdftex]{hyperref}
+\usepackage{amsthm}
+\usepackage{amssymb,enumerate}
+\usepackage[all]{xy}
+\usepackage{lscape}
+\usepackage[compact]{titlesec}
+%\newtheorem{lem} {Lemma}
+%\newtheorem{prop}{Proposition}
+%\newtheorem{thm}{Theorem}
+%\newtheorem{defn}{Definition}
+%\newtheorem{cor}{Corollary}
+%\newtheorem{obs}{Observation}
+ \numberwithin{equation}{section}
+% === dcolumn package ===
+\usepackage{dcolumn}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+% === additional packages ===
+\usepackage{url}
+\newcommand{\makebrace}[1]{\left\{#1 \right \} }
+\newcommand{\determinant}[1]{\left | #1 \right | }
+\title{Mathematical Foundations ANSWER KEY}
+\begin{document}
+\maketitle
+\subsection*{Instructions}
+This exam has 6 sections.  Provide the answers to each section on a new page, labeling the part of the question for each answer.  
+\begin{enumerate}[I]
+\item \textsc{Probability and Mathematical Logic }
+\begin{enumerate}[1)]
+\item If $P(A\cap B)=0$, which of these are false? (there may be more than one)
+\begin{enumerate}
+\item[a)] $P(A|B)=P(A)$ \textbf{FALSE} : If $P(A\cap B)=0$, A and B are \emph{mutually exclusive}.  This would only be true if A and B were \emph{independent.}
+\item[b)] $P(A|B^c)=\frac{P(A)}{P(B^c)}$ \textbf{TRUE} :  $P(A|B^c)=\frac{P(A\cap B^c)}{P(B^c)}$ and $P(A)=P(A\cap B^c)+P(A\cap B)$.
+\item[c)] $P(A)+P(B)=P(A\cup B)$ \textbf{TRUE:} $P(A)+P(B)-P(A\cap B)=P(A\cup B)$
+\end{enumerate}
+\item  Why is it that: 
+\begin{enumerate}
+\item[a)] If $A \subset B$ then $P(B|A) = 1$ \textbf{Answer:} $A\cap B=A$, so $P(B|A) = \frac{P(A\cup B)}{P(A)}=\frac{P(A)}{P(A)}$
+\item[b)] If $A \subset B$ then $P(A|B) = \frac{P(A)}{P(B)}$ \textbf{Answer:} $A\cap B=A$, so $P(A|B) = \frac{P(A\cup B)}{P(B)}=\frac{P(A)}{P(B)}$
+\end{enumerate}
+\item Roll three six-sided dice once. 
+\begin{enumerate}
+\item[a)] What is the probability of no six?  \textbf{Answer:} $(5/6)^3=.57$
+\item[] At least one six?  \textbf{Answer:}$1 - (5/6)^3= .42$
+\item[] At least two sixes? \textbf{Answer:} Either there are two six or three six: $\frac{1}{6}*\frac{1}{6}*\frac{5}{6}+\frac{1}{6}*\frac{5}{6}*\frac{1}{6}+\frac{5}{6}*\frac{1}{6}*\frac{1}{6}+\frac{1}{6}^3=0.074$
+\item[b)] Find the probability that there are at least two sixes given that there is at least one six. (hint: use the equation in question 2.b). \textbf{Answer:} $0.074/0.42 = 0.176$
+\end{enumerate}
+\item TRUE or FALSE, if false, explain in one sentence.
+\begin{enumerate}
+\item[a)] $\bar{X}=\mu$  \textbf{Answer: FALSE} The sample mean is not equal to the population mean.  $\bar{X}$ is a random variable.
+\item[b)] If $X$ and $Y$ are independent, $Var(X-Y)=Var(X)+Var(Y)$ \textbf{Answer:}  This is true (and in the book).   
+\item[c)] $\bar{X}\sim N(0,1)$  \textbf{Answer: FALSE}   Only if you divide by the standard deviation and subtract the mean.
+\item[d)] $Var(\mu)=0$ \textbf{Answer: TRUE}  
+\item[e)] $Var(\bar{X})=\frac{\sigma^2}{n}$ \textbf{Answer: TRUE}  
+\end{enumerate}
+
+\end{enumerate}
+\pagebreak
+\item \textsc{Basketball!} 
+
+Since 2010, the Women's National Basketball Association has a best of five series for the National Championship.  This means that the series can end only when one team wins 3 games.  We are interested in the number of games that are played for one team to be named Champion.
+\begin{enumerate}[1)]
+\item If both teams are equally likely to win, what is the probability that the series lasts to exactly 4 games? \textbf{3*2*(1-p)*p*p*p = 3/8}
+\item What is the probability that the series lasts less than 5 games?  \textbf{This is one minus the chance that it lasts 5 games: 1-3/8 = 0.625}
+\item What is the expected number of games played?  \textbf{1/4*3+3/8*4+3/8*5=4.125}
+\end{enumerate}
+
+\item \textsc{Triangle Distribution} 
+
+
+
+Suppose that X is a random variable distributed as follows:
+$$f(x)=\begin{cases} 0 & \text{for } x< 0\\ 4x & \text{for } 0\leq x < 1/2 \\ 4-4x  & \text{for }  1/2 \leq x\leq 1\\ 0 &\text{for } 1<x
+\end{cases}$$
+\begin{enumerate}[1)]
+\item Draw f(x). \textbf{This looks like a triangle.}
+\item Verify that f(x) is a pdf.  \textbf{It needs to integrate to one.}
+\item Draw the CDF of X. \textbf{This is a line}
+\item What is the probability that $X > .7$?  \textbf{Answer:}  $\int_{.7}^1 4-4x dx= 4x-2x^2|_{.7}^1= 2-1.82=.18$
+\end{enumerate}
+\item \textsc{Surveying Sensitive Information.}
+
+It is difficult to conduct surveys on sensitive issues because many people will refuse to give answers that might embarrass them or put them in legal trouble. ``Randomized response'' is a method designed to ensure anonymity when asking about such topics. Suppose you wish to determine the prevalence of illegal drug use in a population.  Each respondent is asked to privately flip a coin. If they get a tails, they must say `yes`, whether or not they had used drugs.  If they get heads, they should tell the truth and say `no` if they had not used illegal drugs.  Only the respondent knows whether the answer reflects the truth or the coin toss.
+
+\begin{enumerate}[1)]
+\item List the possible outcomes. \{not do drugs, say no\} etc.
+\item Suppose 25\% of the respondent population uses illegal drugs. What is the probability of a `no'?  \textbf{Answer:} \textbf{A no arises if the coin lands heads and they didn't use drugs.  so .5*.75= .375}
+\item  Now suppose that you conduct the study and find that 35\% of the respondents give a `no' answer. What would be your estimate of the percent of respondents who have used illegal drugs?   \textbf{Answer:} \textbf{30\% used illegal drugs.} 
+\end{enumerate}
+\pagebreak
+\item \textsc{Calculating Expectations}
+\begin{enumerate}[1)]
+
+\item Suppose X and Y are random variables that are jointly distributed 
+$$f(x,y)=\begin{cases} \frac{16y}{x^3} \text{, if }x>2, 0<y<1\\ 0, \ \text{ otherwise }\end{cases}$$
+
+\begin{enumerate}[a)]
+\item What is the formula for $f(x)$?  What is $f(y)$?  \textbf{Answer:} 
+$$f(x)=\int_0^1  \frac{16y}{x^3} dy= \frac{8}{x^3}$$  
+$$f(y)=\int_2^\infty  \frac{16y}{x^3} dx= -(-(\frac{16y}{2^3}))=2y$$.
+\item What is E$[X]$?  \textbf{Answer: } $\int_2^\infty  x \frac{8}{x^3} =\int_2^\infty   \frac{8}{x^2}= \frac{8}{x}|_2^\infty= 0- \frac{-8}{2}=4$
+\item What is E$[X|Y=.5]$?  How about E$[X|Y=.21]$? E$[X|Y=.98]$? \textbf{Answer:}  X and Y are \emph{independent} because $f(x,y)=f(x)*f(y)$ so they all =4.
+\end{enumerate}
+
+\item Suppose that the sample space S contains three elements $\{1, 2, 3\}$, with probabilities .5, .2, and .3 respectively.  Define a random variable X as follows:
+$$X(s) = s^2 - 4 \text{ for } s \in S$$ 
+\begin{enumerate}[a)]
+\item What is E[X]?  \textbf{Answer:}  \textbf{.5*(1-4)+.2*(4-4)+.3*(5)=0}
+\item What is Var[X]? \textbf{Answer:} $.5*(-3-0)^2+.2*(0-0)^2+.3*(5-0)^2=12$
+
+\end{enumerate}
+
+\item Suppose you enter a casino, and they offer you one of two bets $\{\textbf{A}, \textbf{B}\}$
+
+\begin{enumerate}
+\item[\textbf{A}] Roll a six-sided die 5 times, with sides printed $\{1,\ 2,\ 3,\ 4,\ 5,\ 6\}$, take the average of your rolls and receive the number of dollars equal to the average, translated by the following equation:
+$$g(\bar{x})=e^{\bar{x}-3.5}$$
+\item[\textbf{B}] Roll a six-sided die 5 times, where each of the sides of the die has $e^{x-3.5},\ \ x\in\{1,\ 2,\ 3,\ 4,\ 5,\ 6\}$ written on it.  i.e. $\{e^{-2.5},\ e^{-1.5},\ e^{-.5},\ e^{.5},\ e^{1.5},\ e^{2.5}\}$, and receive the average of the number of dollars on its face.
+\end{enumerate}
+\begin{enumerate}
+\item[a)]  Without calculating the exact value, which of these bets would you take, \textbf{A} or \textbf{B}?  Why?  \textbf{I prefer B  because of Jensen's inequality.  g(x) is convex.}
+
+\item[b)] What if $g(\bar{x})$ were $\sqrt{\bar{x}}?$ What if $g(\bar{x})$ were $log(\bar{x})?$  Again you shouldn't need to calculate the expectation to know the answer. \textbf{In these cases, I prefer A, as g(x) would be concave.  You can know this by taking the second derivative or by recognizing the shape of these famous functions.}
+\end{enumerate}
+\end{enumerate}
+
+
+\item \textsc{Limit Theorems} 
+
+\begin{enumerate}[1)]
+
+\item Suppose $\bar{X}$ is the sample mean of 100 observations from a population with mean $\mu$ and variance $\sigma^2$.  Find 90\% confidence limits for $\bar{X}$.
+\begin{enumerate}
+\item[a)] Using Chebychev.
+
+$$P(|\bar{X}-\mu|\geq c )\leq \frac{\sigma^2_{\bar{x}}}{c^2}$$
+
+Choosing $c=\sigma_{\bar{x}}k$, we get the following:
+
+$$P(|\bar{X}-\mu|\geq k\sigma_{\bar{x}} )\leq \frac{1}{k^2}$$
+so $.1=\frac{1}{k^2}$, $k=3.16$
+$$P(|\bar{X}-\mu|\geq 3.16\sigma/\sqrt{100} )\leq .1$$
+$$P(\bar{X}-3.16\sigma/\sqrt{100} \geq \mu \geq \bar{X}+3.16\sigma/\sqrt{100})\leq .1$$
+
+The confidence interval is + and - $.316\sigma$
+\item[b)] Using Central Limit Theorem.
+
+$$P(\frac{|\bar{X}-E(X)|}{\sigma/\sqrt{100}}|\geq \Phi^{-1}(.95))=.1$$
+$$P(|\bar{X}-E(X)|\geq 1.64 \sigma/\sqrt{100})=.1$$
+
+The confidence interval is + and - $0.164\sigma$.
+
+\end{enumerate}
+
+\item Suppose $\bar{X}_1$ and $\bar{X}_2$ are two independent surveys of size $n$ from the same population.  Assume we further know that for the individual responses, $Var(X_i)=\sigma^2$.
+\begin{enumerate}[a)]
+\item What is the distribution of $\bar{X}_1-\bar{X}_2$? (hint: see problem 4 from section I). \\  \textbf{Answer:} $N( 0,\ \sigma^2/n+\sigma^2/n)= N( 0,\ 2\sigma^2/n)$
+\item Suppose you had to pick a sample size such that: $$P(|\bar{X}_1-\bar{X}_2| < \sigma/5) \approx .99$$
+ Use the fact that $\Phi^{-1}(.995)=2.576$ to decide how big of a sample you should use.
+ 
+ \textbf{Given the distribution of $\bar{X}_1-\bar{X}_2$ is normal, we have:}
+  
+$$P(\frac{| \bar{X}_1-\bar{X}_2-0|}{\sqrt{2}\sigma/\sqrt{n}}\leq \Phi^{-1}(.995))=.99$$
+$$P(| \bar{X}_1-\bar{X}_2|\leq \sqrt{2}\sigma*\Phi^{-1}(.995)/\sqrt{n})=.99$$
+
+$$\sqrt{2}\sigma*\Phi^{-1}(.995)/\sqrt{n} = \sigma/5$$
+
+$$\sqrt{2}\Phi^{-1}(.995)/\sqrt{n} =1/5$$
+$$\sqrt{2}*2.576/\sqrt{n}=1/5$$
+$$\sqrt{2}*2.576*5=\sqrt{n}$$
+$$n=(\sqrt{2}*2.576*5)^2=332$$
+\end{enumerate}
+
+
+\end{enumerate}
+
+
+\end{enumerate}
+\end{document}
+

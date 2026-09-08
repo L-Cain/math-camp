@@ -1,0 +1,20 @@
+\begin{verbatim}
+deck <- outer( c("A", 2:10, "J", "Q", "K"),
+		       c("h", "d", "s", "c"), paste0)
+Kings <- paste0("K",  c("h", "d", "s", "c"))
+
+trial <- function(){
+	first13 <- sample(as.vector(deck), 13)
+	Kingisthere<- first13[13] %in% Kings
+	KingisAlone <- !(TRUE %in% (first13[1:12] %in% Kings))
+	return(Kingisthere&KingisAlone)
+}
+
+out <- replicate(500000, trial())
+
+mean(out)
+[1] 0.033804
+
+(1/13)*(4*choose(48,12))/choose(52, 13)
+[1] 0.0337575
+\end{verbatim}

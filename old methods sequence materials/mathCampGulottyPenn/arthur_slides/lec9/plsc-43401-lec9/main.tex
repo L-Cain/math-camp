@@ -1,0 +1,551 @@
+\documentclass{beamer}
+
+%\usepackage[table]{xcolor}
+\mode<presentation> {
+  \usetheme{Boadilla}
+%  \usetheme{Pittsburgh}
+%\usefonttheme[2]{sans}
+\renewcommand{\familydefault}{cmss}
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
+%\usepackage{palatino}
+%\usepackage{cmbright}
+  \setbeamercovered{transparent}
+\useinnertheme{rectangles}
+}
+%\usepackage{normalem}{ulem}
+%\usepackage{colortbl, textcomp}
+\setbeamercolor{normal text}{fg = black}
+\setbeamercolor{structure}{fg = blue}
+\definecolor{trial}{cmyk}{1,0,0, 0}
+\definecolor{trial2}{cmyk}{0.00,0,1, 0}
+\definecolor{darkgreen}{rgb}{0,.4, 0.1}
+\definecolor{mygray}{gray}{0.8}
+\definecolor{myblack}{rgb}{0, 0, 0}
+\usepackage{array}
+\beamertemplatesolidbackgroundcolor{white}  \setbeamercolor{alerted
+text}{fg=red}
+
+\setbeamertemplate{caption}[numbered]\newcounter{mylastframe}
+
+\usepackage{color}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{colortbl}
+\usepackage{graphicx}
+\usepackage{epsfig}
+
+%\usepackage[usenames, dvipsnames]{color}
+%\setbeamertemplate{caption}[numbered]\newcounter{mylastframe}c
+%\newcolumntype{Y}{\columncolor[cmyk]{0, 0, 1, 0}\raggedright}
+%\newcolumntype{C}{\columncolor[cmyk]{1, 0, 0, 0}\raggedright}
+%\newcolumntype{G}{\columncolor[rgb]{0, 1, 0}\raggedright}
+%\newcolumntype{R}{\columncolor[rgb]{1, 0, 0}\raggedright}
+
+%\begin{beamerboxesrounded}[upper=uppercol,lower=lowercol,shadow=true]{Block}
+%$A = B$.
+%\end{beamerboxesrounded}}
+\renewcommand{\familydefault}{cmss}
+%\usepackage[all]{xy}
+
+\usepackage{tikz}
+\usepackage{lipsum}
+
+ \newenvironment{changemargin}[3]{%
+ \begin{list}{}{%
+ \setlength{\topsep}{0pt}%
+ \setlength{\leftmargin}{#1}%
+ \setlength{\rightmargin}{#2}%
+ \setlength{\topmargin}{#3}%
+ \setlength{\listparindent}{\parindent}%
+ \setlength{\itemindent}{\parindent}%
+ \setlength{\parsep}{\parskip}%
+ }%
+\item[]}{\end{list}}
+\usetikzlibrary{arrows}
+%\usepackage{palatino}
+%\usepackage{eulervm}
+\usecolortheme{lily}
+
+\newtheorem{com}{Comment}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+ \numberwithin{equation}{section}
+
+
+\title[PLSC 43401] % (optional, nur bei langen Titeln nötig)
+{Mathematical Foundations of Political Methodology}
+
+\author{Robert Gulotty}
+\institute[University of Chicago]{Associate Professor\\Department of Political Science \\  University of Chicago}
+\vspace{0.3in}
+\date{August 28th, 2017}
+
+\setbeamertemplate{navigation symbols}{}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+\begin{frame}
+
+\begin{itemize}
+\item \textcolor{myblack}{Quadratic Form}
+\item \textcolor{myblack}{Positive Definiteness}
+\item \textcolor{myblack}{Multivariate Optimization}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+
+\begin{itemize}
+\item \textcolor{myblack}{Quadratic Form}
+\item \textcolor{mygray}{Positive Definiteness}
+\item \textcolor{mygray}{Multivariate Optimization}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Quadratic Form}
+
+\ \\Before we proceed our discussion to multivariate optimization, we introduce some concepts related to it. The first important concept is positive/negative definiteness.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Quadratic Form}
+
+\begin{itemize}
+\item A \textit{quadratic form} is a homogenous quadratic polynomial in $n$ variables \pause
+\begin{itemize}
+\item A \textit{homogeneous polynomial} is a polynomial whose nonzero terms all have the same degree: in words, the sum of the exponents of each term is constant \pause
+\item A \textit{homogenous quadratic polynomial} is a polynomial whose terms all have degree 2, see following examples: \pause
+
+\begin{itemize}
+\item $a x^2$
+\item $ax^2+bxy+cy^2$
+\item $a x^2+b y^2+c z^2+d xy+e xz+f yz$ (with coefficients $a, b, c, d, e, f$) \pause
+\item $a x_{2} + b y$ is not a homogenous quadratic polynomial because one of the terms doesn't have degree 2
+\end{itemize}
+
+\end{itemize}
+
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Quadratic Form}
+
+Consider the two variable quadratic form
+$$q(x, y)=ax^2+bxy+cy^2$$ \pause
+
+We can re-write it as: $$q(x, y)=\mathbf{z}^T\mathbf{A}\mathbf{z}$$ where $$\mathbf{z}=\begin{bmatrix}
+x\\y
+\end{bmatrix} \hbox{ and }\mathbf{A}=
+\begin{bmatrix}
+a & s \\
+t& c
+\end{bmatrix} 
+$$
+with $s+t=b$ \pause
+
+\ \\If we impose the condition that $\mathbf{A}$ is symmetric (so that $\mathbf{A}=\mathbf{A}^T$, or $a_{ij}=a_{ji}$ for all $i, j$) then we have $s=t={b\over 2}$ \pause
+ 
+ \ \\There is therefore a unique symmetric matrix $\mathbf{A}$ satisfying $q(x, y)=\mathbf{z}^T\mathbf{A}\mathbf{z}$
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Quadratic Form}
+
+This generalizes: \pause
+
+\ \\Let $q(\mathbf{x})$ be a quadratic form in $n$ variables, $x_1, ..., x_n$ \pause
+
+\ \\Then $q(\mathbf{x})$ is equivalent to the expression
+
+$$\mathbf{x}^T\mathbf{A}\mathbf{x}$$ for a unique symmetric $n\times n$ matrix $\mathbf{A}$ and $\mathbf{x}^T=[x_1, x_2, ..., x_n]$ \pause
+
+\ \\Takeaway point: A symmetric $\mathbf{A}$ is uniquely determined by the coefficients in  $q(\mathbf{x})$
+
+\end{frame}
+
+
+
+\begin{frame}
+
+\begin{itemize}
+\item \textcolor{mygray}{Quadratic Form}
+\item \textcolor{myblack}{Positive Definiteness}
+\item \textcolor{mygray}{Multivariate Optimization}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Positive Definiteness}
+
+\ \\For a given quadratic form $q(\mathbf{x})$ we can ask whether $q(\mathbf{x})>0$ (or less stringently, $q(\mathbf{x})\geq 0$) for every non-zero $\mathbf{x}$ \pause
+
+\ \\If  $q(\mathbf{x})>0$ for every non-zero $\mathbf{x}$ then $q(\mathbf{x})$ is \textit{positive definite} \pause
+
+\begin{itemize}
+\item Example $q(\mathbf{x}) = x_1^2+x_2^2+...+x_n^2$
+\end{itemize} \pause
+
+\ \\If  $q(\mathbf{x})\geq 0$ for every $\mathbf{x}$ then $q(\mathbf{x})$ is \textit{positive semidefinite} \pause
+
+\begin{itemize}
+\item Example $q(\mathbf{x}) = x_1^2+x_2^2+x_3^2-2x_2x_3$ \pause
+\item Notice that we can rewrite it as: $q(\mathbf{x}) = x_1^2+(x_2-x_3)^2 \geq 0$ but $q(0, 1, 1)=0$
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Positive Definiteness}
+
+\ \\If  $q(\mathbf{x})<0$ for every non-zero $\mathbf{x}$ then $q(\mathbf{x})$ is \textit{negative definite} \pause
+
+\ \\If  $q(\mathbf{x})\leq 0$ for every $\mathbf{x}$ then $q(\mathbf{x})$ is \textit{negative semidefinite} \pause
+
+\ \\Most  quadratic forms are neither positive nor negative semidefinite \pause
+
+\ \\Example: $q(x, y)=xy$
+\begin{itemize}
+\item $q(1, 1)>0$
+\item $q(1, -1)<0$
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Positive Definiteness}
+
+\ \\We can test if a quadratic form is positive (negative) (semi)definite by testing the associated symmetric matrix $\mathbf{A}$ that satisfies $q(\mathbf{x})=\mathbf{x}^T\mathbf{A}\mathbf{x}$ \pause
+
+\ \\If $\mathbf{A}$ is $2\times 2$, and recall, $\mathbf{A}=\begin{bmatrix}a& c\\c& d\end{bmatrix}$, then: \pause
+
+\begin{itemize}
+\item $\mathbf{A}$ is PD iff $a, d>0$ and $\det \mathbf{A}>0$ \pause
+\item $\mathbf{A}$ is PSD iff  $a, d\geq0$ and $\det \mathbf{A}\geq 0$ \pause
+\item $\mathbf{A}$ is ND iff $a, d<0$ and $\det \mathbf{A}>0$ \pause
+\item $\mathbf{A}$ is NSD iff  $a, d\leq $ and $\det \mathbf{A}\geq 0$
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+
+\begin{itemize}
+\item \textcolor{mygray}{Quadratic Form}
+\item \textcolor{mygray}{Positive Definiteness}
+\item \textcolor{myblack}{Multivariate Optimization}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Multivariate Optimization}
+
+Now, we can proceed our discussion to optimize multivariate functions \pause
+\begin{itemize}
+\item[-] Parameters $\boldsymbol{\beta} = (\beta_{1}, \beta_{2}, \hdots, \beta_{n} ) $ such that $f(\boldsymbol{\beta}| \boldsymbol{X}, \boldsymbol{Y})$ is maximized
+\item[-] Policy $\boldsymbol{x} \in \Re^{n}$ that maximizes $U(\boldsymbol{x})$
+\item[-] Weights $\boldsymbol{\pi} = (\pi_{1}, \pi_{2}, \hdots, \pi_{K})$ such that a weighted average of forecasts $\boldsymbol{f}  =  (f_{1} , f_{2}, \hdots, f_{k})$ have minimum loss 
+\begin{eqnarray}
+\min_{\boldsymbol{\pi}} & = & - (\sum_{j=1}^{K} \pi_{j} f_{j}  - y ) ^ 2 \nonumber 
+\end{eqnarray} 
+\end{itemize} \pause
+
+We'll describe analytic and computational approaches to optimization
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Multivariate Optimization}
+
+\begin{defn} 
+Let $\boldsymbol{x} \in \Re^{n}$ and let $\delta >0$.  Define a \alert{neighborhood} of $\boldsymbol{x}$, $B(\boldsymbol{x}, \delta)$, as the set of points such that, 
+\begin{eqnarray}
+B(\boldsymbol{x}, \delta) & = & \{ \boldsymbol{y} \in \Re^{n} : ||\boldsymbol{x} - \boldsymbol{y}||< \delta \}  \nonumber 
+\end{eqnarray}
+\end{defn}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Multivariate Optimization}
+
+
+\begin{defn} Suppose $f:X \rightarrow R$ with $X \subset R^{n}$.  A vector $\boldsymbol{x}^{*} \in X$ is a \alert{global maximum} if , for all other $\boldsymbol{x} \in X$ 
+\begin{eqnarray}
+f(\boldsymbol{x}^{*}) & > & f(\boldsymbol{x} ) \nonumber 
+\end{eqnarray}
+
+A vector $\boldsymbol{x}^{\text{local}}$ is a \alert{local} maximum if there is a neighborhood around $\boldsymbol{x}^{\text{local}}$, $Q \subset X$ such that, for all $x \in Q$, 
+\begin{eqnarray}
+f(\boldsymbol{x}^{\text{local} }) & > & f(\boldsymbol{x} ) \nonumber 
+\end{eqnarray}
+\end{defn}
+
+\end{frame}
+
+
+
+
+%\begin{frame}
+%\frametitle{Multivariate Optimization}
+%\begin{defn} A set $X\subset R^{n}$ is \alert{compact} if it is closed and bounded
+%\end{defn} 
+
+%\begin{thm} \alert{Multivariate Extreme Value Theorem} Suppose $f:X \rightarrow \Re$ be continuous and $X \subset \Re^{n}$ and $X$ compact.  Then $f$ takes on its \alert{maximum} and \alert{minimum} values on $X$.  
+%\end{thm}
+
+%We're going to come up with the multivariate equivalent of the \alert{first order} and \alert{second order} conditions now
+
+%\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Gradient} 
+
+\begin{defn} 
+Suppose $f:X \rightarrow \Re^{n}$ with $X \subset \Re^{1}$ is a differentiable function.  Define the gradient vector of $f$ at $\boldsymbol{x}_{0}$, $\nabla f(\boldsymbol{x}_{0})$ as, 
+\begin{eqnarray}
+\nabla f (\boldsymbol{x}_{0})  & = & \left(\frac{\partial f (\boldsymbol{x}_{0}) }{\partial x_{1} }, \frac{\partial f (\boldsymbol{x}_{0}) }{\partial x_{2} }, \frac{\partial f (\boldsymbol{x}_{0}) }{\partial x_{3} }, \hdots, \frac{\partial f (\boldsymbol{x}_{0}) }{\partial x_{n} } \right) \nonumber 
+\end{eqnarray}
+
+\end{defn}
+
+
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Gradient First Order Condition}
+
+\begin{thm}
+Suppose $f:X \rightarrow R^{1}$, $X \subset R^{n}$.  Suppose $\boldsymbol{a} \in X$ is a local extremum.  Then, 
+\begin{eqnarray}
+\nabla f(\boldsymbol{a}) & = & \boldsymbol{0} \nonumber \\
+									& = & (0, 0, \hdots, 0) \nonumber 				
+\end{eqnarray}
+
+\end{thm} \pause
+
+\begin{itemize}
+\item[-] Proof (intuition): same as one dimensional case (left-hand, right hand), just do it dimension by dimension \pause
+\item[-] Critical Values: 
+\begin{itemize}
+\item[1)] Maximum
+\item[2)] Minimum 
+\item[3)] Saddle point
+\end{itemize}
+\item[-] Second Derivative Test!
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Second Order Conditions: Hessian}
+
+
+\begin{defn}
+Suppose $f:X \rightarrow R^{1}$ , $X \subset R^{n}$, with $f$ a twice differentiable function.  We will define the Hessian matrix as the matrix of second derivatives at $\boldsymbol{x}^{*} \in X$,
+\begin{eqnarray}
+\boldsymbol{H}(f)(\boldsymbol{x}^{*} )  & = & \begin{pmatrix} 
+		\frac{\partial^{2} f }{\partial x_{1} \partial x_{1} } (\boldsymbol{x}^{*} ) & \frac{\partial^{2} f }{\partial x_{1} \partial x_{2} } (\boldsymbol{x}^{*} ) & \hdots & \frac{\partial^{2} f }{\partial x_{1} \partial x_{n} } (\boldsymbol{x}^{*} ) \\
+		\frac{\partial^{2} f }{\partial x_{2} \partial x_{1} } (\boldsymbol{x}^{*} ) & \frac{\partial^{2} f }{\partial x_{2} \partial x_{2} } (\boldsymbol{x}^{*} ) & \hdots & \frac{\partial^{2} f }{\partial x_{2} \partial x_{n} } (\boldsymbol{x}^{*} ) \\
+		\vdots & \vdots & \ddots & \vdots \\
+		\frac{\partial^{2} f }{\partial x_{n} \partial x_{1} } (\boldsymbol{x}^{*} ) & \frac{\partial^{2} f }{\partial x_{n} \partial x_{2} } (\boldsymbol{x}^{*} ) & \hdots & \frac{\partial^{2} f }{\partial x_{n} \partial x_{n} } (\boldsymbol{x}^{*} ) \\
+\end{pmatrix} \nonumber 
+\end{eqnarray}
+
+\end{defn} \pause	
+								
+General test $\leadsto$ Two Dimensional Test $\leadsto$ Example
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Second Derivative Test} 
+
+Many ways to assess definiteness $\leadsto$ use determinant \pause
+
+\begin{thm} 
+Two Dimensional, Second Derivative Test.  Suppose $f:X \rightarrow R$ with $X \subset R^{2}$ and $f$ twice differentiable.  Write the Hessian of $f$ at a critical value $\boldsymbol{a}$, 
+\begin{eqnarray}
+\boldsymbol{H}(f)(\boldsymbol{a}) & = & \begin{pmatrix} 
+	A & B \\
+	B & C \\
+	\end{pmatrix} \nonumber 
+	\end{eqnarray}
+Then, we can conduct the second derivative test as:
+\begin{itemize}
+\item[-] $AC - B^2> 0$ and $A>0$ $\leadsto$ positive definite $\leadsto$ $\boldsymbol{a}$ is a local minimum 
+\item[-] $AC - B^2> 0 $ and $A<0$ $\leadsto$ negative definite $\leadsto$ $\boldsymbol{a}$ is a local maximum
+\item[-] $AC - B^2<0 $ $\leadsto$ indefinite $\leadsto$ saddle point 
+\item[-] $AC- B^2 = 0$ inconclusive
+\end{itemize}
+	
+\end{thm}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Multivariate Recipe}
+
+\begin{itemize}
+\item[1)] Calculate gradient \pause
+\item[2)] Set equal to zero, solve system of equations \pause
+\item[3)] Calculate Hessian \pause
+\item[4)] Assess Hessian at critical values \pause
+\item[5)] Boundary values?  (if relevant)
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Example 1: A Simple Optimization Problem}
+
+Suppose $f:R^{2} \rightarrow \Re$ with 
+\begin{eqnarray}
+f(x_{1}, x_{2}) & = & 3(x_1 + 2)^2  + 4(x_{2}  + 4)^2 \nonumber 
+\end{eqnarray} \pause
+
+Calculate gradient \pause
+
+\begin{eqnarray}
+\nabla f(\boldsymbol{x}) & = & (6 x_{1} + 12 , 8x_{2} + 32 ) \nonumber \\
+\boldsymbol{0} & = & (6 x_{1}^{*} + 12 , 8x_{2}^{*} + 32 ) \nonumber 
+\end{eqnarray} \pause
+
+We now solve the system of equations to yield
+$x_{1}^{*}  = - 2$ and $x_{2}^{*}  = -4 $ 
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Example 1: A Simple Optimization Problem}
+
+\begin{eqnarray}
+\textbf{H}(f)(\boldsymbol{x}^{*}) & = & \begin{pmatrix}
+6 & 0 \\
+0 & 8 \\
+\end{pmatrix}\nonumber 
+\end{eqnarray} \pause
+
+det$(\textbf{H}(f)(\boldsymbol{x}^{*}))$ = 48 and $6>0$ so $\textbf{H}(f)(\boldsymbol{x}^{*})$ is positive definite. \alert{local minimum}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{Example 2: Two Dimensional Ideal Points}
+Suppose legislators are considering legislation $\boldsymbol{x} \in R^{2}$.  And suppose legislator $i$ has utility function $U_{i}: R^{2} \rightarrow \Re$, \pause
+\begin{eqnarray}
+U(\boldsymbol{x})_{i} & = & - (x_{1} - \mu_{1})^2 - (x_{2} - \mu_{2})^2 \nonumber 
+\end{eqnarray} \pause
+What is legislator $i$'s optimal policy? \pause
+
+$\nabla f(\boldsymbol{x}) = ( -2 (x_{1} - \mu_{1} ) , -2 (x_{2} - \mu_{2} )  )$\\
+$\nabla f(\boldsymbol{x}) = \boldsymbol{0} $ \pause
+\begin{eqnarray}
+- 2(x_{1}^{*} - \mu_{1} ) & = & 0 \nonumber \\
+- 2(x_{2}^{*} - \mu_{2} ) & = & 0 \nonumber 
+\end{eqnarray}  \pause
+Solving yields $x_{1}^{*} = \mu_{1}$ and $x_{2}^{*} = \mu_{2}$.  
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Example 2: Two Dimensional Ideal Points} 
+
+\begin{eqnarray}
+U(\boldsymbol{x})_{i} & = & - (x_{1} - \mu_{1})^2 - (x_{2} - \mu_{2})^2 \nonumber 
+\end{eqnarray} \pause
+
+Call $\boldsymbol{\mu} = (\mu_{1}, \mu_{2} ) $\\ \pause
+
+The Hessian at the critical value is \pause
+\begin{eqnarray}
+\boldsymbol{H}(f)(\boldsymbol{\mu} ) & = & \begin{pmatrix} 
+\frac{\partial^{2} U_{i}} {\partial x_{1} \partial x_{1}} (\boldsymbol{\mu} ) & \frac{\partial^{2} U_{i}} {\partial x_{1} \partial x_{2}} (\boldsymbol{\mu} )  \\
+\frac{\partial^{2} U_{i}} {\partial x_{2} \partial x_{1}} (\boldsymbol{\mu} ) & \frac{\partial^{2} U_{i}} {\partial x_{2} \partial x_{2}} (\boldsymbol{\mu} )\\
+\end{pmatrix} \nonumber \\
+& = & \begin{pmatrix} 
+-2 & 0  \\
+0 & -2  \\
+\end{pmatrix} 
+\nonumber 
+\end{eqnarray} \pause
+So, $-2 * -2 - 0  = 4 >0$ and $-2 <0$ $\leadsto$ \alert{negative definite}, \alert{maximum} \\
+$\boldsymbol{\mu} = (\mu_{1}, \mu_{2})$ are legislator $i$'s two dimensional ideal point.  
+
+\end{frame}
+
+
+
+
+
+
+
+
+\end{document}

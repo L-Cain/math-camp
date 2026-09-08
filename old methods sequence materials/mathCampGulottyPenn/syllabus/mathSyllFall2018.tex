@@ -1,0 +1,277 @@
+\documentclass[11pt]{article} 
+
+\usepackage{amsmath}
+
+\usepackage[super]{nth}
+
+\usepackage{epsfig}
+
+\usepackage{graphics}
+
+\usepackage{wasysym}
+
+\usepackage{times}
+
+\usepackage{natbib}
+
+%\usepackage{amssymb}
+
+\setlength{\topmargin}{0in}
+\setlength{\textwidth}{6.25in}
+
+\setlength{\oddsidemargin}{.125in}
+
+% 28 lectures total
+
+\usepackage{amscd}
+
+\begin{document}
+\begin{center}
+
+\large
+\textsc{Mathematical Foundations of Political Methodology: PLSC 43401}\\
+\end{center}
+
+\small
+
+\ \\ \begin{tabular} {ll} \multicolumn{2}{l}{Professor Robert Gulotty}\\
+Office: &Pick 326\\
+Phone: &2-5726\\
+Email: &gulotty@uchicago.edu\\
+\multicolumn{2}{l}{Office Hours: Tuesday/Thursday signup https://www.wejoinin.com/sheets/anuja}
+\end{tabular}
+
+\vspace{.15in}
+\vspace{.15in}
+
+\ \\ \begin{tabular} {ll} \multicolumn{2}{l}{TA Jongyoon Baik}\\
+Office: & Pick 507 \\
+%Phone: & \\
+Email: &baikjongyoon@uchicago.edu  \\
+%\multicolumn{2}{l}{R Lab: }\\
+\multicolumn{2}{l}{Office Hours: by appointment }
+\end{tabular}
+
+\vspace{.5in}
+
+\ \\{\bf Course description}  
+
+\ \\This is a first course on the theory and practice of mathematical methods in social science research.  These mathematical and computer skills are needed for the quantitative and formal modeling courses offered in the political science department, and are increasingly necessary for courses in American Politics, Comparative Politics, and International Relations.   We will cover mathematical techniques (linear algebra, calculus, probability) and methods of logical and statistical inference (proofs and statistics).  A weekly computing lab will apply these methods, as well as introduce the R statistical computing environment.
+
+\vspace{.1in}
+
+\noindent {\bf Grading:} You will be graded on weekly problem sets (worth 20\% of your total grade), weekly quizzes covering the reading (also 20\%), and two, noncumulative exams (each worth 30\% of your grade).  
+
+\ \\{\bf Problem sets are due each Tuesday at midnight, starting October $\mathbf{9^{\text{th}}}$.  Upload your problem sets to Canvas.}
+
+
+\ \\{\bf Required books:} \textit{ Mathematics for Economists, \nth{4} Edition},  by Pemberton \& Rau, and \textit{Introduction to Probability, \nth{2} Edition}, by Bertsekas \& Tsitsiklis.
+
+\ \\{\bf R resources:} You can read about regular expressions in \textit{Mastering Regular Expressions} by Friedl.  We will make available \textit{Foundations of R} by Gulotty, a series of R exercises for the course that are available on Canvas.  Students should also be familiar with material from the following courses on DataCamp.com:
+
+\begin{itemize}
+\item Introduction to R
+\item Working with the RStudio IDE
+\item Data Manipulation in R with dplyr
+\item Reporting with R Markdown
+\item Importing Data Into R
+\end{itemize}
+
+
+\newpage
+
+\ \\ \noindent \textsc{Oct 2: Algebra, Sets, and Functions}
+
+\begin{itemize}
+\item Pemberton \& Rau Ch, 1-4
+
+\item Foundations of R: Chapter 1, data frames, Boolean logic, indexing, loops, functions.
+\end{itemize}
+
+
+
+
+\noindent \textsc{Oct 4: Mathematical and Social Scientific Reasoning}
+
+\begin{itemize}
+\item \emph{Propositions} and \emph{Patterns of Proof}
+\end{itemize}
+
+
+
+
+
+\noindent \textsc{Oct 9: Sequences, Series and Limits}
+
+\begin{itemize}
+\item Pemberton \& Rau Ch. 5
+\item Foundations of R: Chapter 2, Modeling
+\end{itemize}
+
+
+
+\noindent \textsc{Oct 11:  Differentiation}
+
+\begin{itemize}
+
+\item Pemberton \& Rau Ch. 6, 7
+
+
+
+\end{itemize}
+
+
+
+\noindent \textsc{Oct 16: Optimization}
+
+\begin{itemize}
+\item Pemberton \& Rau Ch. 8, 10
+
+\item Foundations of R: Chapter 3, Plotting with ggplot2
+
+
+\end{itemize}
+
+
+\noindent \textsc{Oct 18: Integration}
+
+\begin{itemize}
+\item Pemberton \& Rau Ch. 19, 20
+
+
+\end{itemize}
+
+
+\noindent \textsc{Oct 23:  Linear Algebra}
+
+\begin{itemize}
+
+\item Pemberton \& Rau Ch. 11, 12, 13.1
+
+\item Foundations of R: Chapter 4, The data science workflow
+
+\end{itemize}
+
+
+\noindent \textsc{Oct 25:  Multivariate Calculus}
+
+\begin{itemize}
+
+\item Pemberton \& Rau Ch. 13, 14, 16
+\item Foundations of R: Chapter 5, Tidy Data
+
+\end{itemize}
+\noindent \textsc{Oct 30:  \underline{In-Class Exam}}
+
+
+
+\newpage
+
+\noindent \textsc{Nov 1: Laws and Properties of Probability}
+
+\begin{itemize}
+
+\item Bertsekas-Tsitsiklis Ch. 1.1-1.2 
+
+
+\end{itemize}
+
+\noindent \textsc{Nov 6: Conditional Probability}
+
+\begin{itemize}
+
+\item Bertsekas-Tsitsiklis Ch. 1.3-1.7
+
+\item Foundations of R: Chapter 6, Vectorized code over lists
+
+\end{itemize}
+
+\noindent \textsc{Nov 8: Discrete Random variables }
+
+\begin{itemize}
+
+ \item Bertsekas-Tsitsiklis Ch. 2  
+ 
+
+
+\end{itemize}
+
+
+\noindent \textsc{Nov 13: Continuous Random variables}
+
+\begin{itemize}
+\item Bertsekas-Tsitsiklis Ch. 3.1-3.3 
+%\item Bertsekas-Tsitsiklis Ch. 3
+
+\item Foundations of R: Chapter 7, Baseball!
+
+\end{itemize}
+
+
+\noindent \textsc{Nov 15: Summarizing Random variables}
+
+\begin{itemize}
+\item Bertsekas-Tsitsiklis Ch. 3.4-3.7 
+
+\end{itemize}
+
+\noindent \textsc{Nov 20: Covariance and Correlation}
+
+\begin{itemize}
+
+ \item Bertsekas-Tsitsiklis Ch. 4.1-4.3
+ 
+ 
+\item Foundations of R: Chapter 8, String Manipulation with Regex
+ 
+\end{itemize}
+
+\noindent \textsc{Nov 27: Transformations of Random Variables}
+
+\begin{itemize}
+
+ \item Bertsekas-Tsitsiklis Ch. 4.4-4.4.6
+
+
+\end{itemize}
+
+\noindent \textsc{Nov 29: Inequalities and limits of sequences of Random Variables}
+
+\begin{itemize}
+
+ \item Bertsekas-Tsitsiklis Ch. 5
+ 
+  
+\item Foundations of R: Chapter 9, Geospatial Data.
+
+\end{itemize}
+
+\noindent \textsc{Dec 4: Hypothesis testing}
+
+\begin{itemize}
+
+ \item Bertsekas-Tsitsiklis Ch. 9
+ \item Degroot and Schervish Chapter 8
+\item Foundations of R: Chapter 10, Classification
+\end{itemize}
+
+\noindent \textsc{Dec 6: \underline{In-Class Exam}}
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

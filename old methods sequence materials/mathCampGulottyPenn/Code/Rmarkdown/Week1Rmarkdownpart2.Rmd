@@ -1,0 +1,538 @@
+---
+title: "R Lab Week 1 Part 2"
+author: "Robert Gulotty"
+date: "9/30/2016"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+set.seed(151)
+library(ggplot2)
+```
+******
+
+
+# Functions in R
+
+In this document, we will learn how to make our own functions, building on the basic tools in R.  In so doing, we will preview material in the second half of the course, which has to do with mathematical models of probability and statistical inference.
+
+## A simulated experiment.
+
+R already contains a variety of random number generators, we will use one to simulate the small errors made over the course of an experiment or project.   
+
+Suppose we make mistakes in the course of a project or an exam.  For example, if we are studying travel times, then small events, a person unable to lift their bag into the overhead bin, a person who was particularly efficient in finding their seat, can each contribute to the outcome.  We can model this process as each mistake causing a deviation up (+1) or down (-1) with equal probability, and these errors cumulate.  Call this the small error process.  
+
+If we make n errors, than we can drift at most n away from the truth.  If we have 10 errors, the chance of ten +1s in a row is:
+
+```{r}
+1/2*1/2*1/2*1/2*1/2*1/2*1/2*1/2*1/2*1/2
+```
+
+Which is not very likely.  How should we understand the overall chances that we end up some distance less than n away from 0 at the end of all these experiments?
+
+\pagebreak
+
+In R we can analyze that process by constructing a function.  First, we will make random draw of either (+1) or (-1).  The set of all the possibilities from an experiment are called the __sample space__.  
+
+```{r}
+samplespace <- c(1, -1)
+```
+
+ If you just want a equal probability random sample without replacement, you can use the `sample' function:
+ 
+```{r}
+sample(samplespace, size = 1)
+```
+
+The `sample()` function can generate all kinds of random events, but as we are using it it is giving us a number i.e. 1 or -1.  Because of that, it is an example of a ___random variable___.  A random variable is a function that assigns a number to outcomes of some ___sample space___.  Other examples of random variables might count the number of crashes in a car race, measure the time between bus arrivals at a bus stop, or the distance traveled by a cat in an evening.  In each case there is some set of possible outcomes, and the random variable assigns a number to each outcome.  
+
+Note, this will not work if the size is greater than 2.  Try it out!
+
+```{r}
+sample(samplespace, size = 10, replace = TRUE)
+```
+
+
+
+To write our custom small error model we neet to write our own function.  We save functions as named objects in R, just like normal.  Functions are embraced by `{` and `}` 
+
+```{r}
+
+
+smallerror <- function(x) {
+  samplespace <- c(1, -1)
+  
+  x <- x + sample(samplespace, size = 1)
+  # Once you are done, you can specify the value of the function as follows:
+  return(x)
+}
+
+smallerror(10)
+```
+
+Because the smallerror function is a function of a random variable, and returns a number, it is itself a random variable.  
+
+
+Not very exciting yet.  It will be useful if we apply it multiple times.  Functions are, however, very useful.  Whenever you find yourself repeatedly typing out code, it is probably better to write a function.
+
+\newpage
+
+All things in R that are functions are written just like the above code.  You can see what is inside such code by just typing the function in the console without ().
+```{r}
+sample
+```
+
+Notice, there are four arguments to sample, and two of them have default settings.  Inside the function is an `if` command, which allows the things in the curly braces to happen if the things in the parenthesis return TRUE, and the things that happen after the `else` if FALSE.  These are called control functions.
+
+Example of function:
+```{r}
+euclideandist<- function(x1, y1, x2, y2){
+    dist=sqrt((x1-x2)^2+(y1-y2)^2)
+    return(dist)
+}
+```
+
+Example of control functions
+```{r}
+KnockKnock<- function(input){
+    if(input=="Who's there?"){
+      response=sample(c("Banana.", "Orange."),size = 1, replace = F, prob = c(.9,.1))
+    }else if(input=="Banana who?"){
+      response="Knock Knock."
+    }else if(input=="Orange who?"){
+      response="ORANGE YOU GLAD I DIDN'T SAY BANANA!"
+    }else{
+     response="PLAY ALONG!"
+    }
+return(response)
+}
+```
+
+
+\newpage
+
+# For loops
+We can apply our function repeatedly, and save the results in the ith element of a list called `errorpath'.  This will tell us how far off we get across the experiment.  To do so, we will use a special function called a for loop.  A for loop iterates over the numbers listed, here 1, 2, 3, ... 1000.  Each loop increments i by 1.  Notice the similarity to a function.  The things in the curly brace are done repeatedly, from top to bottom.  Unlike functions, the objects created in a loop exist outside the loop.
+
+
+```{r}
+# We will start at 0
+start <- 0
+
+# We will calculate 1000 errors
+nerrors <- 1000
+
+# And we will save these results in "errorpath", a vector of length 1000
+errorpath <- rep(NA, nerrors)
+
+# Now we can write a for loop, which iterates over the numbers listed,
+# here 1, 2, 3, ... 1000.  Each loop increments i by 1.
+
+for (i in 1:nerrors) {
+# We start by putting start in the list errorpath at index 'i'
+
+errorpath[i] <- start
+
+start <- smallerror(start)
+
+}
+
+```
+ To visualize the result, we will plot the data using a plot command with the option to draw a line.
+
+```{r,fig.height=4, fig.width=4}
+plot(errorpath, type="l")
+```
+
+Overall, we see that the experiment drifts about.   This is basically what happens to your total amount of winnings if you gamble in an even-odds game.  If you stay long enough, you might get very rich, but you might get very poor -it is best not to gamble.  In an experiment, our small errors lead us to drift about.
+
+
+It turns out that this small error process has a name, it is called a random walk.  It is very often used as a model for uncertainty.  Its main use is as an assumption for where variation comes from in measurements, where we think that in addition to systematic effects of an experiment, lots of small cumulative errors affect the result.  However, we only measure the cumulative effects of all these errors.  If we made a bunch of small errors that we don't measure, and we want to know how likely is it that we get the right answer anyway, and how likely we are to get pushed away from the truth.  In a sense, we want to know are we going to be like the gambler that loses it all.  In this case, we drifted off by the amount listed at the last entry of `errorpath' 
+
+```{r}
+length(errorpath)
+```
+
+```{r}
+errorpath[1000]
+```
+
+What was the furthest we drifted?
+```{r}
+max(abs(errorpath))
+```
+That means that at some point we got `r max(abs(errorpath))` away from the 0.  That is pretty far!  This happened in iteration number `r which.max(abs(errorpath))`, which you can find using the `which.max` function. It is good that we did not end the experiment there, or we would have really been off...  
+
+
+\newpage
+
+## Simulating 10000 Experiments
+
+To understand the properties of randomness, we can run simulations.  Here we are going to run simulations to describe the properties of the cumulative effects of these little errors.  Suppose we run ten thousand simulated experiments, each where there are 10000 small errors, and each time record how far off we are from the truth.  That will help us see how far we get from the real effects given these small errors.  To do so, we will use a loop.
+
+```{r}
+
+# Start like before, defining the parameters of our problem:
+
+
+nexperiments <- 10000
+nerrors <- 10000
+
+# Note, we are going to make a new empty vector, and
+# fill it with the end of each of our experiments.
+
+outcomes <- rep(NA, nexperiments)
+
+for( j in 1: nexperiments){
+
+	start<-0
+
+# Now for each of the j experiments, we run 10000 small errors, 
+	# allowing the result to drift about.
+ 
+	outcomes[ j ] <-  sum(sample(c(-1,1), size = nerrors , replace=T))
+	
+}
+
+```
+
+\newpage
+
+Lets see what we got, plotting the points at the end of each of our experiments.
+```{r}
+plot(outcomes)
+```
+
+They are centered close to zero, but how far does our experiment go wrong? We need to summarise the data.  The quantile of a vector reports things like the median, the 95th percentile, ect.
+
+```{r}
+quantile(outcomes, c(0.025, 0.05, 0.25, 0.5, 0.75, 0.95, 0.975))
+```
+
+This means that 2.5% of the data is less than about -196, 2.5% of the data is above 194. If we think about absolute value deviation, about 5% of the data is as far or further away than about 196.
+
+```{r}
+mean(abs(outcomes)>=196)
+```
+
+\newpage
+
+One way to visualize this data is to plot the density
+
+```{r}
+plot(density(outcomes))
+```
+
+\newpage
+
+Now it turns out that the function that best describes this curve is the following equation, that we will write into a function:
+
+```{r}
+smallerrordensity <- function(x) {
+  sigma <- 100
+  (1 / sqrt(2 * pi * (sigma ^ 2))) * exp(-(x ^ 2) / (2 * (sigma ^ 2)))
+}
+
+
+plot(density(outcomes))
+
+curve(smallerrordensity, add = T, lty = 2)
+
+```
+
+R allows you do directly plot functions using the "curve" command.  Run this after running the plot command above.
+
+\newpage
+
+It turns out that this smallerror density has a name in statistics, the normal distribution, or gaussian distribution.  The height of the function at any given point is given by the equation in the small error density:
+
+$$f(x)=\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{x^2}{2\sigma^2}}$$
+
+Because this is such a popular fucntion, R includes it in its base package and calls it `dnorm`, which stands for the probability density of the normal distribution.
+
+```{r}
+plot(density(outcomes))
+
+curve(dnorm(x = x, sd = 100), add = T, lty = 2, lwd = 5)
+```
+
+
+#########
+
+\newpage
+
+# Preview of probability density functions 
+
+
+In R, we have several ways to get at the "distribution" of random variables.
+
+`dnorm` is the normal probability density function `f_X(x)`, such that $P(a\leq X \leq b)= \int_a^b f_X(x)dx$.  In words, this means that the probability of getting some X between the numbers $a$ and $b$ is the area under the curve of $f_X(x)$ between $a$ and $b$.  
+
+___Q. What is the probability of a standard normal distribution producing a number greater than 0?___
+
+We will learn about the properties of this function later, but lets use R to discover some of them now.  
+
+A function can be a probability density function if it has the following properties:
+
+* The function is always non-negative.
+* The area under the function adds up to 1.
+
+The following code examines whether the `smallerrordensity` is positive, and it uses the computer to calculate the area under the curve, using the `integration` function, which you will learn about later.
+
+```{r}
+
+table(smallerrordensity(-10:10) >= 0)
+
+integrate( smallerrordensity, lower= -Inf, upper=Inf)
+```
+
+\newpage
+
+## Interpreting the area under the pdf
+
+```{r, echo=FALSE}
+
+funcShaded <- function(x) {
+  y <- dnorm(x)
+  y[x < qnorm(.975) | x > 5] <- NA
+  return(y)
+}
+
+ggplot(data = data.frame(x = 0), mapping = aes(x = x)) + stat_function(fun = dnorm) + xlim(-5, 5) + stat_function(
+fun = funcShaded,
+geom = "area",
+fill = "#84CA72",
+alpha = 0.2
+) + theme_bw() + geom_text(label = "A", aes(0, .1), size = 10) + geom_text(label =
+"B", aes(2.2, .02), size = 5)
+
+```
+
+We can calculate how likely we are to end up in the tail of the distribution by using this integration function.  Lets see how much area is covered by the function left of 196.  In the figure above, this is the non-shaded region *A*.
+
+```{r}
+integrate( smallerrordensity, lower= -Inf, upper = 196)
+```
+
+The area to the right of 196, the area *B* is just 1 minus this number. 
+
+```{r}
+integrate( smallerrordensity, lower= 196, upper = Inf)
+```
+
+Because the function is symmetric, we could combine the areas in the tails
+
+```{r}
+higherrorprob <- integrate( smallerrordensity, lower= 196, upper= Inf)
+lowerrorprob <- integrate( smallerrordensity, lower= -Inf, upper= -196)
+
+higherrorprob$value+lowerrorprob$value
+```
+
+These integrals create a function called the __cumulative distribution function__ (cdf), which is the area under the density curve to the left of some point point x.
+
+`pnorm()` is the __Normal cumulative density function__.
+
+Compare the previous calculations with the following:
+
+```{r}
+pnorm(-1.96)*2
+```
+
+To get 100 simulations from this distribution, we can more easily use the rnorm function:
+
+```{r}
+rnorm(100,mean=0, sd=100)
+```
+
+To get the exact value of at which the area under the tails is equal to .05, we can use the qnorm function.  Note that this is very close to 1.96
+```{r}
+qnorm(.025)
+qnorm(.975)
+```
+
+
+\newpage
+
+########################
+# Preview of Statistical Inference 
+
+Lets see if we can use these patterns to do statistical inference.  First, we will load the data from the previous R exercise. 
+
+```{r}
+library(dplyr)
+library(nycflights13)
+
+flights <- mutate(
+  flights,
+  flighttime = arr_time - dep_time,
+  flighttime24 = ifelse(flighttime < 0,
+                        flighttime + 2400, flighttime)
+)
+
+flightscomparison <- mutate(
+  flights,
+  ChristmasEve = ifelse(
+    month == 12 & day == 24 & dep_time > 1900,
+    "Christmas Eve",
+    "Un-Christmas Eve"
+  )
+)
+```
+
+Let's see if Christmas is statistically distinguishable from non-christmas flights in terms of delay.  To do so, we will write an ___estimator___ to summarise the data.  An ___estimator___ is a function of the data, and produces a number or set of numbers, so it is a ___random variable___.  The output of an ___estimator___ is a ___estimator___, and these are used to infer the value of an unknown parameter. Here our ___estimator___ is the familiar average.
+
+```{r}
+
+average <- function(x){
+	
+	x<- x[!is.na(x)]
+	
+	averageout<-sum(x)/length(x)
+	return(averageout)
+}
+````
+
+\pagebreak
+
+ Now let's use this function in the dplyr set up, returning to the "filter" command, but adding a "group_by" and a "summarise" command.  
+ 
+To put this in words:  Take the flightscomparison dataframe, pass it to the filter command, retain rows that are not missing, group that dataset into the categories contained in the ChristmasEve variable, and then calculate the average flight time for each group.  Save the resulting dataframe as flightmeans.
+
+```{r}
+
+flightmeans <- filter(flightscomparison,!is.na(ChristmasEve))
+flightmeans <- group_by(flightmeans, ChristmasEve)
+flightmeans <- summarise(flightmeans, meanflighttime = average(flighttime24))
+
+```
+
+ The difference between the two groups is :
+```{r}
+meandiff <- flightmeans$meanflighttime[1]-flightmeans$meanflighttime[2]
+meandiff
+```
+
+\newpage
+
+## Introduction to statistical models
+
+ But how do we know that 25 minutes is a systematic difference?  How can we account for the statistical uncertainty inherent in flights?  What we need is a statistical model.  Our statistical model will assume that the overall population of flight times is subject to the kinds of small errors described above, and that under the ___null hypothesis___, the two groups are drawn from such distributions with equal means.  As analysts, we will want to be able to say more than the data are inconsistent with no difference, but lets start here.
+
+
+In order to say what sorts of differences the model under the ___null hypothesis___ would generate, we need to make a claim about the spread of the distribution.  The small error distribution, or standard normal distribution, assumes that the small errors are all of size 1.  The properties of the random walk tell us that the probability of drift scales with `sqrt(n)`.  To use this model to describe flights, we need to put them on the same scale, which means correcting for the spread.  Unfortunately, we only get to know the spread from the data, so we need another estimator.
+
+Rather than coming up with two estimates of the spread, we will pool the data from both groups to calculate one spread.  We often do not have a theory for why the spread would be different, so it is not unreasonable to operate under the assumption that they are the same. Nonetheless, we need to estimate this spread from the data, using a second __estimator__, here called the `standard_deviation`.
+
+
+```{r}
+standard_deviation <- function(x){
+	
+	x<- x[!is.na(x)]
+	
+	sdout<-sqrt(sum((x-average(x))^2)/(length(x)-1))
+	return(sdout)
+}
+
+
+
+
+flightsd <- filter(flightscomparison,!is.na(ChristmasEve))
+flightsd <- group_by(flightsd , ChristmasEve)
+flightsdout <- summarise(flightsd ,
+                         sdflighttime = standard_deviation(flighttime24),
+                         ngroup = n())
+
+flightsdout
+```
+
+ The sample standard deviation or spread of the christmas flights is 100, the non-christmas flights are 85.78
+
+
+\newpage
+
+We can combine these two estimates into a single estimate of the spread by using the weighted sum, and then normalizing `meandiff` by this number.  Because it is a weighted sum, the result is essentially the same as the standard deviation of the non-christmas flights, but below is the general formula you will use in the second half of the course:
+
+$$S_{diff}= \sqrt{\left(\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{(n_1-1)+(n_2-1)}\right)\left(\frac{1}{n_1}+\frac{1}{n_2}\right)} $$
+
+Here we write our own function which produces this pooled standard deviation.
+
+```{r}
+sd1 <- 100
+sd2 <- 85.78
+sn_1 <- 87
+sn_2 <- 336680
+
+sample_SD <- function(sd1, sd2, sn_1, sn_2) {
+  SD2 <- ((sn_1 - 1) * (sd1 ^ 2) + (sn_2 - 1) * (sd2 ^ 2)) / (sn_1 + sn_2 - 2)
+  SD2norm <- sqrt(SD2) * (sqrt(1 / sn_1 + 1 / sn_2))
+  return(SD2norm)
+  
+}
+
+                   
+statistic <-  meandiff / (sample_SD(sd1, sd2, sn_1, sn_2))
+```
+
+The $\sqrt{SD2}$ part of the pooled spread is `r sqrt(((sn_1 - 1)*(sd1^2) + (sn_2 - 1)*(sd2^2)) / (sn_1 + sn_2 - 2))`, which is very close to  the flights data for non-christmas, `r flightsdout[2,2]`.  The resulting normalized difference, `statistic`= `r statistic` is a random variable that is distributed in a way that is very similar to a normal distribution.  Technically, this statistic is a ___t statistic___, and follows a __t-distribution__.
+
+
+## Definition and usage of p-values
+
+This statistic is now standardized, and we can compare to our small error experiment.  We do so by asking how often our simulation, which assumes that positive and negative errors are equally likely, but that the average is 0, none the less generates differences beyond those we observe in the data, summarized by our mean difference statistic.
+
+```{r}
+mean(abs(outcomes)>=statistic*100)
+```
+
+The share of times that our small error model is more extreme is very small, close to half a percent.  Note that this number depended on our simulation as well as our data.
+
+This number, the share of simulations that are larger than our observed difference, is the infamous "p-value".  A p-value is defined as the probability under a specific statistical model (here the small-error model of equal means) that a statistical summary of the data (here the difference in means) would be equal to or more extreme than the observed value.  
+
+Again, a p-value is the ___probability___, under a model, that some estimator is ___equal to or larger___ than ___the estimate from our data___.
+
+P-values are great because they offer a continuous summary for how inconsistent a set of data is with a proposed model.   The smaller the p-value, the greater the statistical incompatibility of the data with the proposed model.  Here, the proposed model is that our data follows a small error distribution and there is no difference between the mean flight times.  We find a small p-value, or evidence against that model having generated our data.  Notice that either the distributional assumption, or the hypothesized equality of means, could be the cause of the incompatibility between the model and the data.  
+
+P-values are often misused: a large p-value does not indicate consistency of the model with the data, as there can be other models that are more consistent with the data.  Just because a P-value is small does not mean that the effect is substantively large, again, that would be inferring that something is true, as opposed to not-yet-falsified.
+
+Because the small error model with large sample sizes follows what is known as the normal distribution, R has built in functions for the exact answer.
+
+```{r}
+(1-pnorm(statistic))*2
+```
+
+Another way to see this is that the statistic has been rescaled to the small error distribution where the `sigma' or standard deviation is 1.  
+
+```{r}
+smallerrordensity <- function(x) {
+  sigma <- 1
+  (1 / sqrt(2 * pi * (sigma ^ 2))) * exp(-(x ^ 2) / (2 * (sigma ^ 2)))
+}
+
+area <- integrate(smallerrordensity, lower = statistic, upper = Inf)
+area$value * 2
+```
+
+It turns out that the area under the curve of the smallerror density in the tails past the statistic is 0.0058.
+
+So we can say, that if our model is right, and flights are governed by small errors, then we would expect see a difference in means between these two populations at least as large as 25 minutes about half a percent of the time.  We thereby have evidence against flights out of New York on Christmas Eve being the same, on average, as other evenings in terms of average length.
+
+\pagebreak
+
+### Two sample t tests in base R
+
+Everything we have done so far will be explored in more detail later in the course.  Right now, you should be familiar with functions.  In practice, we would in fact calculate whether two samples have a statistically distinguishable mean with the following command:
+ 
+```{r}
+normalnight <- filter(flightscomparison, ChristmasEve == "Un-Christmas Eve")
+
+xmas <- filter(flightscomparison, ChristmasEve == "Christmas Eve")
+
+t.test(xmas$flighttime24, normalnight$flighttime24, var.equal = T)
+
+```
+The `t.test` reports a t statistic, which was our statistic.  The p-value is the p-value calculated with the t-distribution, which is very similar to the normal distribution derived above when the sample size is large.  
+
+
+

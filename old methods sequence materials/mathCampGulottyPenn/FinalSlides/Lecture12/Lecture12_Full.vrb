@@ -1,0 +1,16 @@
+\frametitle{functions}
+\begin{itemize}
+\item Random Variables are functions.
+\item In R, we see functions look like a word followed by ():
+\begin{itemize}
+\item mean(), median(), head(), str()
+\end{itemize}
+\item Our own functions are written using:
+\end{itemize}
+
+\begin{verbatim}
+ function(input){
+     do something
+     return(output)}
+ \end{verbatim}
+

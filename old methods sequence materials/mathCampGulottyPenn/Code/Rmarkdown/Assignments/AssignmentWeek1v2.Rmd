@@ -1,0 +1,114 @@
+---
+title: "Assignment for Week 1"
+author: "Author: Your name here!"
+date: "12/14/2016"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+```{r setup, include=FALSE}
+# This code changes "global" settings, here it makes the computer `echo` which refers to 
+# printing the code as well as the output into the pdf document when you knit.
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Change the following code to be your working folder for R
+
+setwd("~/Dropbox/mathCamp/Code/R")
+# The following allows the computer to always get the same result for random stuff.
+set.seed(100)
+
+# install.packages("dplyr")
+# install.packages("ggplot2")
+# install.packages("nycflights13")
+```
+
+# Assignment Part I
+<!-- Please Put \newpage commands between long answers.  Avoid allowing answers to spill over pages. --> 
+\begin{itemize}
+
+\item[3.13] Let $A, B, C$ be subsets of a set $X$.  Which of the expressions $(A\cap B)\cup (A\cap B^c)$, $(A\cap B)\cup (A\cap B^c)^c$, $(A\cap B)\cup (A^c\cup C)^c$ can be simplified, and how?
+
+
+
+\item[3.4.2] Let $g$ be the mapping from $\mathbb{R}^2$ to $\mathbb{R}^2$ defined by $$g(x, y)=(y, -x),$$ and let the mapping $h$ be as in Exercise 3.4.1.  Find the image of $(x, y)$ under each of the composite mappings $g\circ h$ and $h\circ g$.
+
+
+\item[31.1.1] As in the text, let $\mathbb{Q}$ be the set of all rational numbers. If $x\in \mathbb{Q}$, which of the following statements (P, Q, R, S) imply which of the others?
+
+\begin{itemize}
+
+\item[P:] $x\geq 0$
+\item[Q:] $\exists w\in \mathbb{Q} $ such that $x=w^2$
+\item[R:] $nx>-1$ $\forall n\in \mathbb{N}$
+\item[S:] $\exists n\in \mathbb{N}$ such that $nx>-1$.
+
+\end{itemize}
+
+\item[5.1.3] In each of the following cases, state whether the sequence $\{u_n\}$ tends to a limit, and find the limit if it exists:
+
+\begin{itemize}
+\item[(a)] $u_n=1+\frac{1}{2}n$
+\item[(b)] $u_n=1-\frac{1}{2}n$
+\item[(c)] $u_n=(\frac{1}{2})^n$
+\item[(d)] $u_n=-(\frac{1}{2})^n$
+\end{itemize}
+
+\end{itemize}
+
+
+
+\pagebreak
+
+# Assignment Part II
+
+## Package Loading
+
+```{r Package Loading}
+library(dplyr, warn.conflicts = FALSE)
+library(ggplot2)
+library(nycflights13)
+```
+
+(1) What are the types of data that serve as the argument and value of the following functions?
+
+* `nchar()`
+* `log()`
+* `paste()`
+* `is.na()`
+
+(2) What was the longest physical distance taken out of New York in 2013? 
+
+(3) In R, we can use scientific notation.  2e3 is 2000.  Why is log(1e10)-log(1e8) the same as log(1e2)?
+
+(4) Without running these commands, what are the values of C, D, and E?
+
+```{r LogicQuestion, eval=FALSE }
+A <- "Iowa"
+B <- "Kansas"
+
+C <- !((A == "Kentucky") | (B == "Kansas"))
+
+D <- ((nchar(A) > 2) & is.na(B)) | (!is.na(A))
+
+E <- ifelse( C, D, A)
+```
+
+
+(5) Plot an interesting subset of the data Flights data.  Use the Rmarkdown fig.height and fig.width to make it look nice.
+
+(6) Write your own "quantile" function which gets the median and the 95th percentile of data.  
+
+(7) What does `df` look like when it is printed out?
+
+```{r Indexing Question, eval=FALSE }
+df <- data.frame(dogheight=c("10", "20", "30"), dogwidth=c("5", "3", "1"))
+df[df$dogwidth==3,1] <- NA
+```
+
+(8) _True_ or _False_
+
+    (a) A small p-value, such as .001 or .0001, means that our estimate is unlikely to have arisen from the null hypothesis.
+    (b) The small errors distribution is a nice approximation for the distances traveled by flights out of New York City.
+    (c) $f(x) = 2x$ for $0\leq x \leq 1$ is a possible probability density function. 
+    (d) The probability that a normal distribution produces the number 0 is 0.

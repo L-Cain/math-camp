@@ -1,0 +1,46 @@
+\documentclass[12pt]{article}
+\begin{document}
+
+\title{Interpret Regression Coefficient Estimates}
+\author{Robert Gulotty}
+
+\maketitle
+
+\subsection{Level-level Regression}
+
+$$y=\beta_0+\beta_1x+\epsilon$$
+
+$$\frac{\partial y}{\partial x}=\beta_1$$
+
+This is to say, if x rises by one unit, y increases by one unit.
+
+
+\subsection{Log-level Regression}
+
+$$ln(y)=\beta_0+\beta_1x+\epsilon$$
+Using the chain rule on the left hand side:
+$$\frac{\partial ln(y)}{\partial x}=\frac{1}{y}*\frac{\partial y}{\partial x}=\frac{\frac{\partial y}{\partial x}}{y}$$
+This means that $\frac{\partial ln(y)}{\partial x}$ is the change in y divided by the level of y.  If we multiply by 100, we get the percentage change.
+
+$$\frac{\partial \beta_0+\beta_1x+\epsilon}{\partial x}=\beta_1$$
+
+$$\frac{\frac{\partial y}{\partial x}}{y}=\beta_1$$
+$$\frac{\frac{\partial y}{\partial x}}{y}*100=\beta_1*100$$
+
+So if you take $\beta_1$, multiply it by 100, a one unit increase in x gives you a $\beta_1*100$ percentage change in y.
+
+
+
+\subsection{Level-log Regression}
+
+$$y=\beta_0+\beta_1ln(x)+\epsilon$$
+
+If we increase x by one percent we expect y to increase by $\beta_1/100$ units of y.
+
+\subsection{Level-level Regression}
+
+$$ln(y)=\beta_0+\beta_1ln(x)+\epsilon$$
+
+
+
+\end{document}

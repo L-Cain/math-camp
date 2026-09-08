@@ -1,0 +1,116 @@
+---
+title: "Assignment Template"
+author: "Author: Some Grad Student"
+date: "12/14/2016"
+output: pdf_document
+---
+
+# Preliminaries
+
+```{r setup, include=FALSE}
+# This code changes "global" settings, here it makes the computer `echo` which refers to 
+# printing the code as well as the output into the pdf document when you knit.
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Change the following code to be your working folder for R
+
+setwd("~/Dropbox/mathCamp/Code/R")
+# The following allows the computer to always get the same result for random stuff.
+set.seed(100)
+```
+
+## Package Installation
+
+Many times you need to install packages, you do that once, but then comment it out:
+
+```{r Package Installation}
+# install.packages("dplyr")
+```
+
+## Package Loading
+
+```{r Package Loading}
+library(MASS)
+```
+
+# Assignment
+
+1) ___Answer to Problem 1___
+
+ This problem involves me saving the number five in a variable called "five",
+ putting that variable in a data.frame, and then writing that data.frame called 
+ "numbersfile.csv"to my working directory.
+
+```{r}
+five <- 5
+numbers <- data.frame(five)
+write.csv(numbers, "numbersfile.csv")
+```
+
+2) ___Answer to Problem 2___
+
+ This problem involves me reading the "numbers.csv" file into R, extracting the 
+ five column, and printing it on the screen.
+
+```{r}
+numbers <- read.csv("numbersfile.csv")
+numbers$five
+```
+
+\newpage
+
+3) ___Answer to Problem 3 (Example 4.30 from text)___
+
+The three bank tellers can serve customers according to an exponential distribution with parameters, $\lambda=6$, $\lambda=6$, and $\lambda=4$, which refers to the number of customers that they can serve per hour. If Jane comes in, pickes one with equal probability, then the total time it would take is distributed according to the PDF:
+
+$$f_X(x)=\frac{2}{3}\cdot 6e^{-6x}+\frac{1}{3}\cdot 4e^{-4x}, \ \ \ \ x \geq 0$$
+Where $X$ is the random variable that measures how long Jane would take.
+
+In order to calculate the expectation of this distribution, we can use the **Moment Generating Function**, which is a transformation of the original PDF.  The transform is defined as follows:
+
+\begin{eqnarray}
+M(s) &=& \int_0^\infty e^{sx}\left(\frac{2}{3}\cdot 6e^{-6x}+\frac{1}{3}\cdot 4e^{-4x}\right)dx\\
+     &=& \frac{2}{3}\int_0^\infty e^{sx}6e^{-6x}dx+\frac{1}{3}\int_0^\infty e^{sx}4e^{-4x}dx
+\end{eqnarray}
+
+Now, evaluating the integrals to show my work, 
+
+
+\begin{eqnarray*}
+\int_0^\infty e^{sx}6e^{-6x}dx & = & 6\int_0^\infty e^{(s-6)x}dx\\
+& = & 6\frac{1}{s-6} e^{(s-6)x}\big|_0^\infty \\
+& = & 0 - 6\frac{1}{s-6} e^{0}\\
+& = &\frac{6}{6-s}
+\end{eqnarray*}
+
+
+Plugging this result back in to equation (2)
+
+$$M(s)=\frac{2}{3}\cdot \frac{6}{6-s}+\frac{1}{3}\cdot\frac{4}{4-s}$$
+
+As a result, the mean of $X$ is just  $$\frac{d}{d s} M(s) \bigg|_{s=0}=\frac{2}{3}*\frac{6}{(6)^2}+\frac{1}{3}*\frac{4}{(4)^2}=\frac{7}{36}$$
+
+Confirming computationally:
+```{r}
+mean(2 / 3 * rexp(10000, 6) + 1 / 3 * rexp(10000, 4))
+```
+So, we will expect Jane to be served in about `r round((7/36)*60, 1)` minutes.  
+
+
+\newpage
+
+4) ___Answer to random R question___
+
+```{r, fig.width=4, fig.height=4}
+# First I create a sequence of numbers between -1 and 1.
+x <- seq(-.99,.99, by=.001)
+# I then feed those numbers into f(x)
+
+y<- 2 / (1-x^2)
+
+# Each sequence is then plotted in the plot command, 
+# I limit the y axis to be between 0 and 10 for legibility.
+
+plot(x,y, type="l", ylim=c(0,10))
+```

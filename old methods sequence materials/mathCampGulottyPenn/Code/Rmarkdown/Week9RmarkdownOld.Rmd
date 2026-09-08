@@ -1,0 +1,289 @@
+---
+title: "R Lab:  Week 9"
+author: "Robert Gulotty"
+date: "2/24/2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=80),tidy=TRUE)
+set.seed(135)
+
+```
+******
+
+```{r}
+library(dplyr, warn.conflicts = F)
+library(stringr)
+library(ggplot2)
+library(readr)
+library(qdapDictionaries)
+library(purrr, warn.conflicts = F)
+```
+
+Today we we will study the wage gap between men and women among Chicago's public employees and learn a bit about matrix notation in R.
+
+The following code reads in data from Open Chicago, a data source on Chicago city information.
+
+```{r}
+employees <-
+  read_csv("~/Dropbox/mathCamp/Code/data/CurrentEmployees.csv",
+  col_types = "cccc")
+  employees <- employees %>%
+  mutate(
+  salarynum = as.numeric(str_extract(`Employee Annual Salary`, "[0-9]+")),
+  nolastname = str_extract(Name, "(?<=,).+"),
+  firstname = str_extract(nolastname, "[^\\s]+")
+  )
+  
+```
+
+The qdapDictionaries library has a file called NAMES, which include columns including name and pred.sex, which is the predicted binary gender of each name.  Here we join by exact matches.
+
+```{r}
+UNAMES<-unique(NAMES[,c("name", "pred.sex", "gender2")])
+names(UNAMES)<-c("firstname", "pred.sex", "gender2")
+codedgender<-employees%>%left_join(UNAMES)
+```
+\newpage
+From here we can begin to study the differences in salary across genders.
+```{r,fig.width=6, fig.height=4}
+ggplot(codedgender, aes(pred.sex,salarynum))+geom_boxplot()
+
+justcoded<-codedgender%>%select(pred.sex, salarynum)%>%na.omit()
+
+justcoded%>%group_by(pred.sex)%>%
+  summarise(meansalary=mean(salarynum),
+          sdsalary=sd(salarynum))
+
+
+meansamples<-c()
+for(i in 1:1000){
+  
+mensalarys100<-sample(justcoded$salarynum[justcoded$pred.sex == "M"], 100)
+womensalarys100<-sample(justcoded$salarynum[justcoded$pred.sex == "F"], 100)
+
+meansamples[i]<-mean(mensalarys100)-mean(womensalarys100)
+}
+
+plot(density(meansamples), main = "100 person samples")
+
+meansamples1k<-c()
+for(i in 1:1000){
+  
+mensalarys1k<-sample(justcoded$salarynum[justcoded$pred.sex == "M"], 1000)
+womensalarys1k<-sample(justcoded$salarynum[justcoded$pred.sex == "F"], 1000)
+
+meansamples1k[i]<-mean(mensalarys1k)-mean(womensalarys1k)
+}
+
+plot(density(meansamples1k), main = "1k person samples")
+```
+
+\newpage
+
+We can do similar analysis Using (prehaps too much) dplyr
+```{r,fig.width=6, fig.height=4}
+
+ttestout<-justcoded %>% 
+  
+  summarise(
+    
+  gapestimate = diff(t.test(salarynum[pred.sex == "M"], 
+                 salarynum[pred.sex == "F"], 
+                 var.equal = T )$estimate),
+      
+  tstat = t.test(salarynum[pred.sex == "M"], 
+                 salarynum[pred.sex == "F"], 
+                 var.equal = T )$statistic,
+  
+  df = t.test(salarynum[pred.sex == "M"], 
+              salarynum[pred.sex == "F"], 
+              var.equal = T )$parameter,
+  
+  pvalue=1-pt(tstat, df))
+
+ttestout
+
+
+
+summary(lm(salarynum ~ pred.sex, data = justcoded))
+```
+
+It seems that women earn 15,800 dollars less, on average, than men.
+
+\newpage
+Now we might be worried that we have unclassified men and women.  Suppose we had a simple model for names, where $p(\theta_i|\theta_{i-1})$ is the probability of a letter $i$ following letter $i-1$.  We can then populate a matrix of letter to letter transitions.  For example, is a "B" likely to follow a "Q"?  Probably not.  I add two spaces for the first and last letter respectively.  We can then estimate these probabilities from the labeled names. 
+
+```{r}
+Female<- UNAMES%>%filter(pred.sex=="F")
+lettersinnamesF<-str_split(Female$firstname, "")
+
+lettersmat<-matrix(rep(0, 28*28), nrow=28)
+
+pupdate<-function(lnames){
+  letternums<-c(27,unlist(map(lnames, function(x){which(LETTERS==x)})))
+  letternumfollow<-c(letternums[-1],28)
+  lettersmat[letternums,letternumfollow]<-1
+  return(lettersmat)
+  }
+  
+mappingsF<-map(lettersinnamesF,pupdate)
+
+
+finalmatF<-Reduce('+', mappingsF)
+
+letterrowsumF<-rowSums(finalmatF)
+
+finalnormF<-finalmatF/letterrowsumF
+
+```
+Here we have the full transition matrix for female names.
+\newpage
+We can repeat the same process for male names.
+```{r}
+Male<- UNAMES%>%filter(pred.sex=="M")
+lettersinnamesM<-str_split(Male$firstname, "")
+
+lettersmat<-matrix(rep(0, 28*28), nrow=28)
+
+pupdate<-function(lnames){
+  letternums<-c(27,unlist(map(lnames, function(x){which(LETTERS==x)})))
+  letternumfollow<-c(letternums[-1],28)
+  lettersmat[letternums,letternumfollow]<-1
+  return(lettersmat)
+  }
+  
+mappingsM<-map(lettersinnamesM,pupdate)
+
+finalmatM<-Reduce('+', mappingsM)
+
+letterrowsumM<-rowSums(finalmatM)
+finalnormM<-finalmatM/letterrowsumM
+
+```
+
+\newpage
+
+Ok, so for the two genders, the probability of each letter following a B is:
+
+```{r}
+finalnormM[2,]
+
+finalnormF[2,]
+```
+
+Awsome huh?  Notice that there is 0 probability of the character reserved for the beginning of a word following a B.  Checking our intuition from earlier, the probablity that a "B" follows a "Q" is rightfully `r finalnormF[which(LETTERS=="Q"),2]`.  Now we can see if this works. Suppose we test the accuracy.
+
+```{r}
+
+namestest<-c(sample(Male$firstname,500), sample(Female$firstname, 500))
+
+namecut<-str_split(namestest,"")
+
+pcheck<-function(lnames){
+  letternums<-c(27,unlist(map(lnames, function(x){which(LETTERS==x)})))
+  letternumfollow<-c(letternums[-1],28)
+  fprob<-prod(diag(finalnormF[letternums,letternumfollow]))
+  mprob<-prod(diag(finalnormM[letternums,letternumfollow]))
+  fprob<-fprob/(fprob+mprob)
+  return(fprob)
+  }
+
+probs<-unlist(map(namecut, pcheck))  
+
+table(c(rep("M",500), rep("F",500)),ifelse(probs > .5, "Flab", "Mlab"))
+
+```
+Seems that we don't always get it wrong!  My own name (BOBBY) occurs as a male name with probability `r 1-pcheck(c("B","O","B","B","Y"))`.  ROBERT is male with probability `r 1-pcheck(c("R","O","B","E","R","T"))`.
+
+\newpage
+The most male name in the dataset is MAXWELL, the least male name (of male names) is NATHANIAL.
+
+```{r}
+Male$probF<-unlist(map(str_split(Male$firstname,""),pcheck))
+Male%>%arrange(probF)%>%head(3)
+Male%>%arrange(probF)%>%tail(3)
+```
+Among the most Female name is JACKQUELINE, the least Female Female name is WILLOW, followed by BUFFY (coincidence?).
+```{r}
+Female$probF<-unlist(map(str_split(Female$firstname,""),pcheck))
+Female%>%arrange(probF)%>%tail(3)
+Female%>%arrange(probF)%>%head(3)
+
+```
+\newpage
+
+We can use a more conservative coding to try to rule out making guesses.
+
+```{r}
+
+namestest<-c(sample(Male$firstname,500), sample(Female$firstname, 500))
+
+namecut<-str_split(namestest,"")
+probs<-unlist(map(namecut, pcheck))  
+
+table(c(rep("M",500), rep("F",500)),ifelse(probs > .6, "Flab", ifelse(probs<.4, "Mlab", "Nolab")))
+```
+Great, this way we get substantially lower errors, at the cost of not coding about a third of the data.  This indicates a tradeoff - we can either make more mistakes, or we can leave out data.  Note, this is still not perfect!
+\newpage
+
+Using this formulation, we can try to classify the uncoded genders as follows:
+
+```{r}
+uncoded<-codedgender%>%filter(!pred.sex%in%c("F","M"))
+namecut<- str_split(uncoded$firstname,"")
+uncoded$probsF<-unlist(map(namecut, pcheck)) 
+
+uncoded%>%select(Name, firstname, probsF )%>%arrange(probsF)%>%head()
+
+uncoded%>%select(Name, firstname, probsF )%>%arrange(desc(probsF))%>%head()
+
+summary(uncoded$probsF)
+```
+\newpage
+
+Finally, we can say, for those that are more than 60 percent likely to be male, call them male, for those that are more than 60 percent likely to be female, call them female.
+
+```{r}
+namecut<- str_split(codedgender$firstname,"")
+codedgender$probsF<-unlist(map(namecut, pcheck)) 
+codedgender<-codedgender%>%mutate(newGender2=ifelse(pred.sex%in%c("M","F"), as.character(pred.sex), ifelse(probsF>.6, "F", ifelse(probsF<.4,"M",NA))))
+table(codedgender$newGender2,codedgender$pred.sex,useNA = "always")
+```
+```{r}
+summary(lm(salarynum~newGender2=="F", data=codedgender))
+```
+\newpage
+
+OK, so given all of this, can we simulate a male and female name?  YES!
+
+Lets find two names that start with the letter M.
+```{r}
+simMname<-"M"
+
+letterdraw<-"M"
+for(i in 1:10){
+   if(letterdraw=="."){
+  break
+}else{
+  letterdraw<-sample(c(LETTERS,"."), prob = finalnormM[which(LETTERS==letterdraw), c(1:26,28)], size = 1)
+  simMname<-paste(simMname, letterdraw,sep="")
+}}
+simMname
+```
+```{r}
+simFname<-"M"
+
+letterdraw<-"M"
+for(i in 1:10){
+   if(letterdraw=="."){
+  break
+}else{
+  letterdraw<-sample(c(LETTERS,"."), prob = finalnormF[which(LETTERS==letterdraw), c(1:26,28)], size = 1)
+  simFname<-paste(simFname, letterdraw,sep="")
+}}
+simFname
+```
+
+I would not name my kid `r simMname`  or `r simFname`, but if you did, it would be a very masculine/feminine name (according to our simple model).

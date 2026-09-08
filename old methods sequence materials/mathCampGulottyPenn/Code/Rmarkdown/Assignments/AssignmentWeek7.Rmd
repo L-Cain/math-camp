@@ -1,0 +1,125 @@
+---
+title: "Assignment for Week 7"
+author: "Author: Your name here!"
+date: "2/3/2017"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+```{r setup, include=FALSE}
+# This code changes "global" settings, here it makes the computer `echo` which refers to 
+# printing the code as well as the output into the pdf document when you knit.
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Change the following code to be your working folder for R
+
+knitr::opts_knit$set(root.dir = '~/Dropbox/mathCamp/Code/data/')
+# The following allows the computer to always get the same result for random stuff.
+set.seed(100)
+
+```
+
+## Package Loading
+
+```{r Package Loading}
+library(ggplot2)
+library(dplyr, warn.conflicts = F)
+```
+
+# Assignment
+<!-- Please Put \newpage commands between long answers.  Avoid allowing answers to spill over pages. --> 
+1)  2.1 (p. 119)
+
+2)  2.3 (p. 119)
+
+3)  2.16 (p. 122)
+
+4)  2.20 (p. 123)
+
+5)  3.1 (p. 184)
+
+6)  3.2 (p. 184) (Use integration by parts)
+
+7)  3.8 (b) (p. 186)
+
+8)  3.11 (a) (b) (c) (p. 188)
+
+\newpage
+
+R assignment
+
+9) Use `group_by`, `str_detect`, and `ggplot` to display the prevelance of mayonaisse, saurkraut, and dill in the American Pickle Packer Association recipes.
+
+10) Isaac Newton once claimed that among the following, __A__ had the highest probability of success.  
+
+A. Six fair dice are tossed independently and at least one `6' appears.
+
+B. Twelve fair dice are tossed independently and at least two `6's appear.
+
+C. Eighteen fair dice are tossed independently and at least three `6's appear.
+
+Use R to evaluate Isaac Newton's claim (use simulation).
+
+You can read more about this problem in Stigler, Stephen M. 2006 ``Isaac Newton as a Probabilist'' _Statistical Science_ Vol. 21, No. 3 400-403.
+
+11) Using Bayes Rule:
+
+Suppose that we are studying a binomial phenomenon, such as the number of people in a precinct that vote in favor of Trump.  Suppose $\theta$ is the probability that any one person votes for Trump.
+
+The likelihood that we see a particular number of votes for Trump $y=0,...,n$ in the voting precinct is:
+
+$$p(y|\theta)={n\choose y} \theta^y (1-\theta)^{n-y}$$
+Here $n$ is the number of people eligible to vote in the precinct, which is fixed.  This is the pdf of the data given the parameter $\theta$, which can range from 0 to 1.  We learned in class that we can use Bayes rule to reverse this conditional probability to discover $p(\theta|y)$, the pdf of $\theta$.
+
+$$p(\theta|y)=\frac{p(\theta)p(y|\theta)}{p(y)}=\frac{p(\theta){n\choose y} \theta^y (1-\theta)^{n-y}}{\int_0^1 p(\theta){n\choose y} \theta^y (1-\theta)^{n-y}d\theta}$$
+
+What we need is $p(\theta)$, which we learned in class is our prior.  Suppose we don't have strong beliefs about $\theta$, we might want to use a prior that puts equal weight on all values of $\theta$. 
+$$p(\theta)=\begin{cases} 1\ for\ 0\leq\theta\leq 1\\ 0\ else \end{cases}$$
+This is called a uniform prior, it means we know nothing about $\theta$.  Plugging that into the prior equation we get the following: 
+
+$$p(\theta|y)=\frac{{n\choose y} \theta^y (1-\theta)^{n-y}}{\int_0^1 {n\choose y} t^y (1-t)^{n-y}dt}=\frac{ \theta^y (1-\theta)^{n-y}}{\int_0^1 t^y (1-t)^{n-y}dt}$$
+We can write this in R as follows:
+
+```{r}
+dposterior<- function(theta, y, n){
+  denominator<-function(t){
+    t^y*(1-t)^(n-y)
+  }
+  
+  integrated<-integrate(denominator,0,1 )
+ 
+  out<- (theta^y*(1-theta)^(n-y))/integrated$value
+  return(out)
+}
+```
+
+\newpage
+
+Suppose we see that in our precinct of 400 eligible voters, we observe 235 votes for Trump:
+We get a fairly tight posterior distribution around (235/400). 
+```{r, fig.height=4, fig.width=6}
+simposterior<-data.frame(thetas= seq(0,1,by=.01), 
+           densityobs=dposterior( seq(0,1,by=.01),235,400))
+
+ggplot(simposterior,aes(thetas, densityobs))+geom_freqpoly(stat="identity")+
+  geom_vline(xintercept =235/400,linetype = "dotdash")
+
+```
+
+The formula for $p(\theta|y)$ is the Beta distribution:
+$$Beta(a, b)=\frac{ \theta^{a-1} (1-\theta)^{b-1}}{\int_0^1 t^{a-1} (1-t)^{b-1}dt}$$
+Where $a= y+1$ and $b = n-y+1$.
+
+```{r}
+dbeta(.5, 235+1,400-235+1)
+dposterior(.5, 235, 400)
+```
+
+Assignment:
+
+(a)  Kellyanne Conway is asked to report to the President about his support from the nation.  She has available three samples - a focus group of 20 people, where 17 reported supporting Trump, a quick poll of 200 people, where 125 reported supporting Trump, and a big poll of 2000 people, where 1082 report supporting Trump.  Use the Beta distribution to plot the posterior probability density function of an individual supporting Trump if we observe his support at 17 of 20, 125 of 200, or 1082 of 2000.
+
+(b)  Which of these should Kellyanne report to the President?  Which is most heartening for the President?  Which is `fake news'?  
+
+

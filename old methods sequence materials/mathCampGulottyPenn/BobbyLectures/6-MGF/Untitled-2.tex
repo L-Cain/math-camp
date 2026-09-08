@@ -1,0 +1,345 @@
+
+\documentclass{beamer}
+
+%\usepackage[table]{xcolor}
+\mode<presentation> {
+  \usetheme{Boadilla}
+
+%  \usetheme{Pittsburgh}
+%\usefonttheme[2]{sans}
+\renewcommand{\familydefault}{cmss}
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
+%\usepackage{palatino}
+%\usepackage{cmbright}
+  \setbeamercovered{transparent}
+\useinnertheme{rectangles}
+}
+
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{structure}{fg= blue}
+\definecolor{trial}{cmyk}{1,0,0, 0}
+\definecolor{trial2}{cmyk}{0.00,0,1, 0}
+\definecolor{darkgreen}{rgb}{0,.4, 0.1}
+\usepackage{array}
+\beamertemplatesolidbackgroundcolor{white}  \setbeamercolor{alerted
+text}{fg=red}
+\usepackage{tcolorbox}
+\setbeamertemplate{caption}[numbered]\newcounter{mylastframe}
+
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{colortbl}
+
+\renewcommand{\familydefault}{cmss}
+%\usepackage[all]{xy}
+
+\usepackage{tikz}
+\usepackage{lipsum}
+
+ \newenvironment{changemargin}[3]{%
+ \begin{list}{}{%
+ \setlength{\topsep}{0pt}%
+ \setlength{\leftmargin}{#1}%
+ \setlength{\rightmargin}{#2}%
+ \setlength{\topmargin}{#3}%
+ \setlength{\listparindent}{\parindent}%
+ \setlength{\itemindent}{\parindent}%
+ \setlength{\parsep}{\parskip}%
+ }%
+\item[]}{\end{list}}
+\usetikzlibrary{arrows}
+
+\usecolortheme{lily}
+
+\newtheorem{com}{Comment}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{condition}{Condition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+ \numberwithin{equation}{section}
+ 
+
+\setbeamertemplate{navigation symbols}{}
+
+
+\title[PLSC 43401]{Mathematical Foundations of Political Methodology}
+
+\author{Robert Gulotty}
+\institute[Chicago]{University of Chicago}
+\vspace{0.3in}
+
+
+
+
+\begin{document}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Day 6: Transforms}
+\begin{itemize}
+\item Change of Coordinates
+\item Moment Generating Functions
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Change of Coordinates}
+
+
+\begin{prop}
+Suppose $X$ is a random variable and $Y = g(X)$, where $g:\Re \rightarrow \Re$ that is a $monotonic$ function.  \\
+Define $g^{-1}:\Re \rightarrow \Re$ such that $g^{-1}(g(X)) = X$ and is differentiable.  Then, 
+\begin{eqnarray}
+f_{Y}(y) & = & f_{X}(g^{-1}(y))\left|\frac{\partial g^{-1}(y)}{\partial y} \right| \text{ if $y = g(x)$ for some $x$ } \nonumber \\
+& = & 0 \text{ otherwise } \nonumber 
+\end{eqnarray}
+
+\end{prop}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Change of Coordinates}
+
+
+\begin{proof}
+
+Suppose $g(\cdot)$ is monotonically increasing (WLOG)\pause 
+\begin{eqnarray}
+\invisible<1>{F_{Y}(y) & = & P(Y \leq y) \nonumber \\} \pause 
+\invisible<1-2>{& = & P(g(X) \leq y) \nonumber \\} \pause 
+\invisible<1-3>{& = & P(X \leq g^{-1}(y) ) \nonumber \\} \pause 
+\invisible<1-4>{& = & F_{X}(g^{-1}(y) ) \nonumber } \pause 
+\end{eqnarray}
+\invisible<1-5>{Now differentiating to get the pdf } \pause 
+\begin{eqnarray}
+\invisible<1-6>{\frac{\partial F_{Y}(y)}{\partial y} & = & \frac{\partial F_{X}(g^{-1}(y) )} {\partial y } \nonumber \\
+ & = & f_{X}(g^{-1}(y) ) \frac{\partial g^{-1}(y)}{\partial y }   \nonumber } \pause 
+\end{eqnarray}
+\invisible<1-7>{Then this is a pdf because $\frac{\partial g^{-1}(Y)}{\partial y } > 0$.  } 
+
+
+\end{proof}
+
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Change of Coordinates}
+
+Suppose $X$ is a random variable with pdf $f_{X}(x)$.  Suppose $Y =  X^{n}$.  Find $f_{Y}(y)$. \pause  \\
+\invisible<1>{Then $g^{-1} (x)  =  x^{1/n}$.  } \pause 
+
+
+
+
+\begin{eqnarray}
+\invisible<1-2>{f_{Y}(y) & = & f_{X}(g^{-1}(y)) \left| \frac{\partial g^{-1}(Y)}{\partial y } \right| \nonumber \\} \pause 
+\invisible<1-3>{ & = & f_{X} (y^{1/n} ) \frac{y^{\frac{1}{n} - 1}}{n} \nonumber } 
+\end{eqnarray}
+\pause
+\invisible<1-4>{\alert{We've used this to derive many of the pdfs}} \pause 
+\begin{itemize}
+\invisible<1-5>{\item[-] Normal distribution }
+\invisible<1-5>{\item[-] Chi-Squared Distribution}
+\end{itemize}
+
+
+
+
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}
+\frametitle{Moment Generating Functions}
+
+
+\begin{defn}
+Suppose $X$ is a random variable with pdf $f$.  Define, 
+\begin{eqnarray}
+E[X^{n}] & = & \int_{-\infty}^{\infty} x^{n} f(x) dx   \nonumber 
+\end{eqnarray}
+
+We will call $X^{n}$ the \alert{$n^{\text{th}}$} moment of $X$ 
+
+\end{defn}
+
+\begin{itemize}
+\item[-] By this definition $var(X) = \text{Second Moment} - \text{First Moment}^{2} $
+\item[-] We are assuming that the integral converges
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Moment Generating Functions}
+
+\begin{prop}
+Suppose $X$ is a random variable with pdf $f(x)$.  Call $M(t) = E[e^{tX}]$, 
+\begin{eqnarray}
+M(t) & = & E[e^{tX}] \nonumber \\
+ & = & \int_{-\infty}^{\infty} e^{tx} f(x) dx \nonumber 
+ \end{eqnarray}
+
+We will call $M(t)$ the moment generating function, because:
+\begin{eqnarray}
+\frac{\partial^{n} M (t) }{\partial^{n} t}|_{0} & = & E[X^{n}] \nonumber 
+\end{eqnarray}
+
+(Assuming that we can interchange derivative and integral)
+
+\end{prop}
+
+
+
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{Moment Generating Functions}
+
+\begin{small}
+\begin{proof}
+Recall the Taylor Expansion of $e^{tX}$ at $0$, \pause 
+\begin{eqnarray}
+\invisible<1>{e^{tX} & = & 1 + tx + \frac{t^2 x^2}{2!} + \frac{t^3 x^3}{3!} + \hdots \nonumber } \pause 
+\end{eqnarray}
+
+\invisible<1-2>{Then, } \pause 
+\begin{eqnarray}
+\invisible<1-3>{E[e^{tX} ] & = &  1 + tE[X] + \frac{t^2}{2!} E[X^2] + \frac{t^3}{3!} E[X^3] + \hdots \nonumber } \pause 
+\end{eqnarray}
+
+\invisible<1-4>{Differentiate once:} \pause 
+\begin{eqnarray}
+\invisible<1-5>{\frac{\partial M(t)}{\partial t} & = & 0 + E[X]  + \frac{2t}{2!} E[X^2] + \hdots \nonumber \\
+M^{'}(0) & = & 0 + E[X] + 0 + 0 \hdots \nonumber } 
+\end{eqnarray}
+
+
+
+
+
+\end{proof}
+
+\end{small}
+
+
+
+\end{frame}
+
+\begin{frame}
+
+\begin{small}
+\begin{proof}
+
+Differentiate $n$ times \pause 
+\begin{eqnarray}
+\invisible<1>{\frac{\partial^{n} M(t)}{\partial^{n} t } & = & 0 + 0 + 0 + \hdots + \frac{n \times n-1 \times \hdots 2 \times t^{0} E[X^{n}] }{n!}  + \frac{n!t E[X^{n+1}] }{(n+ 1)! } + \hdots \nonumber \\} \pause 
+\invisible<1-2>{& = & \frac{n! E[X^{n}] }{n!}  + \frac{n!t E[X^{n+1}] }{(n+ 1)! } + \hdots  \nonumber } \pause 
+\end{eqnarray}
+
+\invisible<1-3>{Evaluated at 0, yields $M^{n}(0)  = E[X^{n}] $} \pause 
+
+\end{proof}
+
+\begin{itemize}
+\invisible<1-4>{\item[-] If two random variables, $X$ and $Y$ have the same moment generating functions, then $F_{X}(x) = F_{Y}(y)$ for \alert{almost all} $x$.  } 
+\end{itemize}
+
+
+\end{small}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{The Moments of the Normal Distribution}
+Suppose $Z \sim N(0,1)$.  \pause 
+
+\begin{eqnarray}
+\invisible<1>{E[e^{tX}] & = & \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} e^{tx} e^{-x^2/2} dx \nonumber } \pause 
+\end{eqnarray}
+
+\invisible<1-2>{$tx - \frac{1}{2} x^2 = -\frac{1}{2}\left( ( x - t)^2 - t^2 \right)$} \pause 
+
+\begin{eqnarray} 
+\invisible<1-3>{E[e^{tX}] & = & \frac{1}{\sqrt{2\pi}}  e^{\frac{t^{2}}{2}}\int_{-\infty}^{\infty} e^{-(x- t)^2/2} dx \nonumber \\} \pause 
+ \invisible<1-4>{& = & e^{\frac{t^{2}}{2}} \nonumber } 
+\end{eqnarray}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Extracting Moments of the Normal Distribution}
+
+\pause 
+\begin{eqnarray}
+\invisible<1>{M^{'}(0) & = &E[X] =  e^{t^2/2} t |_{0} = 0 \nonumber \\} \pause
+\invisible<1-2>{M^{''} (0 ) & = & E[X^2] =  e^{t^2/2} (t^2 + 1) |_{0} = 1 \nonumber \\} \pause 
+\invisible<1-3>{M^{'''} (0) & = & E[X^3] = e^{t^2/2} t (t^2 + 3) |_{0} = 0 \nonumber \\} \pause 
+\invisible<1-4>{M^{''''} (0) & = & E[X^4] = e^{t^2/2} (t^4 + 6t^2 + 3)|_{0} = 3 \nonumber } \\ \pause 
+\invisible<1-5>{M^{5} (0) & = & E[X^5] = e^{t^2/2} t (t^4 + 10t^2 + 15)|_{0} = 0 \nonumber } \\ \pause 
+\invisible<1-6>{M^{6} (0) & = & E[X^6] = e^{t^2/2} (t^6 + 15t^4 + 45t^2 + 15 )|_{0} = 15 \nonumber } \pause 
+\end{eqnarray} 
+
+
+\end{frame}
+
+\begin{frame}
+
+\begin{prop}
+Suppose $X_{i}$ are a sequence of independent random variables.  Define 
+\begin{eqnarray}
+Y & = & \sum_{i=1}^{N} X_{i} \nonumber 
+\end{eqnarray}
+
+Then 
+\begin{eqnarray}
+M_{Y}(t) & = & \prod_{i=1}^{N} M_{X_{i}}(t) \nonumber 
+\end{eqnarray}
+
+
+\end{prop}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{proof}
+\begin{eqnarray}
+M_{Y}(t) & = & E[e^{tY}] \nonumber \\ \pause 
+\invisible<1>{& = & E[e^{t\sum_{i=1}^{N} X_{i} } ] \nonumber \\ } \pause 
+ \invisible<1-2>{& = & E[e^{tX_{1} + tX_{2} + \hdots tX_{N} } ] \nonumber \\} \pause 
+  \invisible<1-3>{& = & E[e^{tX_{1} }]E[e^{tX_{2} }] \hdots E[e^{tX_{N} }] \text{ (by independence) } \nonumber \\} \pause 
+   \invisible<1-4>{& = & \prod_{i=1}^{N} E[e^{tX_{i}}] \nonumber } 
+\end{eqnarray}
+
+\end{proof}
+
+\end{frame}
+
+\end{document}

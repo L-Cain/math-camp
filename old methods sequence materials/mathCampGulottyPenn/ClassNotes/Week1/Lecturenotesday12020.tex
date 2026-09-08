@@ -1,0 +1,133 @@
+\documentclass[12pt]{article}
+\begin{document}
+
+
+\section{Class Questions}
+
+$\in$: `is a' or `is an element of'
+$$a \in \{a, b, c\}$$
+
+$\{a\} \in \{a, b, c\}$?
+There are many canine pets, let's call the collection of them dogs.
+My pets name is Maeby, she is a dog, that is, Maeby is an element of the set of dogs.
+Is the collection that only includes Maeby a dog?
+
+Go through example 1.3 in Book of Proof.
+
+
+
+\subsection{Breakout Sessions}
+Which of the following are correctly constructed?
+$$a \in \{\{a, b\}, c\}$$
+$$c \in \{a,b,\{c\}, c\}$$
+$$\{a,b\} \in \{\{a, b\}, c\}$$
+$$\{b\} \in \{\{a, b\}, c\}$$
+$$[4, 3) \in \mathbf{R}$$
+
+Sketching Functions
+
+$$f(x)=x^3-2x+8$$
+
+$$f(x)=3x^2-log(x)+2$$
+
+$$f(x)=1-2*log(x/2)$$
+
+$$f(x)=\frac{1}{3x^2}+2$$
+
+\pagebreak
+\section{Set Equality}
+
+We introduced in lecture the concept of a set, and the constructor notation
+e.g. $A=\{x: x \in [0,1]\}$
+
+The following sounds pedantic:\\
+\begin{itemize}
+\item A set $A$ is = to a set $B$ if they have exactly the same elements, $x\in A$ iff $x\in B$.\\
+\item A set $A$ is subset of $B$ if every element of $A$ is in $B$.\\
+\end{itemize}
+But from here it follows that if A set $A$ is subset of $B$ and $B$ is subset of $A$, then $A=B$ and vice versa.
+
+How do we know?  
+Start from the left, use the definitions:
+Pick an arbitrary element of A, by the definition of subset, it is in B. So  $x\in A$ $\rightarrow$ $x\in B$
+Pick an arbitrary element of B, by the definition of subset, it is in A.  So  $x\in B$ $\rightarrow$ $x\in A$.
+We are all set.
+
+\subsection{Example 1: Distributive property}
+A non-empty collection of sets is called a "class" or "family"; where $A\in\mathcal{A}$ are sets.
+
+The union of all member of a class is denoted $\cup\mathcal{A}$
+$$\cup\{A : A\in \mathcal{A}\}$$
+
+
+Let $A$ be a set and $\mathcal{B}$ be a class of sets:
+Prove that 
+$$A\cap \cup\mathcal{B}=\bigcup\{A\cap B: B\in \mathcal{B}\}$$
+$$Z=Q$$
+We are asked to prove that two sets are equal, they are if the first is a subset the second and the second is a subset of the first.
+
+Part 1 $A\cap \cup\mathcal{B}\subseteq \bigcup\{A\cap B: B\in \mathcal{B}\}$
+
+Pick $x \in Z$, we want to show that it is in $Q$
+
+$x \in Z$, so $x\in A$ and $x\in B_i$ call that $B_1$ 
+$$(A\cap B_1)$$
+so an element of a set is also the element of that set union some other set:
+$$x\in(A\cap B_1)\cup(A\cap B_2)\ldots$$
+$$\bigcup\{A\cap B: B\in \mathcal{B}\}$$
+
+
+
+Part 2: $A\cap \cup\mathcal{B}\supseteq \bigcup\{A\cap B: B\in \mathcal{B}\}$
+
+Pick $x \in Q$, we want to show that it is in $Z$.  To do that we need to show that x is in A and x is in $\cup\mathcal{B}$.
+
+x in Q means that it is in $(A\cap B_i)$ for some B.  
+This means that x is in A.
+x is also in $B_i$, so x is in $\cup\mathcal{B}$
+
+All done!
+\pagebreak
+\section{Functions}
+Recall we refer to all the combinations of two sets $X$ and $Y$ with $X\times Y$.
+
+A function $f$ that maps $X$ into $Y$ $f: X\rightarrow Y$
+is a relation $f\subseteq X\times Y$ such that
+\begin{itemize}
+\item for every $x\in X$, there exists a $y \in Y$ such that $f(x)=y $.
+\item For every $y,\ z \in Y$ with $f(x)=y $ and $f(x)=z $, we have $y=z$
+\end{itemize}
+X is called the domain of $f$; Y is the codomain of $f$; the range of $f$ is
+$$f(X):=\{y\in Y: f(x)=y \textrm{ for some }x \in X\}$$
+
+General Rule:
+If X and Y are a nonempty sets, $f: X\rightarrow Y$, then for any $\mathcal{A}\subseteq 2^X$
+
+$$f(\cup\mathcal{A})= \bigcup \{f(A): A\in \mathcal{A}\}$$
+
+E.g.
+
+$f=x^2$
+
+$X=\{1, 2, 3, 5\}$
+
+$$\mathcal{A}=\{\{1,2\}, \{1,3\}\}$$
+$$\cup\mathcal{A}=\{1,2,3\}$$
+$$f(\cup\mathcal{A})=\{1, 4, 9\}$$
+$$ \bigcup \{f(A): A\in \mathcal{A}\}= \{1, 4\}\cup\{9\}$$
+
+However:
+If X and Y are a nonempty sets, $f: X\rightarrow Y$, then for any $\mathcal{A}\subseteq 2^X$
+$$f(\cap\mathcal{A})\subseteq \bigcap \{f(A): A\in \mathcal{A}\}$$
+E.g.
+$f=x^2$\\
+$X=\{-2,2\}$
+
+$$\mathcal{A}=\{\{2\}, \{-2\}\}$$
+$$\cap\mathcal{A}=\emptyset$$
+$$f(\cap\mathcal{A})=\emptyset$$
+$$ \bigcap \{f(A): A\in \mathcal{A}\}= \{4\}\cap\{4\}=\{4\}$$
+
+
+\end{document}
+

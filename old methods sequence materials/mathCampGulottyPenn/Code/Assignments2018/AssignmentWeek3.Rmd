@@ -1,0 +1,28 @@
+---
+title: "Assignment for Week 3"
+author: "Author: Your name here!"
+date: "12/14/2016"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+
+
+# Assignment
+<!-- Please Put \newpage commands between long answers.  Avoid allowing answers to spill over pages. --> 
+1) 7.4.1
+2) 7.4.3
+3) 19.2.1 (a) (b) (c)
+4) Evaluate the integrals in 19.2.2 with `integrate` in R.
+5) 19.2.3 (a) (b) (c) (p. 405)
+6) 19.2.6 (p. 406)
+7) 20.1.1
+8) 20.1.2
+
+Complete the problems in Chapter 3 of Foundations of R

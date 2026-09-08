@@ -1,0 +1,60 @@
+---
+title: "Assignment for Week 6"
+author: "Author: Your name here!"
+date: "2/3/2017"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+```{r setup, include=FALSE}
+# This code changes "global" settings, here it makes the computer `echo` which refers to 
+# printing the code as well as the output into the pdf document when you knit.
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Change the following code to be your working folder for R
+
+knitr::opts_knit$set(root.dir = '~/Dropbox/mathCamp/Code/data/')
+# The following allows the computer to always get the same result for random stuff.
+set.seed(100)
+
+```
+
+# Assignment
+<!-- Please Put \newpage commands between long answers.  Avoid allowing answers to spill over pages. --> 
+1)  2.1 (p. 119)
+
+2)  2.3 (p. 119)
+
+3)  2.16 (p. 122)
+
+4)  2.20 (p. 123)
+
+5)  3.1 (p. 184)
+
+6)  3.2 (p. 184) (Use integration by parts)
+
+7)  3.8 (b) (p. 186)
+
+8)  3.11 (a) (b) (c) (p. 188)
+
+
+9) Plot the pmf of each distribution in the following list, with at least one variation in the listed parameter(s), using either a histogram or with a custom `table` and a `persp` plot.
+
+- bernoulli, $p$
+- binomial, $p$
+- Poisson, $\lambda$
+- Geometric, $p$
+- Hypergeometric, $m$, $n$
+- negative binomial, $p$
+
+
+10) Using `str()` and the R help file and worksheet, describe in words each of the elements of the object chisqt1.
+```{r}
+x <- c(89,37,30,28,2)
+p <- c(.40,.20,.20,.15,.05)
+chisqt1 <- chisq.test(x, p = p)
+```
+
+
+

@@ -1,0 +1,689 @@
+---
+title: "Assignment for Week 4"
+author: "Author: Bogdan Popescu"
+date: "1/22/2016"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+
+## Package Loading
+
+```{r Package Loading}
+library(dplyr, warn.conflicts = FALSE)
+library(ggplot2)
+library(haven)
+```
+
+# Assignment
+<!-- Please Put \newpage commands between long answers.  Avoid allowing answers to spill over pages. --> 
+
+1. 14.1.2 (d) (p. 274)
+In each of the following cases, find the gradient vector and the Hessian matrix of the function
+$$
+\begin{split}
+f(x,y)=x*ln(1+y^2)
+\end{split}
+$$
+Answer:
+Step 1: We first find partial derivative with respect to x
+$$
+\begin{split}
+\frac{\partial f}{\partial x}=ln(1+y^2)
+\end{split}
+$$
+Step 2: We then find partial derivative with respect to y
+$$
+\begin{split}
+\frac{\partial f}{\partial y}&=\\
+\frac{\partial f}{\partial y}&=x*\frac{1}{y^{2}+1}*\frac{d}{dy}[y^2+1]\\
+\frac{\partial f}{\partial y}&=x*\frac{\frac{d}{dy}[y^2]+\frac{d}{dy}[1]}{y^2+1}\\
+\frac{\partial f}{\partial y}&=x*\frac{2y+0}{y^2+1}\\
+\frac{\partial f}{\partial y}&=\frac{2xy}{y^2+1}
+\end{split}
+$$
+Step 3: We find the second partial derivative with respect to x
+
+
+$$
+\begin{split}
+\frac{\partial ^2 f}{\partial x^2}&=\frac{\partial}{\partial x} \frac{\partial f}{\partial x}\\
+\frac{\partial ^2 f}{\partial x^2}&=\frac{\partial}{\partial x} * ln(1+y^2)\\
+\frac{\partial ^2 f}{\partial x^2}&=0
+\end{split}
+$$
+Step 4: We find the second partial derivative with respect to y
+
+$$
+\begin{split}
+\frac{\partial^2 f}{\partial y^2}&=\frac{\partial}{\partial y}(\frac{\partial f}{\partial y})\\
+\frac{\partial^2 f}{\partial y^2}&= 2x * \frac{d}{dy}[\frac{y}{y^2+1}]\\
+\frac{\partial^2 f}{\partial y^2}&= 2 * \frac{\frac{d}{dy}[y](y^2+1)-y*\frac{d}{dy}[y^2+1]}{(y^2+1)^2}*x\\
+\frac{\partial^2 f}{\partial y^2}&=\frac{2x(1(y^2+1)-(\frac{d}{dy}[y^2]+\frac{d}{dy}[1])y)}{(y^2+1)^2}\\
+\frac{\partial^2 f}{\partial y^2}&=\frac{2x(y^2)-2y+0)y+1}{(y^2+1)^2}\\
+\frac{\partial^2 f}{\partial y^2}&=\frac{2x(1-y^2)}{(y^2+1)^2}\\
+\end{split}
+$$
+Step 5: Now we find the partial derivative of the function with respect to X
+$$
+\begin{split}
+\frac{\partial}{\partial x}\frac{\partial f} {\partial y}&=\frac{\partial}{\partial x}(\frac{2xy}{y^2+1})\\
+\frac{\partial}{\partial x}\frac{\partial f} {\partial y}&=\frac{2y}{1+y^2}
+\end{split}
+$$
+Step 6: Now we find the partial derivative of the function with respect to y
+
+$$
+\begin{split}
+\frac{\partial}{\partial y}\frac{\partial f} {\partial x}&=\frac{\partial}{\partial y}(ln(1+y^2))\\
+\frac{\partial}{\partial y}\frac{\partial f} {\partial x}&=\frac{1}{y^2+1}*\frac{d}{dy}[y^2+1]\\
+&=\frac{\frac{d}{dy}[y^2]+\frac{d}{dy}[1]}{y^2+1}\\
+&=\frac{2y+0}{y^2+1}\\
+\frac{\partial}{\partial y}\frac{\partial f} {\partial x}&=\frac{2y}{1+y^2}\\
+\end{split}
+$$
+To recapitulate, we have the following results:
+$$
+\begin{split}
+\frac{\partial f}{\partial x}&=ln(1+y^2)\\
+\frac{\partial f}{\partial y}&=\frac{2xy}{y^2+1}\\
+\frac{\partial ^2 f}{\partial x^2}&=0\\
+\frac{\partial^2 f}{\partial y^2}&=\frac{2x(1-y^2)}{(y^2+1)^2}\\
+\frac{\partial}{\partial x}\frac{\partial f} {\partial y}&=\frac{2y}{1+y^2}\\
+\frac{\partial}{\partial y}\frac{\partial f} {\partial x}&=\frac{2y}{1+y^2}\\
+\end{split}
+$$
+Since f is a smooth function the mixed derivative theroem applies. At each point (x, y) in the plane we may define the gradient vector
+
+Step: 7
+At each point (x,y) in the plane, we may define the gradient vector:
+
+$$
+\begin{split}
+D f(x,y)&=
+\begin{bmatrix}
+\frac{\partial f}{\partial x}\\
+\frac{\partial f}{\partial y}\\
+\end{bmatrix}\\
+
+D f(x,y)&=
+\begin{bmatrix}
+ln(1+y^2)\\
+\frac{2xy}{y^2+1}\\
+\end{bmatrix}
+\end{split}
+$$
+Step 8: The Hessian
+
+$$
+\begin{split}
+D^2 f(x,y)&=
+\begin{bmatrix}
+\frac{\partial ^2 f}{\partial x^2} & \frac{\partial}{\partial y}\frac{\partial f} {\partial x}\\
+\frac{\partial}{\partial x}\frac{\partial f} {\partial y} & \frac{\partial^2 f}{\partial y^2}\\
+\end{bmatrix}\\
+&=
+\begin{bmatrix}
+0 & \frac{2y}{1+y^2}\\
+\frac{2y}{1+y^2} & \frac{2x(1-y^2)}{(y^2+1)^2}
+\end{bmatrix}
+\end{split}
+$$
+$$
+\begin{split}
+\frac{\partial f}{\partial x}&=ln(1+y^2)\\
+\frac{\partial f}{\partial y}&=\frac{2xy}{y^2+1}\\
+\frac{\partial ^2 f}{\partial x^2}&=0\\
+\frac{\partial^2 f}{\partial y^2}&=\frac{2x(1-y^2)}{(y^2+1)^2}\\
+\frac{\partial}{\partial x}\frac{\partial f} {\partial y}&=\frac{2y}{1+y^2}\\
+\frac{\partial}{\partial y}\frac{\partial f} {\partial x}&=\frac{2y}{1+y^2}\\
+\end{split}
+$$
+Step 9: Replacing x=1 and y=-2
+
+$$
+\begin{split}
+D f(x,y)&=
+\begin{bmatrix}
+ln(1+y^2)\\
+\frac{2xy}{y^2+1}\\
+\end{bmatrix}\\
+
+&=
+\begin{bmatrix}
+ln(5)\\
+-0.8\\
+\end{bmatrix}\\
+
+D^2 f(x,y)&=
+\begin{bmatrix}
+0 & \frac{2y}{1+y^2}\\
+\frac{2y}{1+y^2} & \frac{2x(1-y^2)}{(y^2+1)^2}
+\end{bmatrix}\\
+&=\begin{bmatrix}
+0 & -0.8\\
+-0.8 & -0.24
+\end{bmatrix}
+\end{split}
+$$
+
+2. 14.2.2 (p. 279)
+If $z=x^3y^4+xe^y, x=1+6t, y=-2-3t$, use the chain rule to find $dz/dt$
+By the chain rule, we have:
+$$
+\frac{dz(x(t),y(t))}{dt}=\frac{\partial z}{\partial x} \frac{dx}{dt}+\frac{\partial z}{\partial y}\frac{dy}{dt}
+$$
+We first find:
+$$
+\begin{split}
+\frac{\partial z}{\partial x}&=\frac{\partial (x^3y^4+xe^y)}{\partial x}\\
+&=3x^2y^4+e^y
+\end{split}
+$$
+Second, we find:
+
+$$
+\begin{split}
+\frac{d x}{d t}&=\frac{d(1+6t)}{t}\\
+&=6
+\end{split}
+$$
+Third, we find:
+$$
+\begin{split}
+\frac{\partial z}{\partial y}&=\frac{\partial (x^3y^4+xe^y)}{\partial y}\\
+&=4x^3y^3+xe^y
+\end{split}
+$$
+Fourth, we find:
+$$
+\begin{split}
+\frac{d y}{d t}&=\frac{d(-2-3t)}{t}\\
+&=-3
+\end{split}
+$$
+We now put everything together and get:
+$$
+\begin{split}
+\frac{dz(x(t),y(t))}{dt}&=\frac{\partial z}{\partial x} \frac{dx}{dt}+\frac{\partial z}{\partial y}\frac{dy}{dt}\\
+&=(3x^2y^4 +e^y)·6+(4x^3y^3 +xe^y)·(−3)\\
+&=6(3x2y4+e^y)−3(4x^3y^3 + xe^y)
+\end{split}
+$$
+
+3. 16.1.5 (a) (p. 323) 
+Find the critical points for the following functions and classify each as a local maximum, a local minimum, a saddle point or none of these.
+$z=3x^2-y^3+12xy-36y$
+
+Answer: The gradient vector is:
+$$
+\begin{split}
+D f(x,y)=
+\begin{bmatrix}
+6x+12y\\
+-3y^2+12x-36
+\end{bmatrix}
+\end{split}
+$$
+The Hessian is:
+
+$$
+\begin{split}
+D^2 f(x,y)&=
+\begin{bmatrix}
+6 & 12\\
+12 & -6y\\
+\end{bmatrix}
+\end{split}
+$$
+When $D f(x,y)=0$ we have: 
+$$
+\begin{split}
+6x + 12y&=0\\
+-3y^2+12x-36&=0
+\end{split}
+$$
+We now have a system of equations that can be solved simultaneously. Thus we can have x=4 or x=12.
+a) when x=4, y=-2, then $f(x,y)=32$
+b) when x=12, y=-6, then $f(x,y)=0$
+
+Therefore, (4, -2, 32) and (12, -6, 0) are two critical points. We now determine their nature by evaluating $D^2f (x,y)$ at each point. The matrix
+
+$$
+\begin{split}
+D^2 f(x,y)&=
+\begin{bmatrix}
+6 & 12\\
+12 & -6y\\
+\end{bmatrix}\\
+D^2 f(4,-2)&=
+\begin{bmatrix}
+6 & 12\\
+12 & 12
+\end{bmatrix}
+\end{split}
+$$
+$D^2f (x,y)$ has positive diagonals, and its determinant is $6*12-12*12<0$, therefore (4,-2, 32) is a saddle point.
+
+$$
+\begin{split}
+D^2 f(x,y)&=
+\begin{bmatrix}
+6 & 12\\
+12 & -6y\\
+\end{bmatrix}\\
+D^2 f(12,-6)&=
+\begin{bmatrix}
+6 & 12\\
+12 & 36
+\end{bmatrix}
+\end{split}
+$$
+$D^2f (x,y)$ has positive diagonals, and its determinant is $6*36-12*12>0$, therefore (12,-6, 0) is a local minimum point.
+
+4. 16.2.6 (p. 331)
+Show that the function $f(x, y, z)=e^x+e^y+e^z$ is convex.
+
+We first show that $g(x) = e^x$ is convex. Then it follows that $f(x, y, z) = e^x + e^y + e^z$ as a sum of convex functions is also convex.
+
+5. 17.2.1 (p. 349)
+Find the maximum and minimum values of $2x+3y+z$ subject $x^2+y^2+z^2=9$
+
+Answer:
+We have the following:
+$$
+f(x,y,z)=2x+3y+z\\
+g(x,y,z)=x^2+y^2+z^2-9
+$$
+The Lagrangian is:
+$$
+\begin{split}
+L(x,y,z,\lambda)&=f(x,y,z)-\lambda g(x,y,z)\\
+&=2x + 3y + z - \lambda(x^2+y^2+z^2-9)\\
+&=(2x − \lambda x^2) + (3y − \lambda y^2) + (z − \lambda x^2) − 9\lambda
+\end{split}
+$$
+We set the $L(x,y,z,\lambda)=0$, we have $x=\frac{1}{\lambda}$, $x=\frac{3}{2\lambda}$ and $z=\frac{1}{2\lambda}$. Hence $f(x,y,z)=\frac{7}{\lambda}$. But the constraint $x^2+y^2+z^2=9$, we have $\lambda=±\frac{\sqrt{14}}{6}$. Therefore, the maximum and minimum of $2x+3y+z$ are $3\sqrt{14}$ and $-3\sqrt{14}$.
+
+\newpage
+
+7) Which of the following datasets are tidy?
+
+```{r}
+dta1<- data.frame(year = c(2000:2003,2000:2003), 
+                  CountryA = c(rep("USA",4),rep("CAN",4) ),
+                  CountryB=c(rep("Russia",4),rep("Russia",4) ),
+                  Agreement=c(0,1,1,0,0,1,0,0))
+
+dta2<- data.frame(year = c(2000:2003,2000:2003), 
+                  Dyad = c(rep("USA-RUS",4),rep("USA-RUS",4) ),
+                  ConflictType=c(rep("War",4),rep("Minor MID",4) ),
+                  ConflictLevel=c(0,3,1,0,0,1,0,0))
+
+dta3<- data.frame(Dyad = c("USA-RUS", "CAN-RUS"),
+                  War2002=c(0,2),
+                  War2003=c(0,2),
+                  War2004=c(0,2),
+                  MinorMID2002=c(0,2),
+                  MinorMID2003=c(0,2),
+                  MinorMID2004=c(0,2))
+```
+
+```{r}
+#In order to answer the question one needs to examine the dataset:
+# Load dplyr
+library(dplyr)
+
+# Check the structure of dta1
+str(dta1)
+# Check the structure of dta1, the dplyr way
+glimpse(dta1) 
+# View a summary of dta1
+summary(dta1)
+# View head
+head(dta1)
+```
+The dta1 is tidy. In this dataset, each column is a variable and each row is an observation. With Country A, Country B and year, we can uniquely identify the observation.
+
+```{r}
+# Check the structure of dta
+head(dta2)
+```
+The dta2 is not tidy, dta2 has a column conflict type, which lists variables whose values are in column ConflictLevel.
+
+```{r}
+# Check the structure of dta
+head(dta3)
+```
+The dta3 is not tidy. Two variables are clumped together in one column.
+
+
+8) Use spread, gather and seperate from the tidy package to fix the untidy data.frames from question 7.
+
+
+#Gather
+The most important function in tidyr is gather(). It should be used when you have columns that are not variables and you want to collapse them into key-value pairs.
+The easiest way to visualize the effect of gather() is that it makes wide datasets long. 
+
+#Spread
+The opposite of gather() is spread(), which takes key-values pairs and spreads them across multiple columns. This is useful when values in a column should actually be column names (i.e. variables). It can also make data more compact and easier to read.
+The easiest way to visualize the effect of spread() is that it makes long datasets wide.
+
+```{r}
+dta2%>%
+  spread(ConflictType, ConflictLevel)
+```
+
+#Separate
+The separate() function allows you to separate one column into multiple columns. Unless you tell it otherwise, it will attempt to separate on any character that is not a letter or number. You can also specify a specific separator using the sep argument.  Here we count from the right hand side five symbols, splitting before the year.
+
+```{r}
+dta3%>%
+  gather(ConflictType, ConflictLevel, -Dyad)%>%
+  separate(ConflictType, c("Conflict_Type", "Year"),sep = -5)
+```
+
+
+
+
+9) Correct the common mistakes in the following code snippets
+
+  a)  Make the following TRUE
+  
+```{}
+mean(c("3,000", 2, 1, 0, 4)) == 601.4
+```
+Answer:
+
+```{r}
+mean(c(3000, 2, 1, 0, 4)) == 601.4
+```
+
+  b)  Make the following into a vector TRUE TRUE TRUE
+  
+```{}
+EuclidDistancetoKabul <- function(x) {
+  sqrt((-64 - x[1]) ^ 2 + (16 - x[2]) ^ 2)
+}
+x <- EuclidDistancetoKabul(rbind(c(48, 4), c(12, 3), c(80, 13)))
+x > 20
+```
+
+Answer:
+
+```{r}
+EuclidDistancetoKabul <- function(x) {
+  sqrt((-64 - x[1]) ^ 2 + (16 - x[2]) ^ 2)
+}
+v<-rbind(c(48, 4), c(12, 3), c(80, 13))
+x<-apply(v, 1, EuclidDistancetoKabul)# 1 row-wise, 2 column-wise
+x
+
+x > 20
+
+#sqrt((-64 - x[1]) ^ 2 + (16 - x[2]) ^ 2) essentially means
+#replacing x[1] and x[2] with row 1 of column 1 and row1 or column 2, then 
+#row2 and row3
+sqrt((-64 - 48) ^ 2 + (16 - 4) ^ 2)
+sqrt((-64 - 12) ^ 2 + (16 - 3) ^ 2)
+sqrt((-64 - 80) ^ 2 + (16 - 13) ^ 2)
+```
+      
+  c)  Make the following code install the 'car' package.
+  
+```{}
+#install.packages(car)
+```
+
+Answer:
+```{r}
+#install.packages('car')
+```
+      
+  d)  Correct the following plot command:
+  
+```{}
+x <- c(3, 10, 4)
+y <- c(2, 3, 4)
+df <- data.frame(x, y)
+ggplot(df) + geom_bar(aes(x, y))
+```
+
+Answer:
+
+```{r}
+library(ggplot2)
+x <- c(3, 10, 4)
+y <- c(2, 3, 4)
+df <- data.frame(x, y)
+ggplot(df) + aes(x,y) + geom_bar(stat="identity")
+```
+      
+  e)  Make the following code report TRUE 
+  
+```{}
+allthetypes <- list(df1 = data.frame(x = c("Iowa"), stringsAsFactors = F))
+is.character(allthetypes[1][[1]])
+```
+
+Answer:
+
+```{r}
+allthetypes <- data.frame(x=c("Iowa"), stringsAsFactors = F)
+#allthetypes
+is.character(allthetypes[1,1])
+```
+
+```{r}
+#Removing all datasets in memory
+rm(list=ls(all=TRUE))
+```
+
+\newpage
+
+10)  How many shootings occur in the state with the most active VA hospitals?  The least active?
+
+To help you answer the question, you need to creafully read: "Week4Rmarkdownpart1.pdf"
+
+In order to answer the question we need three datasets:
+- VA hospital usage
+- VA hospital location
+- shootings
+
+```{r}
+#Step 1: Load data on how active VA hospitals are
+library(jsonlite)
+library(dplyr)
+#Include now the URL from view raw
+VAest <- fromJSON(paste0("https://raw.githubusercontent.com/vacobrydsk/", "VHA-Files/master/NEPEC_AnnualDataSheet_MH_FY15.json"), flatten = T)
+#head(VAest)
+glimpse(VAest)
+```
+This is another classic example of ‘untidy’ data. Notice that the variables are listed in columns, alongside the observation name (here a ‘Station’). tidy data is data that has exactly one observation per row, with columns for each variable.
+
+The tidyr package handles this sort of thing. The spread command takes as inputs the variables, here “item”, and the inputs to that varable, here “Value” and then creates a new column for each.
+
+```{r}
+#Step 2: Clean the data by (1) removing variables you don't need and (2) by making data in a wide format
+library(tidyr)
+VAtidy <- VAest %>% 
+  #We don'd need ValueType and Category
+  select(-ValueType, -Category) %>% 
+  spread(Item, Value)
+
+#The opposite of gather() is spread(), which takes key-values pairs and spreads them across multiple columns. This is useful when values in a column should actually be column names (i.e. variables). It can also make data more compact and easier to read. The easiest way to visualize the effect of spread() is that it makes long datasets wide.
+
+#Note in this particular case, spread(Item, Value) means place
+#Item from row observations into column (variable name) names, while
+#Value is the range of values that different variables have
+
+#head(VAest, n=10)
+#head(VAtidy, n=10)
+```
+There are 41 variables in the dataset. Ideally, each variable name is descriptive, not too long, and has no spaces in it. To do so, it is often easiest to do things by hand. Here I used the dput command to print the names in a nice concatonated list. Then it was just a matter of picking 41 names.
+
+```{r}
+#Step 3: Renaming variables. Some variables names are too long
+
+fixednames <- c("Station", "ADC_all_beds", "ADC_inpatient", "ADC_residential", "ADC_psych_encounters", "ADC_psych_unique", "Avestops_MH", "Avestops_Psychiatry", "Avestops_Substance", "Setting_Inpatient", "Setting_Outpatient", "Setting_Resident", "N_serviceusers", "N_serviceusers_confirmed", "N_serviceusers_possible", "Pct_confirmed", "Pct_possible", "NMH_Prop_community_confirmed", "NMH_Prop_inpatient_confirmed", "NMH_Prop_outpatient_confirmed", "NMH_Prop_community_possible", "NMH_Prop_inpatient_possible", "NMH_Prop_outpatient_possible", "Prop_Vets_confirmed_any", "Prop_Vets_confirmed_outpatient", "Prop_Vets_confirmed_inpatient", "Prop_Vets_confirmed_resident", "Prop_Vets_possible_any", "Prop_Vets_possible_outpatient", "Prop_Vets_possible_inpatient", "Prop_Vets_possible_resident", "testing_encounters", "testing_uniques", "ServiceUserswithMH", "Total_NHM_stays_community", "Total_NHM_stays_inpatient", "Total_NHM_stays_outpatient", "Total_Service_Users", "Unique_Vets_inpatient", "Unique_Vets_outpatient", "Unique_Vets_resident")
+names(VAtidy) <- fixednames
+```
+
+```{r}
+#Step 4: Converting strings to numbers
+#VAtidy data has many of its columns as strings rather than numbers. We can turn these into numbers by doing the following, which deploys regular expressions, which we will learn about next week. For now, just know that in the pattern part of str_replace_all, we are using a code which reads, replace either a percent sign or a comma. The pipe | is the logical or.
+library(stringr)
+stringtonumber <- function(sortanumber) { as.numeric(str_replace_all(as.character(sortanumber), "%|,", "")) }
+
+VAtidy2 <- VAtidy %>% mutate_all(stringtonumber)
+```
+```{r}
+#Step 5: Selecting relevant variables.
+# The question is about the most active VA hospitals, which can be operationalized as the Total Service Users, which is why I am creating a new dataset in which I keep "Sttn" and "Total Service Users" 
+library(dplyr)
+VAtidy3<- VAtidy2 %>% 
+  select(Sttn= Station, Total_Service_Users )
+```
+
+```{r}
+#Step 6: Load data on the location of these facilities:
+VAfacilities <- fromJSON(paste0("https://raw.githubusercontent.com/department-of-veterans-affairs", "/VHA-Facilities/master/VAFacilityLocation.json"), flatten = T)
+
+#head(VAfacilities, n=10)
+
+VAfacdta <- VAfacilities$VAFacilityData %>% 
+  mutate(Sttn = facility_id)
+
+#head(VAfacdta, n=10)
+```
+
+```{r}
+#Step 7: Merge the locations to the Total_Service_Users
+#We have two datasets
+# - VAfacdta - where the facilities are
+# - VAtidy3 - no. of service users
+# The variable that these two datasets have in common is "Sttn"
+
+#Step 7a: Defining the common variable as character
+VAfacdta$Sttn<-as.character(VAfacdta$Sttn)
+VAtidy3$Sttn<-as.character(VAtidy3$Sttn)
+
+#Step 7b: Performing a left_join
+vahospitals <- left_join(VAfacdta, VAtidy3, by="Sttn")
+glimpse(vahospitals)
+```
+```{r}
+str(vahospitals$Total_Service_Users)
+```
+
+```{r}
+#Step 8: Count no. of total users per state
+hospitalsbystate <- vahospitals %>% 
+  group_by(state) %>% 
+  summarize (no_hospitals= length(Sttn), no_users= sum(Total_Service_Users, na.rm=T))
+#head(hospitalsbystate, n=5)
+```
+
+
+```{r}
+#Step 9: Load the Police Shooting file
+URLchunkA <- "https://raw.githubusercontent.com/washingtonpost/"
+URLchunkB <- "data-police-shootings/master/fatal-police-shootings-data.csv" 
+shootings <- read.csv(paste0(URLchunkA, URLchunkB))
+glimpse(shootings)
+```
+
+```{r}
+#Note: The only geographic data we have is city and state
+#Step 10: Count shootings by state
+shootingbystate <- shootings %>% 
+  group_by(state) %>% 
+  summarize (no_shots= length(id))
+```
+
+```{r}
+#Step 11: Merge the hospitals data to shooting
+#shootingbystate - contains shootings by state
+#hospitalsbystate - contains data on all hospital
+
+#Step 11a: Defining the common variable as character
+hospitalsbystate$state<-as.character(hospitalsbystate$state)
+shootingbystate$state<-as.character(shootingbystate$state)
+
+#Step 11b: Performing a left_join
+facilitywshooting <- left_join(hospitalsbystate, shootingbystate, by="state")
+
+#Step 12: Keeping variables of interest
+final<-facilitywshooting%>%
+  select(state, no_users, no_shots)
+
+#head(final, n=10)
+```
+
+```{r}
+#Step 11: Order results
+arrange(final, -no_users)
+```
+```{r}
+#Step 11: Order results
+arrange(final, no_users)
+```
+Answer:
+Texas (TX) has the highest no. of users - 2261653 and 236 shootings while Northern Mariana Islands (MP) has no users and no shootings (or both the info for users and shootings is unavailable).
+
+11)  Plot the following function for $x \in [-4,4]$ by writing a custom function().  Use integrate() on that function to plot the area under the curve of that function from -Inf to x, such that $x \in [-4,4]$.
+
+$$\frac{1}{\sqrt{2\pi}}e^{\frac{-x^2}{2}}$$
+```{r}
+#I define a function that is that particular equation
+A <- function(x) {y <- (1/sqrt(2*pi))*(exp((-x^2)/2)) 
+return(y)
+}
+
+#I define a new function which looks at upper and lower limits
+B <- function(llim,ulim) {
+  x <- seq(from = -4, to=4, by=0.01)
+  #I define now y as the set of new values resulted from y
+  y <- A(x)
+  x_lim <- seq(from = llim, to=ulim, by=0.05)
+#The c(-4,4) below defines the ends of the curve
+#cex= 0.01 defines the thickness of the curve
+plot(x,y, cex= 0.01, xlim = c(-5,5)) 
+
+for (i in 1:length(x)){
+  coord.x <- c(x_lim[i],x_lim[i], x_lim[i+1],x_lim[i+1]) 
+  coord.y <- c(0,A(x_lim[i]), A(x_lim[i+1]),0) 
+  #Below is the code for shading the are under the curve
+  polygon(coord.x,coord.y)
+}}
+#This tells how much of the curve should be shaded. In this case from -4 to 4
+B(-4,4)
+```
+
+```{r}
+#I define a function that is that particular equation
+customNormF <- function(x) {y <- (1/sqrt(2*pi))*(exp((-x^2)/2)) 
+return(y)
+}
+
+x<- seq(-4,4, by = 0.01)
+y <- customNormF(x)
+
+ggplot(data=data.frame(), aes(x, y))+geom_point()+theme_bw()
+
+curve(customNormF, from = -4,to=4)
+
+out<-c()
+
+for(i in 1:length(x)){
+integrand<-integrate(customNormF ,lower = -10, upper = x[i])
+out[i]<-integrand$value
+}
+
+ggplot(data=data.frame(), aes(x, out))+geom_point()+theme_bw()
+
+
+
+```
+
+

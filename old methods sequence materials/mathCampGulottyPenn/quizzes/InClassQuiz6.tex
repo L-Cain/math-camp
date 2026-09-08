@@ -1,0 +1,73 @@
+\documentclass[11pt]{article} 
+
+\usepackage{amsmath}
+
+\usepackage[super]{nth}
+
+\usepackage{epsfig}
+
+\usepackage{graphics}
+
+\usepackage{wasysym}
+
+\usepackage{times}
+
+\usepackage{natbib}
+
+%\usepackage{amssymb}
+
+\setlength{\topmargin}{0in}
+\setlength{\textwidth}{6.25in}
+
+\setlength{\oddsidemargin}{.125in}
+
+% 28 lectures total
+
+\usepackage{amscd}
+
+\begin{document}
+\pagenumbering{gobble}
+\title{Quiz \hfill Name : \underline{\hspace{3cm}}}
+\date{November 14}
+\maketitle
+\begin{enumerate}
+\item[Example 3.20] Suppose a binary signal $S\in{-1,\ 1}$ with $P(S=1)=p$ is transmitted, but the signal is received with standard normally distributed noise $N$, so that we only observe $Y=N+S$.  Bayes Rule says the probability that $S=1$ given an observed value $y$ is
+
+$$P(S=1|Y=y)=\frac{P(S=1) f_{Y|S}(y|1)}{f_Y(y)}=\frac{\frac{p}{\sqrt{2\pi}}e^{-(y-1)^2/2}}{\frac{p}{\sqrt{2\pi}}e^{-(y-1)^2/2}+\frac{1-p}{\sqrt{2\pi}}e^{-(y+1)^2/2}}=\frac{pe^y}{pe^y+(1-p)e^{-y}}$$
+
+
+\begin{enumerate}
+\item What happens to the probability that the S=1 if $y$ becomes very negative?
+\bigskip
+\bigskip
+\bigskip
+
+\item What is the probability that the signal is 1 if $y=0$?
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+
+\item Why was it valid that $f_Y(y)=\frac{p}{\sqrt{2\pi}}e^{-(y-1)^2/2}+\frac{1-p}{\sqrt{2\pi}}e^{-(y+1)^2/2}$ in the denominator?
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+
+\end{enumerate}
+
+
+
+\item True or False?
+
+\begin{enumerate}
+\item Given two random variables X and Y, the joint PDF must be such that $$\int_{-\infty}^{\infty} f_{X,Y}(x,\ y)dx=1$$
+\item A valid pdf must take on finite values.
+\item The expectation of a product of 2 random variables is the product of their expectations.
+\item The expectation of a sum of 2 random variables is the sum of their expectations.
+\item If X and Y are independent, var($X+Y$)=var($X$)+var($Y$)
+\end{enumerate}
+
+
+\end{enumerate}
+\end{document}

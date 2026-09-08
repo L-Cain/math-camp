@@ -1,0 +1,608 @@
+\documentclass{beamer}
+
+%\usepackage[table]{xcolor}
+\mode<presentation> {
+  \usetheme{Boadilla}
+%  \usetheme{Pittsburgh}
+%\usefonttheme[2]{sans}
+\renewcommand{\familydefault}{cmss}
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
+%\usepackage{palatino}
+%\usepackage{cmbright}
+  \setbeamercovered{transparent}
+\useinnertheme{rectangles}
+}
+%\usepackage{normalem}{ulem}
+%\usepackage{colortbl, textcomp}
+\setbeamercolor{normal text}{fg = black}
+\setbeamercolor{structure}{fg = blue}
+\definecolor{trial}{cmyk}{1,0,0, 0}
+\definecolor{trial2}{cmyk}{0.00,0,1, 0}
+\definecolor{darkgreen}{rgb}{0,.4, 0.1}
+\definecolor{mygray}{gray}{0.8}
+\definecolor{myblack}{rgb}{0, 0, 0}
+\usepackage{array}
+\beamertemplatesolidbackgroundcolor{white}  \setbeamercolor{alerted
+text}{fg=red}
+
+\setbeamertemplate{caption}[numbered]\newcounter{mylastframe}
+
+\usepackage{color}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{colortbl}
+\usepackage{graphicx}
+\usepackage{epsfig}
+
+%\usepackage[usenames, dvipsnames]{color}
+%\setbeamertemplate{caption}[numbered]\newcounter{mylastframe}c
+%\newcolumntype{Y}{\columncolor[cmyk]{0, 0, 1, 0}\raggedright}
+%\newcolumntype{C}{\columncolor[cmyk]{1, 0, 0, 0}\raggedright}
+%\newcolumntype{G}{\columncolor[rgb]{0, 1, 0}\raggedright}
+%\newcolumntype{R}{\columncolor[rgb]{1, 0, 0}\raggedright}
+
+%\begin{beamerboxesrounded}[upper=uppercol,lower=lowercol,shadow=true]{Block}
+%$A = B$.
+%\end{beamerboxesrounded}}
+\renewcommand{\familydefault}{cmss}
+%\usepackage[all]{xy}
+
+\usepackage{tikz}
+\usepackage{lipsum}
+
+ \newenvironment{changemargin}[3]{%
+ \begin{list}{}{%
+ \setlength{\topsep}{0pt}%
+ \setlength{\leftmargin}{#1}%
+ \setlength{\rightmargin}{#2}%
+ \setlength{\topmargin}{#3}%
+ \setlength{\listparindent}{\parindent}%
+ \setlength{\itemindent}{\parindent}%
+ \setlength{\parsep}{\parskip}%
+ }%
+\item[]}{\end{list}}
+\usetikzlibrary{arrows}
+%\usepackage{palatino}
+%\usepackage{eulervm}
+\usecolortheme{lily}
+
+\newtheorem{com}{Comment}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+ \numberwithin{equation}{section}
+
+
+\title[PLSC 43401] % (optional, nur bei langen Titeln nötig)
+{Mathematical Foundations of Political Methodology}
+
+\author{Robert Gulotty}
+\institute[University of Chicago]{Associate Professor\\Department of Political Science \\  University of Chicago}
+\vspace{0.3in}
+\date{August 28th, 2017}
+
+\setbeamertemplate{navigation symbols}{}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+\begin{frame}
+
+\begin{itemize}
+\item \textcolor{myblack}{Proposition}
+\item \textcolor{myblack}{Methods of Mathematical Proof}
+\item \textcolor{myblack}{Social Scientific Thinking}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+
+\begin{itemize}
+\item \textcolor{myblack}{Proposition}
+\item \textcolor{mygray}{Methods of Mathematical Proof}
+\item \textcolor{mygray}{Social Scientific Thinking}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Proposition}
+
+\begin{defn}
+A proposition is a statement that is either true or false.
+\end{defn} \pause
+
+\ \\Now, let's see two examples. The first proposition is true while the second one is wrong. \pause
+
+\ \\Proposition: $2 + 3 = 5$. \pause
+
+\ \\Proposition: $1 + 1 = 3$. \pause
+
+\ \\Remark: Proposition is synonymous with equation! \pause
+
+\ \\Proposition: Superstition is the belief in the causal nexus. - Wittgenstein
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Proposition}
+
+\ \\In English, we can modify, combine, and relate propositions with words such as "not", "and", "implies", and "if-then". Such propositions are called as compound propositions. \pause
+
+\ \\To understand compound propositions, we use truth table.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Proposition: Not(P)}
+
+\ \\The truth table for "NOT(P)" is:
+
+\begin{table}[]
+\begin{tabular}{lllll}
+P                     & Not(P)                &  &  &  \\ \cline{1-2}
+\multicolumn{1}{c}{T} & \multicolumn{1}{c}{F} &  &  &  \\
+\multicolumn{1}{c}{F} & \multicolumn{1}{c}{T} &  &  &  \\
+                      &                       &  &  & 
+\end{tabular}
+\end{table} \pause
+
+\ \\Example. Following proposition is true: Justin is a male. However, not (P), that is, Justin is not a male, is not true.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Proposition: P and Q}
+
+\ \\The truth table for "P and Q" is:
+
+\begin{table}[]
+\begin{tabular}{cccll}
+\multicolumn{1}{l}{P} & \multicolumn{1}{l}{Q} & \multicolumn{1}{l}{P and Q} &  &  \\ \cline{1-3}
+T                     & T                     & T                           &  &  \\
+T                     & F                     & F                           &  &  \\
+F                     & T                     & F                           &  &  \\
+F                     & F                     & F                           &  & 
+\end{tabular}
+\end{table} \pause
+
+\ \\Example. Say, P, Justin is a male. Q, Justin is a female. P and Q is not true. Because Justin cannot simultaneously be male or female.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Proposition: P or Q}
+
+\ \\The truth table for "P or Q" is:
+
+\begin{table}[]
+\begin{tabular}{cccll}
+\multicolumn{1}{l}{P} & \multicolumn{1}{l}{Q} & \multicolumn{1}{l}{P or Q} &  &  \\ \cline{1-3}
+T                     & T                     & T                          &  &  \\
+T                     & F                     & T                          &  &  \\
+F                     & T                     & T                          &  &  \\
+F                     & F                     & F                          &  & 
+\end{tabular}
+\end{table} \pause
+
+\ \\ Here, let's ignore the discussion of how we should categorize gender, and assume that there are only two genders. \pause
+
+\ \\Example. Say, P, Justin is a male. Q, Justin is a female. P or Q is true. Because Justin is either a male or a female.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Proposition: P implies Q}
+
+\ \\The truth table for "P implies Q" is:
+
+\begin{table}[]
+\begin{tabular}{cccll}
+\multicolumn{1}{l}{P} & \multicolumn{1}{l}{Q} & \multicolumn{1}{l}{P implies Q} &  &  \\ \cline{1-3}
+T                     & T                     & T                               &  &  \\
+T                     & F                     & F                               &  &  \\
+F                     & T                     & T                               &  &  \\
+F                     & F                     & T                               &  & 
+\end{tabular}
+\end{table} \pause
+
+\ \\The truth table can be summarized in words as: An implication is true exactly when the if-part is false or the then-part is true. \pause
+
+\ \\Example 1. If $x > 2$, then, $x + 6 > 8$. P is true, Q is true, thus, P implies Q is true. \pause
+
+\ \\Example 2. If pigs can fly, then, dogs can drive a car. Since P is false, thus, P implies Q is true.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Proposition: P IFF Q}
+
+\ \\The truth table for P IFF (if and only if) Q is:
+
+\begin{table}[]
+\begin{tabular}{cccll}
+\multicolumn{1}{l}{P} & \multicolumn{1}{l}{Q} & \multicolumn{1}{l}{P IFF Q} &  &  \\ \cline{1-3}
+T                     & T                     & T                               &  &  \\
+T                     & F                     & F                               &  &  \\
+F                     & T                     & F                               &  &  \\
+F                     & F                     & T                               &  & 
+\end{tabular}
+\end{table} \pause
+
+\ \\Example. This if-and-only-if statement is true for every real number $x$: $x^{2} - 4 \geq 0$ iff $|x| \geq 2$
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Proposition: Contrapositive}
+
+\begin{defn}
+"NOT(Q) IMPLIES NOT(P)" is called the contrapositive of the implication "P IMPLIS Q". These two are just different ways of saying the same thing.
+\end{defn} \pause
+
+\ \\Their truth table is:
+
+\begin{table}[]
+\begin{tabular}{ccccl}
+\multicolumn{1}{l}{P} & \multicolumn{1}{l}{Q} & \multicolumn{1}{l}{P implies Q} & (NOT)Q implies (NOT)P &  \\ \cline{1-4}
+T                     & T                     & T                               & T                     &  \\
+T                     & F                     & F                               & F                     &  \\
+F                     & T                     & T                               & T                     &  \\
+F                     & F                     & T                               & T                     & 
+\end{tabular}
+\end{table} \pause
+
+\ \\Example. "If I am hungry, then I am grumpy." is equivalent to "If I am not grumpy, then I am not hungry". 
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Proposition: Always vs. Sometimes True}
+
+\ \\Examples on "Always True": \pause
+
+\ \\For all $x \in \mathbb{R}$, $x^{2} \geq 0$. Equivalent to write as: $\forall x \in \mathbb{R}$, $x^{2} \geq 0$. \pause
+
+\ \\Examples on "Sometimes True": \pause
+
+\ \\There exists an $x \in \mathbb{R}$ such that $5 x^{2} - 7 = 0$. Equivalent to write as: $\exists x \in \mathbb{R}$ such that $5 x^{2} - 7 = 0$.
+
+\end{frame}
+
+
+
+
+\begin{frame}
+
+\begin{itemize}
+\item \textcolor{mygray}{Proposition}
+\item \textcolor{myblack}{Methods of Mathematical Proof}
+\item \textcolor{mygray}{Social Scientific Thinking}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Mathematical Proofs}
+
+\ \\Before we proceed to the definition of mathematical proofs, we need to define axioms first. \pause
+
+\begin{defn}
+Propositions that are simply accepted as true are called axioms.
+\end{defn} \pause
+
+\ \\Example on axiom: There is a straight line segment between every pair of points.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Mathematical Proofs}
+
+\begin{defn}
+A mathematical proof of a proposition is a chain of logical deductions leading to the proposition from a base set of axioms.
+\end{defn}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Mathematical Proofs}
+
+Following three concepts are important for proofs. \pause
+
+\begin{itemize}
+\item Important propositions are called theorems. \pause
+\item A lemma is a preliminary proposition useful for proving later propositions. \pause
+\item A corollary is a proposition that follows in just a few logical steps from a lemma or a theorem.
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Methods for Mathematical Proofs}
+
+\ \\A fundamental logical deduction is modus ponens. It says that a proof of P together with a proof that P IMPLIES Q is a proof of Q. \pause
+
+\begin{table}[]
+\begin{tabular}{ccl}
+\multicolumn{1}{l}{P,} & \multicolumn{1}{l}{P implies Q} &  \\ \cline{1-2}
+\multicolumn{2}{c}{Q}                                    &  \\
+                       &                                 &  \\
+                       &                                 &  \\
+                       &                                 & 
+\end{tabular}
+\end{table} \pause
+
+\ \\An example of an argument that fits the form modus ponens: \pause
+\ \\If today is Tuesday, then John will go to work.
+\ \\Today is Tuesday.
+\ \\Therefore, John will go to work.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Methods for Mathematical Proofs: Direct Proof}
+
+\ \\Now, let's see how we do mathematical proofs. \pause
+
+\ \\For this method, in order to prove that P IMPLIES Q, there are two steps: 1. Assume P is true; 2. Show that Q logically follows. \pause
+
+\ \\Now, let's see an example.
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Methods of Mathematical Proof: Direct Proof}
+
+\begin{theorem}
+If $0 \leq x \leq 2$, then, $- x^{3} + 4x + 1 > 0$.
+\end{theorem} \pause
+
+\begin{proof}
+Assume $0 \leq x \leq 2$. \pause
+Then, $x$, $2 - x$, and $2 + x$ are all nonnegative. \pause
+Therefore, the product of these terms is also nonnegative. Adding 1 to this product gives a positive number, so:
+$$x (2 - x) (2 + x) + 1 \geq 0$$ \pause
+Which is equivalent to:
+$$- x^{3} + 4x + 1 > 0$$
+\end{proof}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Methods of Mathematical Proof: Direct Proof}
+
+\ \\Now, let's see an example of using direct proof in set theory. \pause
+
+\begin{thm} Let $A$ and $B$ be sets.  If $A$ = $B$ then $A \subset B$ and $B \subset A$ \end{thm}
+\pause
+\invisible<1>{ \begin{proof}  Suppose $A = B$.  \pause By definition, if $x \in A$ then $x \in B$.  So $A \subset B$.  \pause Again, by definition, if $y \in B$ then $y \in A$.  So $B \subset A$. \end{proof}}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Methods of Mathematical Proof: Prove the Contrapositive}
+
+\ \\If prove the contrapositive is easier, we can prove the contrapositive, since it's logically equivalent to the original statement. \pause
+
+\ \\To prove the contrapositive, there are two steps: 1. write, "We prove the contrapositive:", and then state the contrapositive; 2. proceed as in the first method. \pause
+
+\ \\Now, let's see an example.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Methods of Mathematical Proof: Prove the Contrapositive}
+
+\begin{theorem}
+If $r$ is irrational, then $\sqrt[]{r}$ is also irrational.
+\end{theorem}
+
+\begin{proof}
+We prove the contrapositive: if $\sqrt[]{r}$ is rational, then, $r$ is rational. \pause Assume that $\sqrt[]{r}$ is rational. Then, there exists integers $a$ and $b$ such that:
+$$\sqrt[]{r} = \frac{a}{b}$$ \pause
+Squaring both sides gives:
+$$r = \frac{a^{2}}{b^{2}}$$ \pause
+Since $a^{2}$ and $b^{2}$ are integers, $r$ is also rational.
+\end{proof}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Methods of Mathematical Proof: Prove by Contradiction.}
+
+\ \\In a proof by contradiction, you show that if a proposition were false, then some false fact would be true. Since a false fact can't be true, the proposition had better not be false. That is, the proposition really must be true. \pause
+
+\ \\The step of proof by contradiction is: 1. Write, "We use proof by contradiction."; 2. Write, "Suppose P is false"; 3. Deduce something know to be false (a logical contradiction); 4. Write, "This is a contradiction. Therefore, P must be true." \pause
+
+\ \\Now, let's see an example.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Methods of Mathematical Proof: Prove by Contradiction.}
+
+\begin{theorem}
+There is no largest even integer.
+\end{theorem}
+
+\begin{proof}
+\ \\Suppose not. That is, suppose that there is a largest even integer. Let's call it $k$. \pause
+\ \\Since $k$ is even, it has the form $2n$, where $n$ is an integer. \pause Consider $k + 2$. $k + 2 = (2n) + 2 = 2 (n + 1)$. \pause
+\ \\So $k + 2$ is even. \pause
+\ \\But $k + 2$ is larger than k. This contradicts our assumption that k is the largest even integer. \pause
+\ \\So the theorem must be true.
+\end{proof}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Methods of Mathematical Proof: Prove by Contradiction.}
+
+\ \\Now, let's see an example of using prove by contradiction in set theory. \pause
+
+\begin{thm} Let $A$ and $B$ be sets.  Then $A$ = $B$ if and only if $A \subset B$ and $B \subset A$. \end{thm} \pause
+\begin{proof} $\Rightarrow$ Suppose $A = B$.  By definition, if $x \in A$, $x \in B$.  So $A \subset B$.  Again, by definition, if $y \in B$ then $y \in A$.  So $B \subset A$. \pause  \\
+$\Leftarrow$ Suppose $A \subset B$  and that $B \subset A$. \pause Now, by way of contradiction, suppose that $A \ne B$.  \pause $A \ne B$ only if there is $x \in A $ and $x \notin B$ or if $y \in B$ and $y \notin A$.  \pause But then, either $A \not\subset B$ or $B \not\subset A$, contradicting our initial assumption.
+\end{proof}
+
+\end{frame}
+
+
+
+\begin{frame}
+
+\begin{itemize}
+\item \textcolor{mygray}{Proposition}
+\item \textcolor{mygray}{Methods of Mathematical Proof}
+\item \textcolor{myblack}{Social Scientific Thinking}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Social Scientific Thinking}
+
+\begin{defn}
+We define valid as: if the knowledge is intended to be used as a spur to action, it must be valid in light of the appropriate evidence and compelling in the way that it fits the question raised.
+\end{defn} \pause
+
+\ \\Example. The statement, "capitalism exploits the poor" is not valid unless you give enough evidence to support the statement.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Social Scientific Thinking}
+
+\begin{defn}
+In scientific research, internal validity is the extent to which a causal conclusion based on a study is warranted, which is determined by the degree to which a study minimizes systematic error (or "bias").
+\end{defn} \pause
+
+\ \\Example. The randomized controlled trial usually has good internal validity if the experiment is conducted appropriately. One example of randomized controlled trial is double-blind pill experiment.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Social Scientific Thinking}
+
+\begin{defn}
+External validity is the validity of generalized (causal) inferences in scientific research, usually based on experiments as experimental validity. In other words, it is the extent to which the results of a study can be generalized to other situations and to other people.
+\end{defn} \pause
+
+\ \\Example. If the randomized controlled trial is conducted on the representative sample, it may have good external validity.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Social Scientific Thinking}
+
+\begin{defn}
+Theory is a set of related propositions that attempts to explain, and sometimes to predict, a set of events.
+\end{defn} \pause
+
+\ \\An example of theory in political science is social choice theory. Social choice theory deals with preference aggregation problem in the society.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Social Scientific Thinking}
+
+\begin{defn}
+A hypothesis is a sentence of particularly well-cultivated breed. The purpose of a hypothesis is to organize a study.
+\end{defn} \pause
+
+\ \\Example. A hypothesis can be: economic fluctuation causes civil conflict. 
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Social Scientific Thinking}
+
+\begin{defn}
+Scientists use the term model to convey an implication of greater order and system in a theory.
+\end{defn} \pause
+
+\ \\Example. An example in political science is the rational choice model of political candidates. One important example is median voter theorem.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Social Scientific Thinking}
+
+\begin{defn}
+An independent variable is one that influences another variable, called the dependent variable.
+\end{defn} \pause
+
+\ \\Example. Say, we have following hypothesis: higher income causes the country to be democracy. The independent variable is income. The dependent variable is whether or not the country is a democracy.
+
+\end{frame}
+
+
+
+\end{document}

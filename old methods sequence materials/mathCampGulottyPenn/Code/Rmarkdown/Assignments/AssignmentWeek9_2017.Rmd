@@ -1,0 +1,79 @@
+---
+title: "Assignment for Week 9/10"
+author: "Author: Your name here!"
+date: "2/20/2017"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+```{r setup, include=FALSE}
+# This code changes "global" settings, here it makes the computer `echo` which refers to 
+# printing the code as well as the output into the pdf document when you knit.
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Change the following code to be your working folder for R
+
+knitr::opts_knit$set(root.dir = '~/Dropbox/mathCamp/Code/data/')
+# The following allows the computer to always get the same result for random stuff.
+set.seed(100)
+
+```
+
+## Package Loading
+
+```{r Package Loading}
+library(ggplot2)
+library(dplyr, warn.conflicts = F)
+library(readr)
+```
+
+## Assignment
+
+```{r Data}
+URLchunkA <- "https://raw.githubusercontent.com/washingtonpost/"
+URLchunkB <- "data-police-shootings/master/fatal-police-shootings-data.csv"
+shootings <- read_csv(paste0(URLchunkA, URLchunkB))
+```
+
+
+1) This question asks us to use ggplot to display the timing of police shootings data above.
+
+a)  First, use the `lubridate` package to round dates to the nearest month. Use the `round_date` function.
+b)  Display these data with a histogram with 10 bins, 20 bins, 30 and 35 bins.  Do the same with a density plot with varying adjustment equal to .1, .2, and .8.  Describe what is happening.
+
+c) Produce a table which displays the count of white people that were shot and the presence of a body camera.
+
+d) What would the expected counts be if these two variables (being white and body camera presence) were independent?
+
+e) What is the difference between the observed counts and the expected counts?  
+
+f) Square the answers from e), divide by the expected count, and take the sum.  This is called the chi-square statistical test of independence.  It is distributed chi-square with `2*2 -1 =3` degrees of freedom.
+
+g) Use the cdf function for the chi-square to describe the probability of observing the result from f) were these two variables independent.
+
+h) Replicate the above steps with the chisq.test command.
+
+2)  Use the `lakers` dataset from the lubridate package to determine the following:
+
+a) Which top 40 Laker's performance (in terms of made free throw shots) was most affected by being home or away?  
+
+b) Which top 40 Laker's performance improved most (in terms of made free throw shots) when the lakers were losing?
+
+c) ADVANCED/Extra Credit: Plot the distribution of time between shots over the course of games.
+
+
+3) Come up with an exam question on each of the following concepts, these can be multiple choice, word problems, or True/False.  Be sure to provide an answer:
+
+a) The inclusion/exclusion principle.
+b) Confidence intervals when estimating the variance.
+c) The difference between independence and mutually exclusive.
+d) The determining whether a function is a pdf.
+e) Markov's inequality.
+f) Law of Total Probability.
+g) Law of Iterated Expectations.
+h) Calculating a variance.
+i) The difference between $\mu$ and $\bar{X}$
+j) Jensen's inequality.
+k) Joint and marginal distributions
+l) Tranformations of random variables.

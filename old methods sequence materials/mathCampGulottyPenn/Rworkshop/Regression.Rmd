@@ -1,0 +1,122 @@
+---
+title: "Regression Presentation"
+author: "Robert Gulotty"
+date: "11/6/2020"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(car)
+data(Prestige)
+```
+
+## The Ordinary Least Squares Model
+
+In many quantitative papers people display standard outputs from statistical software.  Today we will cover three main ideas.
+
+- How are are the parameters of the model ($\beta$) calculated.
+- How are standard errors calculated and summarized
+- What diagnostics are reported.
+
+## Prestige Data
+
+```{r Prestige, echo = TRUE}
+summary(Prestige[,c("prestige", "education", "income")])
+```
+
+
+## Predicting Prestige with lm()
+\footnotesize
+```{r reg with LM, echo=TRUE}
+summary(lm(prestige~education+income, data=Prestige))
+```
+
+## Visulazation of Prestige
+```{r pic}
+scatter3d(prestige~income+education, data=Prestige)
+```
+
+## Output and Input
+```{r outputs, echo=TRUE}
+y<-Prestige$prestige
+xvars<-as.matrix(Prestige[,c("education", "income")])
+# Add vector of 1 to X matrix
+xmat<-cbind(1,xvars)
+```
+
+
+
+## $\beta=(X'X)^{-1}X'y$.
+```{r point estimates, echo=TRUE}
+betas<-solve(t(xmat)%*%xmat)%*%t(xmat)%*%y
+betas
+```
+
+## Note Betas
+\footnotesize
+```{r betas in lm, echo=TRUE}
+summary(lm(prestige~education+income, data=Prestige))
+```
+
+
+
+## Errors= $y-X\beta$.
+```{r errors, echo=TRUE}
+err<-y-xmat%*%betas
+summary(err)
+```
+## Note errors
+\footnotesize
+```{r errors in lm, echo=TRUE}
+summary(lm(prestige~education+income, data=Prestige))
+```
+
+## Residual standard error: sqrt(e'e/(n-k))
+\footnotesize
+```{r rse, echo=TRUE}
+ete<-t(err)%*%err/(length(err)-ncol(xmat))
+sqrt(ete)
+```
+
+## Note Residual standard error
+\footnotesize
+```{r resid errors in lm, echo=TRUE}
+summary(lm(prestige~education+income, data=Prestige))
+```
+
+## $R^2$: 1-sum($(y-xb)^2$)/sum($(y-ybar)^2$)
+```{r rsquared, echo=TRUE}
+1-sum(err^2)/sum((y-mean(y))^2)
+```
+
+## Variance Covariance Matrix Betas
+```{r varcovar, echo=TRUE}
+(varcovar<-as.numeric(ete)*solve(t(xmat)%*%xmat))
+```
+
+## Standard Errors of Betas
+```{r beta se, echo=TRUE}
+sigmas<-diag(varcovar)
+(stderrors<-sqrt(sigmas))
+```
+
+## Note Standard Errors
+\footnotesize
+```{r sd error, echo=TRUE}
+summary(lm(prestige~education+income, data=Prestige))
+```
+
+## tstats of Betas
+
+```{r tstats, echo=TRUE}
+(tstats<-betas/stderrors)
+```
+
+## P-values of Betas
+
+```{r pvals, echo=TRUE}
+(1-pt( abs(tstats), df= length(err)-3))*2
+```
+
+

@@ -1,0 +1,333 @@
+---
+title: "R Lab Week 5"
+author: "Robert Gulotty"
+date: "1/26/2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=60),tidy=TRUE)
+set.seed(120)
+```
+******
+
+```{r}
+library(purrr)
+library(dplyr, warn.conflicts = F)
+library(devtools)
+#install_github("jennybc/repurrrsive")
+library(repurrrsive)
+library(broom)
+library(ggplot2)
+```
+
+# Lists in R
+
+Today we learn about functional programming and purrr. R works well with "lists". A list is a container for all kinds of mixed data types. The repurrrsive package has a list in it called `got_chars`. This is a list of characters from A Game of Thrones, a popular book, and inspiration for a violent TV series.
+
+We can use the `str()` function to display its structure. In this case, it is a list length 29 of lists length 18.
+
+```{r}
+length(got_chars)
+```
+
+ Lists are like a railroad train, each element of the list is like a car of the train, the more elements, the longer the train. If we use a single square bracket, we get the first car of the train. A single car train (a single element list) is still a train (a list).
+ 
+```{r} 
+got_chars[1]
+```
+
+This gives us the entry for Theon Greyjoy.
+
+```{r}
+str(got_chars[1])
+```
+
+Note it says "list of 1".
+
+If we want the content of an entry in a list, we use the double `[[ ]]`. This is like the contents of the railroad car.
+```{r}
+got_chars[[1]]
+str(got_chars[[1]])
+```
+
+Notice in this case, we get another list, which is the first element of `got_chars`, and it has a length of 18.
+
+Finally, we can get the interior of this list using another square bracket or double square bracket.
+```{r}
+got_chars[[1]][1]
+got_chars[[1]][[1]]
+```
+
+A shortcut for the second method, when we know the names of the elements is to use the `$`. This should look familiar. This is because data.frames are lists!
+
+```{r}
+got_chars[[1]]$url
+```
+
+\newpage
+
+# Purrr
+
+Ok, so we have a list of lists of vectors. To manipulate them more easily, we will learn about the map functions in purrr. Suppose we want to just return a named part of a list. We can do so with the `map()` function.
+
+```{r}
+map(got_chars[1:3], "gender")
+```
+
+The basic map function returns a list. `map_x` returns an object of type x.
+
+```{r}
+map_chr(got_chars, "gender")
+map_chr(got_chars, "name")
+```
+
+
+Ok, so why would we use such a thing? We can, for example, run a bunch of models at once.
+
+Consider the following dataset:
+```{r}
+head(mtcars)
+```
+
+Each observation is a type of car, and we have information about fuel efficiency, mpg", the size of the engine, both in count and in terms of volume and weight, and some information about horsepower. 
+
+\newpage
+
+One of the main determinants of fuel efficiency is the number of cyliders, so lets say we want to do an analysis `stratified` or grouped by cyl. The split command takes a column, here identified using the `$` shortcut, and creates a list.
+```{r}
+mtcars %>%split(.$cyl) 
+splitmtcars<-mtcars %>%split(.$cyl) 
+```
+
+Notice the `.$` construction. This is to indicate to functions that are not part of the dplyr universe, like mutate and ggplot, which always put the data command first. Here we need to specify that you want to refer to the dataset being piped into the command using `%>%`. 
+
+
+Now we have a list of data.frames. We can use this map command to fit a function to each dataframe. This map command returns a list as a default, but it will return a list of regression models.
+
+```{r}
+splitmtcars %>%map( ~ lm(mpg~wt, data= .x))
+```
+
+We can futher apply map functions to the output, such as the summary command:
+```{r}
+splitmtcars %>%map( ~ lm(mpg~wt, data= .x)) %>%map(summary)
+``` 
+
+Finally, we can pull out a element of those summary commands with a final map command. Here we are getting the r-squared, which is a measure of the total share of variation in the outcome variable, here `mpg`, that is associated with our independent variables, here just `wt`.
+
+```{r}
+splitmtcars %>%map( ~ lm(mpg~wt, data= .x)) %>%map(summary)%>%map_dbl("r.squared")
+```
+
+Cool huh?
+
+Ok, so now lets use this technique. 
+
+# Re-analysis of afghanistan
+
+```{r}
+afg<-read.csv("~/Google Drive/ChicagoSyllabi/SSI131/Rcode/afg2.csv", as.is=T)
+```
+
+Here we output to a data frame using the tidy function, and then we restrict attention to the ELEVATION coefficients. Be sure to check each of the steps so you know what it is doing.
+
+```{r}
+afg %>% 
+ split(.$LANGUAGE) %>% 
+ map( ~ lm(POPULATION ~ ELEVATION, data = .x)) %>%
+ map_df(tidy) %>% 
+ dplyr::filter(term == "ELEVATION")
+```
+
+\newpage
+# Functional Programming
+
+R supports functional programming. In practice, this means there are often opportunities to vastly improve the speed and efficiency of your code by using a custom function.  Before getting there, lets review the `apply` family, which help take functions and applies it a bunch of times to a set of data.  `lapply` takes a list, and applies the function to each element of the list.
+
+```{r}
+x<- list(a = rnorm(rbinom(1,10, .4)),
+         b = rnorm(rbinom(1,10, .6)),
+         c = rnorm(rbinom(1,10, .9)))
+unlist(lapply(x, mean))
+```
+
+The second most popular `apply` function is the `tapply` function, which allows you to use a function on subsets of the data, usually by group. 
+
+```{r}
+df<- data.frame(tariffrate = c(rbeta(5,2,1), rbeta(2,1,8), rbeta(8,1,2)),
+        country = c(rep("USA",5), rep("UK",2),rep("Japan",8)))
+tapply(df$tariffrate, df$country, mean)
+```
+
+The apply family, including `tapply` and `lapply` are useful and relatively fast. They work particularly well in combination with custom functions.  Custom functions allow you to combine and mix a variety of functions.  One striking thing to do is to use a function which makes other functions.  Here is a simple example.  Suppose you want to calculates several features of some fake data
+
+```{r}
+df2 <- data.frame(replicate(6, sample(c(1:10, NA), 6, rep = TRUE)))
+names(df2) <- letters[1:6]
+ 
+mean(df2$a, na.rm=TRUE)
+median(df2$a, na.rm=TRUE)
+sd(df2$a, na.rm=TRUE)
+mad(df2$a, na.rm=TRUE)
+IQR(df2$a, na.rm=TRUE)
+```
+\newpage
+Notice the repeated text.  We can write a function which creates functions and then applies them to the data.
+
+```{r}
+summaries<- function(x){
+  sumfuns <- c(mean, median, sd, mad, IQR)
+  listout<-lapply(sumfuns, function(f){ f(x, na.rm=T)})
+  names(listout) <- c("mean", "median", "sd", "mad", "IQR")
+  return(unlist(listout))
+}
+ summaries(df2$a)
+```
+
+For most purposes (when you have a standard data frame) we can use the `dplyr` summarise function, which does much the same thing as apply.  
+
+```{r}
+summarise(df2, 
+          mean = mean(a, na.rm=T),
+          median = median(a, na.rm=T), 
+          sd= sd(a, na.rm=T), 
+          mad=mad(a, na.rm=T), 
+          IQR=IQR(a, na.rm=T))
+```
+Again, if you groupby first, you can calculate these variables for subgroups.
+
+\newpage 
+
+# Application:  studying the normal distribution
+
+Recall the small error fuction from the second R lab?   If not, go back and read about it.  One of the problems is that it was very slow.  We can use the `replicate` command from the apply family to make it __vectorized__ and work much faster. 
+```{r, fig.width= 7, fig.height=3}
+
+smallerrors<- function( lengthofchain ){
+	directionoferror <- c(1,-1)
+	x<-sum(sample(directionoferror, size = lengthofchain , replace=T))
+	return(x)
+}
+
+endpoints <- replicate(1000, smallerrors(10000))
+
+plot(endpoints)
+
+```
+
+
+This was much faster, as it used vectorization, which means that it uses an apply function rather than a loop.  The main idea is that R works better when it is not looping.  In general there may be a tradeoff between the ease of writing a command and the speed that the computer can calculate the answer, but in this case there are also readability advantages to using the vectorized code.
+
+\newpage
+
+Now recall that these end points follow a normal distribution.  The pdf of the normal distribution is described by the following equation:
+$$f(x|\mu, \sigma^2)=\frac{1}{\sqrt{2\sigma\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$$
+Where $\sigma$ is the standard deviation and $\mu$ is the mean.  In this case, the mean is 0, and the standard deviation is the square root of the length of the chain, which here is 100.  
+```{r, fig.width= 7, fig.height=3}
+plot(density(endpoints))
+curve(dnorm(x, mean = 0, sd = 100), from = -400,to = 400,
+add = T)
+rug(endpoints)
+```
+ 
+ 
+Notice I put a rug plot at the bottom, which shows where the points lie on the line.
+
+Now suppose that instead of plotting the theoretical distribution, we wanted to plot the observed distribution using the normal approximation.  Here we replace the theoretically known mean and standard deviation with the sampled data.
+
+```{r, fig.width= 7, fig.height=3}
+plot(density(endpoints))
+curve(dnorm(x, mean = mean(endpoints), sd = sd(endpoints)), from = -400,to = 400,
+add = T, lty=2
+)
+rug(endpoints)
+```
+Try playing around with the original simulated data, and see how the observed fit of the normal does.
+\newpage
+
+# ADVANCED: Multivariate Distributions and mapply
+
+
+Now we have seen how a distribution can be fit to a sample, but what if the data is not just a point on a line?  What if, for example, we observe several characteristics at once, such as the correlation between several variables, an event in time and space, or an otherwise more complicated event.  We can say that these examples make up a vector of random variables.  This can be any where from a very high dimensional vector of all sorts of independent variable estimates from a regression, or the simplest case, two parameters, such as a point on a plane.  If we wish to study such a system we can characterize a joint distribution using a multivariate function.  One of the most useful of these is the multivariate normal distribution, which is an extension of the normal distribution.  If you have $k$ dimensional random vector $\boldsymbol{x}= [X_1,\ X_2\ ..., \ X_k]$ then we can say $\boldsymbol{x}\sim \mathit{N}(\boldsymbol{\mu}, \boldsymbol{\Sigma})$, where $\Sigma$ is a variance covariance __matrix__, and $\boldsymbol{\mu}$ is a vector of means.
+
+The pdf of such a random vector is the following:
+$$f_X(x_1, ... , x_k)=\frac{1}{\sqrt{(2\pi)^k|\Sigma|}}e^{-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu})^{T} \Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu})}$$
+Where $|\Sigma|$ is the determinant of the variance covariance matrix $\Sigma$, and $x$ and $\mu$ are vectors.  The simplest case of this is the bivariate case, where 
+$$\boldsymbol{\mu}= \left[\begin{array}{c} \mu_{X_1}\\ \mu_{X_2}\end{array}\right],\ \  \boldsymbol{\Sigma}=\left(\begin{array}{cc}
+\sigma^2_{X_1}  & \rho\sigma_{X_1}\sigma_{X_2}  \\ 
+\rho\sigma_{X_2}\sigma_{X_1} & \sigma^2_{X_2} 
+\end{array}\right)$$
+
+$$f_X(x_1,x_2)=\frac{1}{2\pi\sigma_x \sigma_y\sqrt{1-\rho^2}}\exp\left(
+        -\frac{1}{2(1-\rho^2)}\left[
+          \frac{(x-\mu_X)^2}{\sigma_X^2} +
+          \frac{(y-\mu_Y)^2}{\sigma_Y^2} -
+          \frac{2\rho(x-\mu_X)(y-\mu_Y)}{\sigma_X \sigma_Y}
+        \right]
+      \right)\\$$
+
+
+I leave it to you to try to invert $\Sigma$ and figure this out.  In any case, we can use the built in R function to draw a sample from such a distribution.  mvdraws is a 1000 by 2 matrix.
+
+```{r}
+library(mvtnorm)
+
+mvdraws <- rmvnorm(
+n = 1000,
+mean = c(0, 0),
+sigma = matrix(c(2, 1, 1, 2), nrow = 2, byrow = T)
+)
+dim(mvdraws)
+```
+
+\newpage
+
+Because we are still in $\boldsymbol{R}^2$, we can plot these points on a plane.
+```{r,fig.width=4, fig.height=4}
+plot(mvdraws)
+
+```
+
+We can work with this sort of data using the `mapply` function, which operates on multiple lists.  First we calculate the sample means and the sample variance covariance matrix, and then we fit these in the multivariate normal distribution just as we did in the one dimensional case.  To do so, we use the outer command to create all the possible combinations of x and y.  Notice we are using `%*%` for matrix multiplication, and `solve`, which finds the inverse of a matrix.  We then plot these as ellipse using a contour plot and as a height in a perspective plot
+
+```{r, fig.width=6, fig.height=6}
+
+samplecenter <- apply(mvdraws, 2, mean)
+samplesigma <- cov(mvdraws)
+
+sigma.inv = solve(samplesigma)
+
+ellipse <- function(s, t) {
+u <- c(s, t) - samplecenter
+
+exp(-u %*% sigma.inv %*% u / 2) / (sqrt(det(samplesigma) *
+(2 * pi) ^ 2))
+}
+
+# Grid
+n = 50
+x = seq(-5, 5, length = 50)
+y = seq(-5, 5, length = 50)
+
+z = mapply(ellipse, rep(x, n), as.vector(outer(rep(0, n), y, `+`)))
+
+plot( mvdraws,
+pch = 20,
+xlim = c(-6, 6),
+ylim = c(-6, 6),
+cex = .1)
+
+contour(x, y,
+matrix(z, n, n),
+nlevels = 8,
+col = "black",
+add = TRUE, labcex=.7)
+
+persp(x,y, matrix(z, n, n))
+
+```
+
+
+
+

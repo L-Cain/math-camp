@@ -1,0 +1,528 @@
+---
+title: "R Lab Week 1"
+author: "Robert Gulotty"
+date: "9/30/2016"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+******
+This is the first of 10 weeks of R materials that will guide you through the programming side of data science. While these worksheets are intended to be self contained, there are a couple prerequisites.  You should visit datacamp.com and work through the intro and ideally intermediate classes in R.  You should also take the Rstudio course.  These will provide basic insight into the fundamentals of R, including objects in R and some insights into how functions work.  
+
+The way to read these document is that the commands in the boxes are R code.  The things to the right of the  `##` below indicates the output of these commands.  In Rstudio, the suggested platform for using R, this code is typed out in a __script__, and then run in the console by selecting the code and typing `command'+`enter'.  For more general help, type `help.start()` in the console and click enter.  For the r-reference card/ cheat sheet, go to https://cran.r-project.org/doc/contrib/Short-refcard.pdf 
+
+
+# Intro to data.frame
+
+The fundamental object of the data scientist is to make predictions and draw inferences from data. Today we will learn how to load and manipulate dataframes, the objects that store datas in R.   
+
+
+## Preliminaries, loading packages
+
+ 
+
+The first time you run R, you will have to install packages.  These are "libraries"" that contain interesting code and data for us to use.  You install them by using a function called `install.packages`.  The first thing in the `install.packages` function is the name of the package.  Below you will see code that installs 'dplyr', 'ggplot2' and 'nycflights'.  Notice, the packages are case sensitive and surrounded by quotation marks.  The next thing listed within the parenthesis is generally omitted, but if specified, tells the computer to look for these packages in the rstudio repository.  CRAN, the R organization, has many repository options, and if you leave off this part, R will use your default repository, set the first time you run a install command.  The third part, setting dependencies to `TRUE`, asks R to redownload all of the assumed packages that the installed package requires.  Again, I usually leave this out, but there are cases where a package is not updating properly, and this is a quick fix.  
+
+```{r package_installation, eval=FALSE}
+
+install.packages("dplyr", repos="http://cran.rstudio.com/", dependencies = TRUE)
+install.packages("ggplot2", repos="http://cran.rstudio.com/", dependencies = TRUE)
+install.packages("nycflights13", repos="http://cran.rstudio.com/", dependencies = TRUE)
+
+```
+
+You will should only have to run each of these commands once and when you restart R it will still be downloaded and installed.  It is never a problem to re-run a command in R. 
+
+After installation, you can load the packages with the `library` command.  This function just uses the name of the package, with or without quotation marks.  Notice the warning after you load the dplyr package.  When a package is loaded, it introduces a number of functions that may have the same name as functions already loaded in R.  In this case, `filter` and `lag` were functions in the preloaded `stats` package, but we are rewriting it with the dplyr `filter` and `lag` command.  If you want to use a function with a redundant name, you can always use `::` to make sure it is coming from the right package.  For example, `dplyr::filter()` or `stats::filter()`.
+
+```{r packages, results="hide"}
+library(ggplot2)
+library(nycflights13)
+library(dplyr)
+
+```
+
+If you want to see all the functions that come with a package, check out the help file by putting a specific command in the regular help function `help(package="ggplot2")`.  Online you can find many resources at the official CRAN website, which organizes packages by topic. 
+
+******
+
+### Data Description functions dim(), head(), str()
+
+R is a language of functions.  Just as in mathematics, functions can transform some input in a way that we find interesting.  A function might summarise some data, or it might produce a plot.  
+
+
+On the screen, functions look like words with a `()` next to them.  The things within the () are the inputs to the function, or in R-speak, the ___Arguments___ of the function.  The output of the function is called the ___Value___ of the function.  We have already used two special examples of functions, `library()` and `install.packages()`.
+
+To check your understanding, what would the argument be for a function that finds the distance between two cities?  What might a value of such a function be?
+
+Today we are going to work with functions on an amazing dataset, flights, which describes all the flights out of New York in 2013.
+
+We begin by identifying the __dimensions__ of the flights dataset, which is already loaded into R with the nycflights library using the `dim` function.
+
+```{r dimensions}
+
+dim(flights)
+
+```
+
+What do you think these numbers refer to?  A little heuristic, whenever dealing with a matrix or dataframe is that the order is Rows and Columns, or Rum and Coke, Roman Catholic.  R x C.  In this case, we have 336,776 rows, and 19 columns.  The rows refer to a flight, the columns refer to a characteristic or measured attribute of that flight.
+
+When using data from libraries, you can use the ? command, as follows :  `?flights` 
+
+\newpage
+
+The most common function that I use is one that glimpses the top of a dataset, called `head()`
+
+```{r top_rows}
+
+head(flights)
+
+# head(flights, n=8)
+```
+
+
+Note that you get the first 6 rows by default.  You can change this by adding to the head command an additional parameter "n".  
+\newpage
+
+A second useful examination function is `str()`, which gives the structure of the object.
+
+
+```{r strflights}
+
+str(flights)
+
+```
+
+Notice the first line of output gives the "class" of flights.  Here flights has three types, tbl\_df, tbl and data.frame.  It then lists the structure of the content of the data.  Notice, R has several basic data types: 
+
+* __int__ refers to integers, such as 22, -9 and 0.
+* __num__ refers to real numbers, such as .03, 19, and $\pi$.
+* __chr__ refers to characters strings, or letter based data, such as "Alabama", "horseradish", and "C-3PO".
+* __POSIXct__ is a date format, which we will learn about later. 
+* __logi__ (not listed here) refers to the boolean logical statement, TRUE and FALSE, manipulated by the logical commands described in the next section.
+* __Factor__ (not listed here) refers to a categorical variable, a special encoded character vector.
+
+You can switch between these data types using `as.numeric()`, `as.character()`, `as.integer()`, `as.logical()`, and `as.factor()`.  Sometimes R will allow you to switch between data types without explicitly saying that you want to.  This is very useful for applied work.
+
+
+******
+
+\newpage
+
+# Dplyr Commands and Logic
+
+The first command to learn in the dplyr framework is `filter`.  `filter` takes on three arguments.  The first is a data frame, which has all your data in it.  After that, you can put any number of conditions that you want to query from that dataset.  The function grabs the subset of rows that satisfy logical conditions listed after the data frame.  Here, we are grabbing the flights where on the day is equal to 1 and the month is equal to 1, which is to say all the flights on new years day of 2013.  
+
+```{r New_years}
+
+filter(flights, month == 1, day == 1)
+
+```
+
+## Logical commands
+
+Inside that `filter` command is actually another function, the `==` function.  `filter`'s  arguments are logical vectors, like `r c(TRUE, TRUE, FALSE)`.  The data in flights are not logical.  As we saw above with the `str` command, the columns of flights are all integers, numbers, and characters.  There is even a POSIXct format variable for time, but no logicals.  
+In order to use the `filter` function, we need a function which takes as an argument an inputi something from the flights dataset and gives as a value a logical vector.  There are a number of thes logical functions in R.  These, and all standard functions, can be found in help files by typing `?`'COMMAND'.  
+
+* `==` refers to 'equal to'.  It returns TRUE if both sides are equal and not missing.
+* `>=` and `<=` refer to 'greater than or equal to' and 'less than or equal to'.  These compare numbers.
+* `!=` means not equal to.
+* `&` is a logical __and__
+* `|` is the logical __or__
+* `!` is the logical negation.
+
+Here we get all the flights from New York to Chicago.
+ 
+```{r New_years_Chicago}
+
+filter(flights, month == 1 , day == 1, dest=="ORD" | dest== "MDW" )
+
+```
+
+___Practice Q. How many funtions are in the above code?___
+
+
+___Practice Q. How many flights traveled to Des Moines International from New York in August?___
+
+___Practice Q.  On what day did a flight go to Lexington, KY (LEX)?___
+
+At this point you should be able to answer the first four questions in the assignment section of this document.
+
+\pagebreak
+
+# Base R comparison
+
+ In "base" or unmodified R, all this would be more cumbersome, with the following commands used to grab new year's day flights.
+
+```{r New_years2, results="hide"}
+
+januaryflights <- flights[, "month"] == 1
+firstofmonthflight <- flights[, "day"] == 1
+NewYearslogical <- januaryflights & firstofmonthflight
+flights[NewYearslogical,]
+
+```
+
+ Althought we will use the dplyr commands, it is useful to learn abit about the R syntax here.  As with all programming problems, the key is to break up this cumbersome command into its parts.
+
+The first line uses the logical function `==`, but on the left hand side, we are asking for just the month column of flights.  
+
+ `flights[]` is just the whole flights dataset, and inside the square brackets are a comma.  What do you think we get when we type `flights[ 4 , 4 ]` ?
+
+ Were you right?  Try changing the numbers.  
+
+ As you can see, we have a way to get elements out of the dataframe.  What do you think we get when we write, 
+ 
+ * `flights[ , "dest" ]`
+
+or 
+
+ * `flights[ , "day" ]`
+
+ Remember, rows and columns.
+
+ Now lets say we want the 4th entry under month, we could just write
+
+* `flights[4 , "month" ]`
+
+ All of this indexing assumes we know in advance what index we are looking for.  In practical terms though, we want to be able to search through the data to find specific entries.
+
+ For the next couple exercises, lets work with a subset of the data, lets examine flight patterns from New York into DC on January 18-21.  We start with the way that we were able to make it before, then we redo it with some new commands. `c( )` makes a vector, and `A %in% B` is yet another logical command that reports TRUE for each element of A present somewhere in B.  The `setdiff` command shows that there are no elements of the second dataset not present in the first.  Formally, `setdif` returns the set $\{x: x\in A\ \  \&\ \ x\notin B\}$.
+ 
+```{r New_years_DC}
+
+DCflights <- filter(flights, 
+                    month == 1, 
+                    day == 18 | day == 19 | day == 20 | day == 21,
+                    dest == "IAD" | dest =="DCA") 
+
+DCflightsMethod2 <- filter(flights, 
+                    month == 1, 
+                    day %in% 18:21, 
+                    dest %in% c("IAD", "DCA") )
+
+setdiff(DCflights, DCflightsMethod2)
+
+```
+
+Within the DC flights, suppose we want to get the longest flights.  First we need to grab the air time variable, which we could do using the [] , `DCflights[, "air_time"]`
+
+As a short cut, R allows us to use the `$` operator to get named variables from a dataset.  Rather than `DCflights[, "air_time"]` we can write the faster `DCflights$air_time`
+
+Now we want the max of this vector.  Note we need a seperate command for how to deal with missing data indicated by NA.  `na.rm` means remove NA values, and then do the calculation. 
+
+```{r Max_Airtime}
+
+max(DCflights$air_time, na.rm=T)
+
+```
+
+
+It seems that the max is 61.  Lets find out where that is true.
+
+```{r is_equal_to_Max_Airtime}
+
+DCflights$air_time==61
+
+```
+
+
+What we really want is the 'index' of the flights that are 61 minutes long.  For that we can use the which() command
+
+
+```{r which_is_equal_to_Max_Airtime}
+
+which(DCflights$air_time == 61)
+
+```
+
+\pagebreak
+
+### Five ways to get row 92
+
+This gave us the index of the dataset where this is true, here the 92nd row.  Finally, we can use this information in five ways to get that row of the dataset:
+
+```{r ways_to_get_row_92}
+DCflights[92, ]
+
+DCflights[which(DCflights$air_time == 61), ]
+
+DCflights[DCflights$air_time == 61, ]
+
+DCflights[DCflights$air_time == max(DCflights$air_time, na.rm=T), ]
+
+filter(DCflights, air_time==max(air_time, na.rm=T))
+```
+Note the second and third techniques also return the NA rows.  This is because the == returns a NA, and putting in a NA in an index in R returns an NA.
+
+
+## An aside on indexing
+One note on indexing, it is very powerful.  Take the following vector, for example.  We begin by creating an object, called lengths, which contains the words short, medium, and long. We then show that repeated indexes return repeated elements of the index.
+
+```{r Indexing_trick}
+lengths <- c("short", "medium", "long")
+
+lengths[c(1,1,1,1,1,1,2,2,2,3,3,3,1,1,2,3)]
+
+# Suppose we make some fake data:
+(fake_responses <- rbinom(10, size = 2, prob = 0.3)+1)
+
+lengths[fake_responses]
+
+```
+
+\pagebreak
+
+# Christmas Eve Analysis
+
+Now, I am not sure if you are have ever taken a flight on Christmas Eve, but the pilots often fly by one another with their lights set up in a Rudolf leading the reindeer, with a red light up front, and they make an announcement for the children.  
+
+```{r Christmas}
+
+filter(flights, month==12, day ==24 )
+
+```
+
+Filter to the flights at night, let's say after 7:00 PM, or 1900
+
+```{r ChristmasEve}
+
+ChristmasEveFlights <- filter(flights, month==12, day ==24,  dep_time > 1900 )
+
+```
+
+
+Now let's see who was in the air long enough to see the raindeer.  To do so, we will add a new variable to the dataset, flighttime, by subtracting deptime from arrtime.  We will add that variable using the `mutate()` function, which works just like filter, but instead of returning rows, it adds columns.  You name the new variable whatever you like, and you use an `=` then the content of the new variable.
+
+```{r ChristmasFlightTime}
+
+ChristmasEveFlights <- mutate(ChristmasEveFlights, flighttime = arr_time - dep_time)
+
+```
+
+\pagebreak
+
+## Plotting Flights
+
+Lets use a simple plot to visualize these flights.  Remember you can learn about all commands using ?qplot  
+
+```{r ChristmasPlot1,fig.height=4, fig.width=4}
+
+qplot(x = dep_time, y = flighttime, data = ChristmasEveFlights)
+
+```
+
+
+ It seems like something is wrong.  Some flights are spilling over into the next day.  Let's return to the Christmas Eve Flights equation.  What do we need to do?  We want to add 2400 hours when the flighttime is negative.  We can do that with an `ifelse` command.  `ifelse` commands take a logical statment and return the second element if it is true and the third element if it is false.  
+
+
+```{r ifelsecommand}
+
+ifelse(2==3, "Is correct", "Is not correct")
+
+```
+
+```{r ChristmasPlot2,fig.height=4, fig.width=4}
+
+ChristmasEveFlights <- mutate(ChristmasEveFlights, 
+              
+                       flighttime = arr_time - dep_time, 
+                       
+                       flighttime24 = ifelse( flighttime < 0, flighttime+2400, flighttime))
+
+qplot(dep_time, flighttime24, data=ChristmasEveFlights)
+
+```
+
+
+
+##Summarizing the Data
+
+ Is this an atypical distribution?  Let's get some simple statistics from these data.
+
+
+```{r summaryFlights}
+
+summary(ChristmasEveFlights)
+
+```
+
+
+The average flight time on Christmas Eve is 256.  For comparison, we should do the same calculation for the whole dataset.
+
+
+
+```{r summaryFlights2}
+
+
+flights <- mutate(flights,  
+    
+        flighttime = arr_time - dep_time, 
+        flighttime24 = ifelse( flighttime < 0, flighttime+2400, flighttime))
+
+summary(flights$flighttime24)
+
+```
+
+
+
+
+The average for the whole population is 231.  Is this the right way to summarise this data? We can add a variable to the flights data that indicates that the flight is a Christmas eve flight, so we don't have to keep messing with two datasets.
+
+```{r flightcomparison}
+
+flightscomparison <- mutate(flights, 
+
+    ChristmasEve = ifelse( month==12 & day==24& dep_time>1900,
+                           "Christmas Eve", "Un-Christmas Eve"))
+
+
+```
+
+Let further limit the analysis to evenings evenings, we don't want our analysis messed up by morning flights.
+
+
+
+```{r flightcomparisonnights}
+
+flightscomparison <- filter(flightscomparison, dep_time>1900)
+
+head(flightscomparison)
+
+```
+
+
+\newpage
+
+# Advanced Plotting
+
+After you have mastered the above commands, we can turn to advanced plotting techniques, from `ggplot2`, the most cutting edge data visualization software on the market.  Learning about ggplot2 will be a substantial part of this course, and a great tool you will use for the rest of your careers.
+
+ggplot2 has a particular philosophy about how to plot.  The basic parts are a `ggplot()` command to input the data, and then layers or `geoms` are added with `+` signs afterwards.  
+
+Inside a ggplot function we start with some data, and then we tell the computer which rows and columns from the data are to be used as the x and y axis.  This is done inside a function called an aesthetic command `aes()`.  The neat thing is that just like mutate and filter, the aesthetic command does not need quotation marks, more on that later.  
+
+The next thing to do is add a layer, or `geom`, which tells `ggplot` what shape you want the data to take.  Here is a list of the ones I use most often:
+    + `geom_points` : Common scatterplot.  Takes on a `x` and `y` `aes`.
+    + `geom_bar` : Barplot, great for categorical data.
+    + `geom_histogram` : A histogram, which shows the proportion or frequency of a continuous variable in various bins.
+    + `geom_density` : Displays a smoothed histogram (essentially).
+    + `geom_smooth` : Adds a regression line to a scatterplot.  Defaults to a smoothed local regression.
+    + `geom_text` : like a scatterplot but with text.
+ 
+These commands will show up throughout the course.
+
+We start with a very simple dataframe and plot:
+
+```{r simpleplot,fig.height=4, fig.width=8}
+
+votes2016<-c(-5, -4, -3, -10, 0, 3, 4, 0, 5)
+
+votes2018<-c(0, -2, -8, -8, -9, 12, 13, 5, 3)
+
+df<-data.frame(votes2016=votes2016, votes2018=votes2018)
+
+ggplot(df, aes(x = votes2016, y = votes2018)) +
+  geom_point()
+  
+```
+
+
+Simple, clear, attractive.  Now lets consider a more advanced plot.
+\newpage
+
+The `aes` is not just for 2 dimension plots, it can be used to specify all sorts of interesting 3rd and 4th dimensions of the data using the `group` and `fill` commands.
+
+```{r flightcomparisonGGplot1,fig.height=4, fig.width=8}
+
+ggplot(flightscomparison, 
+       aes(flighttime24, group = ChristmasEve, fill= ChristmasEve ))+
+        geom_density(alpha=.5)
+
+```
+
+This is a bit hard to read.  To improve legibility, we can cut out all flights more than 6 hours.  Note that we are putting the filter command right into the ggplot command.
+
+```{r flightcomparisonGGplot2,fig.height=4, fig.width=8}
+
+ggplot(filter(flightscomparison, flighttime24<600), 
+       aes(flighttime24, group = ChristmasEve, fill= ChristmasEve ))+
+       geom_density(alpha=.5)
+```
+
+
+\newpage
+For your enjoyment, I am going to add some features to the plot above, to make it look nice.
+
+```{r flightcomparisonGGplot3,fig.height=4, fig.width=8}
+
+ggplot( filter(flightscomparison, flighttime24<600), 
+        aes(flighttime24, group = ChristmasEve, fill= ChristmasEve ))+
+geom_density(alpha=.5)+
+theme_bw()+
+xlab("Flight Length")+
+ggtitle("Distribution of Nighttime Flight Lengths in 2013")+
+guides(fill = guide_legend(title = "Holiday"))+theme(legend.position="bottom")
+
+```
+
+\newpage
+
+### Histogram plot
+
+For comparison, see the following histogram plot.  This histogram shows the proportion of the data that occurs in bins of a continuous variable.  I am using the new `freqpoly` geom, which draws a line at the top of the various histogram bins.
+
+```{r flightcomparisonGGplot4,fig.height=4, fig.width=4}
+
+ggplot( filter(flightscomparison, flighttime24<600), 
+        aes(flighttime24, group = ChristmasEve, color = ChristmasEve ))+
+geom_freqpoly(bins=20, aes(y=..density..), position="identity")+
+theme_bw()+
+xlab("Flight Length")+
+ggtitle("Distribution of Nighttime Flight Lengths in 2013")+
+guides(fill = guide_legend(title = "Holiday"))+theme(legend.position="bottom")
+
+```
+
+\newpage
+
+## Plotting skewed data
+
+Very often we transform our data to improve visualization, not just to fit our concepts better.  One of those tranforms used very often is the logarithm.  Consider the distribution of departure delay for a sample of 5000 flights:
+
+```{r needsalog}
+ggplot(sample_n(flights, 5000), aes(dep_delay))+geom_density()
+```
+
+
+\newpage
+
+A few points really stretch out the x axis.  If we take the log, we can get a better look.  To do so, we first remove observations less than or equal to 0.
+
+```{r hasalog,fig.height=4, fig.width=4}
+
+samp_flights        <- sample_n(flights, 5000)  # This draws a random 5000 rows from flights
+samp_flights_delay  <- filter(samp_flights, dep_delay>=0) # This removes negative delay
+samp_flights_delay  <- mutate(samp_flights_delay, log_dep_delay = log(dep_delay+1))
+
+ggplot(samp_flights_delay, aes(log_dep_delay))+geom_density()
+
+```
+
+
+
+Writing data in R is simple.  Here we save this data that we made to do statistical inference later in the quarter.  Again, put the path in a folder on your computer.
+
+```{r writeout, eval=FALSE}
+
+write.csv(flightscomparison, "~/Dropbox/mathCamp/Code/data/flightcomparison.csv")
+
+
+```
+
+
+
+

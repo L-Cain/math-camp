@@ -1,0 +1,281 @@
+---
+title: "R Lab:  Week 6"
+author: "Robert Gulotty"
+date: "1/31/2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=80),tidy=TRUE)
+set.seed(120)
+
+```
+******
+
+```{r}
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(dplyr, warn.conflicts = F)
+library(purrr, warn.conflicts = F)
+library(readr)
+```
+
+#BASEBALL!
+
+The World Series is a best of 7 contest, whoever wins four wins the series wins, and they stop playing.  Our question is how long the series will last.  If you are unfamiliar with baseball, I suggest watching the documentary, __A League of Their Own__.
+
+Suppose that we know that the probability of winning a game is .5:
+
+```{r}
+p<-.5
+```
+
+## Intro to combinatorics
+
+Lets consider the probability of each of outcomes.
+
+The probability of the world series ending in exactly four games is the sum of a win a win a win and a win or a loss a loss a loss and a loss.  That is, 
+```{r}
+winin4 <- p * p * p * p + (1 - p) * (1 - p) * (1 - p) * (1 - p)
+winin4
+```
+
+Because the two teams are symmetric, we could have just multiplied by two:
+```{r}
+2 * p * p * p * p
+```
+
+Now if it is going to end in 5 games, the series can work several ways, without loss of generality, the home team could lose the first, the second, the third or the fourth games, but they have to win the final game.  These are four possibilities:
+
+```{r}
+winin5 <- 2 * 4 * p * p * p * (1 - p) * p
+winin5
+```
+
+If the series lasts for 6 games, they could lose the first two, the first and the second to last, etc.  This is a combinatoric problem, and can be calculated with the choose function.  Take the number of things in the set that you are ordering, call that n, and then the number of distinct elements as k.  Then `choose(n, k) = n!/(k!(n-k)!)` is the number of k-combinations.  
+
+So for the previous example, we had four games before the last one that could be in any order, so n=4, and we had one element that was distinct, k=1.  
+
+```{r}
+winin5 <- 2 * choose(4, 1) * p * p * p * (1 - p) * p
+winin5
+```
+
+We can extend this logic with 5 games and two losses
+```{r}
+winin6 <- 2 * choose(5, 2) * p * p * p * (1 - p) * (1 - p) * p
+winin6
+```
+
+We can extend this logic with 6 games and three losses
+```{r}
+winin7 <- 2 * choose(6, 3) * p * p * p * (1 - p) * (1 - p) * (1 - p) * p
+winin7
+```
+
+\newpage
+## An aside on game 6 or 7.
+
+```{r, collapse=T, fig.width=7, fig.height=4}
+tprops<-c(winin4,winin5,winin6,winin7)
+names(tprops)<-c("Done in 4","Done in 5","Done in 6","Done in 7")
+barplot(tprops,main="Theoretical Proportions of World Series Length")
+```
+
+Isn't it surprising that the ex ante probability of the series being over in six games is equal to it being done in 7 games?  A quick look ahead to conditional probability will give you a sense for why.  Suppose that you just finished Game 5, and it is not over.  There are many ways you could have gotten to this point, but we will ignore that for now.  One of the two teams is in a position to win it all if they win Game 6.  If that team loses game six, then you go to Game 7.  The chance of that happening is just the chance that a team wins a game, which is $.5$.  So with equal probability, the games go to either 6 or 7 games.  
+
+In the following weeks, we will try to get an intuition this and other similar situtions.
+
+
+
+# Demonstrating the form of the binomial distribution.
+
+The preceeding logic is related to one of the most useful distributions in probability, the binomial distribution.  We will learn about random variables and their distributions soon, but the binomial distribution describes the probability of $k$ successes in $n$ independent trials of a binary experiment where each experiment has the same probability of success $p$.
+
+
+
+
+$$f(k; n,p)=P(X=k)= {n\choose k} p^k (1-p)^{n-k}$$
+The simplest case is the single trial experiment, like a coin toss, where n=1. 
+$$f(k; n,p)= \begin{cases} P(X=1) = {1\choose 1} p^1 (1-p)^{1-1} =p \\ P(X=0) = {1\choose 0} p^0 (1-p)^{1-0}=1-p\end{cases}$$
+
+The more complicated situation arises whenever you count things that arise from a fixed constant process, like the number of games that a world series lasts  
+
+\newpage
+
+Work through the following equations to reassure yourself of their similarity.
+```{r}
+endin4 <- 2 * choose(3, 3) * p * p * p * p
+endin4binomial <- 2 * dbinom(x = 3, size = 3, prob = p) * p
+
+endin5 <- 2*choose(4,3)*p*p*p*(1-p)*p
+endin5binomial <- 2*dbinom(x = 3, size = 4, prob = p)*p
+
+endin6<-2*choose(5,2)*p*p*p*(1-p)*(1-p)*p
+endin6binomail<-2*dbinom(x = 3, size = 5, prob = p)*p
+
+endin7<-2*choose(6,3)*p*p*p*(1-p)*(1-p)*(1-p)*p
+endin7binomial<-2*dbinom(x = 3, size = 6, prob = p)*p
+```
+
+\newpage
+
+# Confirmation through simulation methods
+
+Throughout this portion of the course, we will ask you to simulate data to confirm or test intuitions about probability.  Here we will simulate the data generating process for the baseball games, and then run a simulation of these games to check our distributional assumption.
+
+```{r}
+worldseriesgame<-function(pwin){
+  outcomeofgame <- sample(c(0, 1), size = 1,  prob = c(pwin, 1-pwin))
+  return(outcomeofgame)
+  }
+ 
+
+
+worldseries<- function(totalwinsneeded, pwin){
+  maxgames<-25
+gameswonbyA <- replicate(worldseriesgame(pwin), n = maxgames)
+
+totalAwins<-cumsum(gameswonbyA)
+totalBwins<-cumsum(1-gameswonbyA)
+
+EndbyA<-min(c(which(totalAwins==totalwinsneeded), maxgames))
+EndbyB<-min(c(which(totalBwins==totalwinsneeded), maxgames))
+            
+Serieslength<-min(EndbyA,EndbyB)
+return(Serieslength)
+}
+
+```
+Now that we have a worldseries function, we can simulate one run of 100 years:
+
+```{r}
+sim100<-replicate(worldseries(4, .5), n=100)
+table(sim100)/sum(table(sim100))
+```
+
+What if we ran that 100 years for 5000 worlds?
+```{r}
+worldhistory<- function(maxwins){
+sim100<-replicate(worldseries(maxwins, .5), n=100)
+table(sim100)/sum(table(sim100))
+}
+
+maxwins<- 4
+athousandworlds<-replicate(worldhistory(maxwins), n=5000)
+
+dfthousand<-data.frame(t(athousandworlds))
+names(dfthousand)<-paste0("in",maxwins:(2*maxwins-1))
+
+toplot<-gather(dfthousand)
+
+ggplot(toplot, aes(key, value))+geom_violin()+labs(x="SeriesLength", y="Share")
+
+```
+
+\newpage
+
+# Comparing theory to data
+Ok, now we have a model for the world series.  We should fit it to the data.
+
+Read in data from Wikipedia.
+```{r}
+WSeries<-read_csv("~/Google Drive/IPS2014/Lecture3/WSeries.csv")
+# Drop canceled World Series.
+WSeriesin4<-WSeries[!is.na(WSeries$Games),]
+```
+
+Turn 4xY nomenclature to 4+Y length of game:
+
+```{r}
+WSeriesin4 <-
+  WSeriesin4 %>% mutate(length = map_dbl(map(
+  str_extract_all(WSeriesin4$Games, "\\d"), as.numeric), sum))
+```
+
+Drop Series that went over 7 games
+```{r}
+WSeriesin4 <- WSeriesin4 %>% filter(length < 8)
+```
+
+
+Empirical Proportions of Series Lengths
+```{r}
+eprops <- table(WSeriesin4$length) / length(WSeriesin4$length)
+
+ActualWS <- data.frame(key = paste0("in", 4:7),
+value = as.numeric(eprops))
+
+ggplot(toplot, aes(key, value)) + geom_violin() + labs(x = "SeriesLength", y =
+"Share") + geom_point(data = ActualWS)
+
+```
+
+As we can see, we simulated world series with as many or more 'done in 4' games `r mean(dfthousand$in4>=eprops[1])*100` percent of the time.  I would say we have evidence against the model.  The problem is that once we have a low draw for one of the categories, we must have higher draws on at least one of the others.  In the next section, I discuss the canonical way to test the fit between our data and this model.
+
+\newpage
+
+#Chi Square Test
+
+Formally, we would use a chi-square test, a statistical procedure for testing whether overall distribution of events are generated by chance.  As will other statistical tests, the goal is to see if the data is consistent with a null hypothysis.  Our __null hypothesis__ is that the World Series satisfies our model's theoretical proportions (`r tprops`). 
+
+If we have a theoretical model of counts and observed counts, we can test whether our data is consistent with our model using a Chi-square test.  Specifically, the sum of squared deviations from the expected values are distributed by a Chi-square distribution.  The produdure has us take the difference of the count of the observed categories from the expected counts, and square them. This is our squared difference.  We normalize these differences by dividing by the expected count, and then sum across all our categories.  This generates a single number, called a test statistic, that has a theoretical distribution.
+
+$$\chi^2=\sum_{i \in Categories} \frac{(Observed_i- Expected_i)^2}{Expected_i}$$
+
+What we have done is taken a complicated model, our World Series model, and come up with a single statistical summary of the fit of that model to the data.
+
+Chi-Square distributions have one parameter, the number of __Degrees of Freedom__.  Normally, the __Degrees of Freedom__ are the number of categories minus the number of fixed values in our theoretical model.  In our example, we have four categories (done in 4, done in 5, etc.), and four expected proportions from our model.  The four theoretical proportions must to sum to one, so once we know three of the proportions, the fourth is set.  This is an intuition for why we have three __Degrees of Freedom__.  
+
+The following code generates several Chi-Square distributions under different degrees of freedom.  As you can see, the squared deviation is always expected to be positive, and depending on the number of degrees of freedom will have more mass at higher values of x.  Because x will be the measure of deviation from our expected counts, you should intuitively think the more degrees of freedom, the more our test expects to see larger deviations just by chance.
+
+```{r, fig.width=10, fig.height=5}
+degreesoffreedom <- c(1, 2, 3, 5, 9)
+x <- seq(0, 20, by = .01)
+chisquares <- map(degreesoffreedom,  ~ dchisq(x, df = .x))
+names(chisquares) <- paste0("df", degreesoffreedom)
+
+data.frame(chisquares) %>% mutate(x = x) %>%
+  gather(key = "degreesoffreedom", value = "f(x)", -x) %>%
+  ggplot() + geom_line(aes(x, `f(x)`)) +
+  facet_grid(. ~ degreesoffreedom)  + 
+  ylim(c(0, .3)) + xlim(c(0, 20)) +
+  labs(title = "Chi-Square Distribution")
+
+```
+
+\pagebreak
+
+We can apply these ideas to our observed and expected world series lengths.
+
+```{r}
+Observed <- table(WSeriesin4$length)
+Expected <- length(WSeriesin4$length)*tprops    
+chisqstat <-sum(((Observed-Expected)^2)/Expected)
+```
+
+Now, remembering from the first R lesson, we can calculate the p-value of a statistic by integrating the area of the distribution to the right of our test statistic.  It corresponds to the probability, under the null hypothesis, of having seen a statistic as high as what we calculate or higher.  
+
+```{r}
+integrate(dchisq, df=3, lower= chisqstat, upper = Inf)
+```
+
+It looks like we have a p-value of 0.047, so we can say that we can reject the hypothesis that our data was generated by our the model.
+
+As before, R has a built in way of calculating the same thing:
+
+```{r}
+testWS <- chisq.test(table(WSeriesin4$length), correct = F, p = tprops)
+
+testWS
+```
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,766 @@
+
+\documentclass{beamer}
+
+%\usepackage[table]{xcolor}
+\mode<presentation> {
+  \usetheme{Boadilla}
+
+%  \usetheme{Pittsburgh}
+%\usefonttheme[2]{sans}
+\renewcommand{\familydefault}{cmss}
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
+%\usepackage{palatino}
+%\usepackage{cmbright}
+  \setbeamercovered{transparent}
+\useinnertheme{rectangles}
+}
+
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{structure}{fg= blue}
+\definecolor{trial}{cmyk}{1,0,0, 0}
+\definecolor{trial2}{cmyk}{0.00,0,1, 0}
+\definecolor{darkgreen}{rgb}{0,.4, 0.1}
+\usepackage{array}
+\beamertemplatesolidbackgroundcolor{white}  \setbeamercolor{alerted
+text}{fg=red}
+\usepackage{tcolorbox}
+\setbeamertemplate{caption}[numbered]\newcounter{mylastframe}
+
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{colortbl}
+
+\renewcommand{\familydefault}{cmss}
+%\usepackage[all]{xy}
+
+\usepackage{tikz}
+\usepackage{lipsum}
+
+ \newenvironment{changemargin}[3]{%
+ \begin{list}{}{%
+ \setlength{\topsep}{0pt}%
+ \setlength{\leftmargin}{#1}%
+ \setlength{\rightmargin}{#2}%
+ \setlength{\topmargin}{#3}%
+ \setlength{\listparindent}{\parindent}%
+ \setlength{\itemindent}{\parindent}%
+ \setlength{\parsep}{\parskip}%
+ }%
+\item[]}{\end{list}}
+\usetikzlibrary{arrows}
+
+\usecolortheme{lily}
+
+\newtheorem{com}{Comment}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{condition}{Condition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+ \numberwithin{equation}{section}
+ 
+
+\setbeamertemplate{navigation symbols}{}
+
+
+\title[PLSC 43401]{Mathematical Foundations of Political Methodology}
+
+\author{Robert Gulotty}
+\institute[Chicago]{University of Chicago}
+\vspace{0.3in}
+
+
+
+
+\begin{document}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Lecture 6: Transforms}
+\begin{itemize}
+\item Proof that if $X_1\ ...\ X_N$ are MVN and $cov(X_i,X_j)=0$ then independent.
+\item Change of Coordinates
+\item Moment Generating Functions
+\end{itemize}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+
+\begin{defn}
+$\boldsymbol{X} = (X_{1}, X_{2}, \hdots, X_{N}) $ is a vector of random variables.  If $\boldsymbol{X}$ has pdf 
+
+\begin{eqnarray}
+f(\boldsymbol{x}) & = & (2 \pi)^{-N/2} \text{det}\left(\boldsymbol{\Sigma}\right)^{-1/2} \exp\left(-\frac{1}{2}(\boldsymbol{x} - \boldsymbol{\mu})^{'}\boldsymbol{\Sigma} (\boldsymbol{x} - \boldsymbol{\mu} ) \right) \nonumber 
+\end{eqnarray}
+$\boldsymbol{X}$ is a \alert{Multivariate Normal} Distribution, 
+\begin{eqnarray}
+\boldsymbol{X} & \sim & \text{Multivariate Normal} (\boldsymbol{\mu}, \boldsymbol{\Sigma}) \nonumber 
+\end{eqnarray}
+
+
+\end{defn}
+
+
+\end{frame}
+
+
+\begin{frame}
+
+\begin{prop}
+Suppose $\boldsymbol{X} \sim \text{Multivariate Normal}(\boldsymbol{\mu}, \boldsymbol{\Sigma})$.  
+where $\boldsymbol{X}= (X_{1}, X_{2}, \hdots, X_{N})$. \\
+If $\text{cov}(X_{i}, X_{j})  = 0  $, then $X_{i}$ and $X_{j}$ are independent 
+
+\end{prop}
+\end{frame}
+
+
+
+\begin{frame}
+
+\begin{proof}
+Suppose $\mathbf{X}=(X_1,\ ... X_N)$ are MVN distributed \\ \pause 
+Partition these into two groups $\mathbf{X_A}$ and $\mathbf{X_B}$, with means $\boldsymbol{\mu_A}$ and $\boldsymbol{\mu_B}$, and variance covariance 
+$$\boldsymbol{\Sigma}=\ \begin{pmatrix} 
+\text{var}(X_{1}) & \text{cov}(X_{1}, X_{2}) & \hdots & \text{cov}(X_{1}, X_{N}) \\
+\text{cov}(X_{2}, X_{1}) & \text{var}(X_{2}) & \hdots & \text{cov}(X_{2}, X_{N} ) \\
+\vdots & \vdots & \ddots & \vdots \\
+\text{cov}(X_{N}, X_{1} ) & \text{cov}(X_{N}, X_{2} ) & \hdots & \text{var}(X_{N} ) \\
+\end{pmatrix}=\begin{pmatrix} \boldsymbol{\Sigma}_{AA} & \boldsymbol{\Sigma}_{AB} \\ \boldsymbol{\Sigma}_{BA} &\boldsymbol{\Sigma}_{BB} \\\end{pmatrix}$$
+
+\pause
+Now assume: $\boldsymbol{\Sigma}_{AB}=\boldsymbol{\Sigma}_{BA}=0$\pause
+\begin{eqnarray}
+\invisible<1-3>{& & [\mathbf{x_A^T}-\boldsymbol{\mu_A^T}, \quad \mathbf{x_B^T}-\boldsymbol{\mu_B^T}]\begin{bmatrix} \boldsymbol{\Sigma}_{AA} & 0\\ 0 &\boldsymbol{\Sigma}_{BB} \end{bmatrix}^{-1}  \begin{bmatrix}\mathbf{x_A}-\boldsymbol{\mu_A} \\ \mathbf{x_B}-\boldsymbol{\mu_B}\end{bmatrix} \nonumber } 
+\end{eqnarray}
+
+\end{proof}
+\end{frame}
+
+\begin{frame}
+Now taking that equation:
+\begin{eqnarray}
+\invisible<1>{& & [\mathbf{x_A^T}-\boldsymbol{\mu_A^T}, \quad \mathbf{x_B^T}-\boldsymbol{\mu_B^T}]\begin{bmatrix} \boldsymbol{\Sigma}_{AA} & 0\\ 0 &\boldsymbol{\Sigma}_{BB} \end{bmatrix}^{-1}  \begin{bmatrix}\mathbf{x_A}-\boldsymbol{\mu_A} \\ \mathbf{x_B}-\boldsymbol{\mu_B}\end{bmatrix} \nonumber \\ } \pause 
+\invisible<1-2>{& & [\mathbf{x_A^T}-\boldsymbol{\mu_A^T}, \quad \mathbf{x_B^T}-\boldsymbol{\mu_B^T}]\begin{bmatrix} \boldsymbol{\Sigma}_{AA}^{-1} & 0\\ 0 &\boldsymbol{\Sigma}_{BB}^{-1} \end{bmatrix}  \begin{bmatrix}\mathbf{x_A}-\boldsymbol{\mu_A} \\ \mathbf{x_B}-\boldsymbol{\mu_B}\end{bmatrix} \nonumber \\ } \pause 
+\invisible<1-3>{& &(\mathbf{x_A}-\boldsymbol{\mu_A})^T\boldsymbol{\Sigma}_{AA}^{-1}(\mathbf{x_A}-\boldsymbol{\mu_A})+ (\mathbf{x_B}-\boldsymbol{\mu_B})^{T} \boldsymbol{\Sigma}_{BB}^{-1}(\mathbf{x_B}-\boldsymbol{\mu_B}) \nonumber } \pause
+\end{eqnarray}
+
+\invisible<1-4>{So $exp\{(\mathbf{x}-\boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})\}$ factorizes into :
+$$exp\{(\mathbf{x_A}-\boldsymbol{\mu_A})^T\boldsymbol{\Sigma}_{AA}^{-1}(\mathbf{x_A}-\boldsymbol{\mu_A})\}*exp\{(\mathbf{x_B}-\boldsymbol{\mu_B})^{T} \boldsymbol{\Sigma}_{BB}^{-1}(\mathbf{x_B}-\boldsymbol{\mu_B})\}$$}
+\pause
+so :\pause
+\invisible<1-5>{$$f(\mathbf{x})=g(\mathbf{x_A})h(\mathbf{x_B})$$}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Change of Coordinates}
+
+
+\begin{prop}
+Suppose $X$ is a random variable and $Y = g(X)$, where $g:\mathbb{R} \rightarrow \mathbb{R}$ that is a $monotonic$ function.  \\
+Define $g^{-1}:\mathbb{R} \rightarrow \mathbb{R}$ such that $g^{-1}(g(X)) = X$ and is differentiable.  Then, 
+\begin{eqnarray}
+f_{Y}(y) & = & f_{X}(g^{-1}(y))\left|\frac{\partial g^{-1}(y)}{\partial y} \right| \text{ if $y = g(x)$ for some $x$ } \nonumber \\
+& = & 0 \text{ otherwise } \nonumber 
+\end{eqnarray}
+
+\end{prop}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Change of Coordinates}
+
+
+\begin{proof}
+
+Suppose $g(\cdot)$ is monotonically increasing (WLOG)\pause 
+\begin{eqnarray}
+\invisible<1>{F_{Y}(y) & = & P(Y \leq y) \nonumber \\} \pause 
+\invisible<1-2>{& = & P(g(X) \leq y) \nonumber \\} \pause 
+\invisible<1-3>{& = & P(X \leq g^{-1}(y) ) \nonumber \\} \pause 
+\invisible<1-4>{& = & F_{X}(g^{-1}(y) ) \nonumber } \pause 
+\end{eqnarray}
+\invisible<1-5>{Now differentiating to get the pdf } \pause 
+\begin{eqnarray}
+\invisible<1-6>{\frac{\partial F_{Y}(y)}{\partial y} & = & \frac{\partial F_{X}(g^{-1}(y) )} {\partial y } \nonumber \\
+ & = & f_{X}(g^{-1}(y) ) \frac{\partial g^{-1}(y)}{\partial y }   \nonumber } \pause 
+\end{eqnarray}
+\invisible<1-7>{Then this is a pdf because $\frac{\partial g^{-1}(Y)}{\partial y } > 0$.  } 
+
+
+\end{proof}
+
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Change of Coordinates}
+
+Suppose $X$ is a random variable with pdf $f_{X}(x)$.  Suppose $Y =  X^{n}$.  Find $f_{Y}(y)$. \pause  \\
+\invisible<1>{Then $g^{-1} (x)  =  x^{1/n}$.  } \pause 
+
+
+
+
+\begin{eqnarray}
+\invisible<1-2>{f_{Y}(y) & = & f_{X}(g^{-1}(y)) \left| \frac{\partial g^{-1}(Y)}{\partial y } \right| \nonumber \\} \pause 
+\invisible<1-3>{ & = & f_{X} (y^{1/n} ) \frac{y^{\frac{1}{n} - 1}}{n} \nonumber } 
+\end{eqnarray}
+\pause
+\invisible<1-4>{\alert{We've used this to derive many of the pdfs}} \pause 
+\begin{itemize}
+\invisible<1-5>{\item[-] Normal distribution }
+\invisible<1-5>{\item[-] Chi-Squared Distribution}
+\end{itemize}
+
+
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{$\chi^{2}$ Distribution}
+
+Suppose $Z \sim \text{Normal}(0,1)\leftarrow f_x(x)$. \pause   \\
+\invisible<1>{Consider $X = Z^2 \leftarrow g_x(x)$} \pause 
+\begin{eqnarray}
+\invisible<1-2>{F_{X}(x)   & = &  P(X \leq x) \nonumber \\ } \pause 
+\invisible<1-3>{& = & P(Z^2 \leq x ) \nonumber \\} \pause 
+ \invisible<1-4>{& = & P(-\sqrt{x} \leq Z \leq \sqrt{x}) \leftarrow g_x^{-1}(x)\nonumber \\} \pause 
+ \invisible<1-5>{& = & \frac{1}{\sqrt{2\pi}} \int_{-\sqrt{x}}^{\sqrt{x} } e^{-\frac{z^2}{2}} dz \nonumber \\} \pause 
+ \invisible<1-6>{& = & F_{Z} (\sqrt{x}) - F_{Z} (-\sqrt{x}) \nonumber } 
+\end{eqnarray}
+\invisible<1-7>{The pdf then is } \pause 
+
+\begin{eqnarray}
+\invisible<1-8>{\frac{\partial F_{X}(x) }{\partial x }  & = & f_{Z} (\sqrt{x}) \frac{1}{2\sqrt{x}} + f_{Z}(-\sqrt{x}) \frac{1}{2\sqrt{x}} \nonumber } 
+\end{eqnarray}
+
+\pause 
+
+
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{$\chi^2$ Distribution}
+\begin{eqnarray}
+\frac{\partial F_{X}(x) }{\partial x }  & = & f_{Z} (\sqrt{x}) \frac{1}{2\sqrt{x}} + f_{Z}(-\sqrt{x}) \frac{1}{2\sqrt{x}} \nonumber \pause \\
+\invisible<1>{& = & \frac{1}{\sqrt{x}}\frac{1}{2 \sqrt{2\pi}} ( 2e^{-\frac{x}{2}}) \nonumber \\} \pause 
+\invisible<1-2>{& = & \frac{1}{\sqrt{x}}\frac{1}{\sqrt{2\pi}} ( e^{-\frac{x}{2}}) \nonumber \\} \pause 
+\invisible<1-3>{& = & \frac{(\frac{1}{2})^{1/2}}{\Gamma(\frac{1}{2})}\left(x^{1/2 - 1} e^{-\frac{x}{2}}\right) \nonumber } \pause 
+\end{eqnarray}
+
+\invisible<1-4>{$X \sim \text{Gamma}(1/2, 1/2)$} \pause 
+
+\invisible<1-5>{Then if $X = \sum_{i=1}^{N} Z^2$\\}  \pause 
+
+\invisible<1-6>{$X \sim \text{Gamma}(n/2, 1/2) $}
+
+
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Approximating functions and second order conditions}
+
+
+\begin{thm}
+\textbf{Taylor's Theorem}
+Suppose $f:\Re \rightarrow \Re$, $f(x)$ is infinitely differentiable function.  Then, the taylor expansion of $f(x)$ around \alert{$a$} is given by 
+
+\begin{eqnarray}
+f(x) & = & f(a) + \frac{f^{'}(a)}{1!} (x- a) + \frac{f^{''}(a)}{2!} (x - a)^2 + \frac{f^{'''}(a)}{3!}(x- a)^3 + \hdots \nonumber \\
+f(x) & = & \sum_{n=0}^{\infty } \frac{f^{n} (a) }{n!} (x - a)^n \nonumber
+\end{eqnarray}
+
+\end{thm}
+
+
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example Function}
+
+Suppose $a$ = 0 and $f(x) = e^{x}$.  Then, 
+\begin{eqnarray}
+f^{'}(x) & = & e^{x} \nonumber \\
+f^{''}(x) & = & e^{x} \nonumber \\
+\vdots  & \vdots & \vdots \nonumber \\
+f^{n} (x) & = & e^{x} \nonumber 
+\end{eqnarray}
+
+This implies
+\begin{eqnarray}
+e^{x} & = & 1 + x + \frac{x^{2}}{2!} + \frac{x^3}{3!} \hdots + \frac{x^{n}}{n!} + \hdots \nonumber \end{eqnarray}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{Moment Generating Functions}
+
+
+\begin{defn}
+Suppose $X$ is a random variable with pdf $f$.  Define, 
+\begin{eqnarray}
+E[X^{n}] & = & \int_{-\infty}^{\infty} x^{n} f(x) dx   \nonumber 
+\end{eqnarray}
+
+We will call $X^{n}$ the \alert{$n^{\text{th}}$} moment of $X$ 
+
+\end{defn}
+
+\begin{itemize}
+\item[-] By this definition $var(X) = \text{Second Moment} - \text{First Moment}^{2} $
+\item[-] We are assuming that the integral converges
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Moment Generating Functions}
+
+\begin{prop}
+Suppose $X$ is a random variable with pdf $f(x)$.  Call $M(t) = E[e^{tX}]$, 
+\begin{eqnarray}
+M(t) & = & E[e^{tX}] \nonumber \\
+ & = & \int_{-\infty}^{\infty} e^{tx} f(x) dx \nonumber 
+ \end{eqnarray}
+
+We will call $M(t)$ the moment generating function, because:
+\begin{eqnarray}
+\frac{\partial^{n} M (t) }{\partial^{n} t}|_{0} & = & E[X^{n}] \nonumber 
+\end{eqnarray}
+
+(Assuming that we can interchange derivative and integral)
+
+\end{prop}
+
+
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+\begin{frame}
+\frametitle{Moment Generating Functions}
+
+\begin{small}
+\begin{proof}
+Recall the Taylor Expansion of $e^{tX}$ at $0$, \pause 
+\begin{eqnarray}
+\invisible<1>{e^{tX} & = & 1 + tx + \frac{t^2 x^2}{2!} + \frac{t^3 x^3}{3!} + \hdots \nonumber } \pause 
+\end{eqnarray}
+
+\invisible<1-2>{Then, } \pause 
+\begin{eqnarray}
+\invisible<1-3>{E[e^{tX} ] & = &  1 + tE[X] + \frac{t^2}{2!} E[X^2] + \frac{t^3}{3!} E[X^3] + \hdots \nonumber } \pause 
+\end{eqnarray}
+
+\invisible<1-4>{Differentiate once:} \pause 
+\begin{eqnarray}
+\invisible<1-5>{\frac{\partial M(t)}{\partial t} & = & 0 + E[X]  + \frac{2t}{2!} E[X^2] + \hdots \nonumber \\
+M^{'}(0) & = & 0 + E[X] + 0 + 0 \hdots \nonumber } 
+\end{eqnarray}
+
+
+
+
+
+\end{proof}
+
+\end{small}
+
+
+
+\end{frame}
+
+\begin{frame}
+
+\begin{small}
+\begin{proof}
+
+Differentiate $n$ times \pause 
+\begin{eqnarray}
+\invisible<1>{\frac{\partial^{n} M(t)}{\partial^{n} t } & = & 0 + 0 + 0 + \hdots + \frac{n \times n-1 \times \hdots 2 \times t^{0} E[X^{n}] }{n!}  + \frac{n!t E[X^{n+1}] }{(n+ 1)! } + \hdots \nonumber \\} \pause 
+\invisible<1-2>{& = & \frac{n! E[X^{n}] }{n!}  + \frac{n!t E[X^{n+1}] }{(n+ 1)! } + \hdots  \nonumber } \pause 
+\end{eqnarray}
+
+\invisible<1-3>{Evaluated at 0, yields $M^{n}(0)  = E[X^{n}] $} \pause 
+
+\end{proof}
+
+\begin{itemize}
+\invisible<1-4>{\item[-] If two random variables, $X$ and $Y$ have the same moment generating functions, then $F_{X}(x) = F_{Y}(y)$ for \alert{almost all} $x$.  } 
+\end{itemize}
+
+
+\end{small}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{The Moments of the Normal Distribution}
+Suppose $Z \sim N(0,1)$.  \pause 
+
+\begin{eqnarray}
+\invisible<1>{E[e^{tX}] & = & \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} e^{tx} e^{-x^2/2} dx \nonumber } \pause 
+\end{eqnarray}
+
+\begin{eqnarray} 
+\invisible<1-2>{tx - \frac{1}{2} x^2  & = & tx - \frac{1}{2} x^2 - \frac{1}{2}t^2+\frac{1}{2}t^2 \nonumber } \\\pause 
+\invisible<1-3>{ & = & -\frac{1}{2}(x-t)^2 +\frac{1}{2}t^2\nonumber   } \pause 
+\end{eqnarray}
+\begin{eqnarray} 
+\invisible<1-4>{E[e^{tX}] & = & e^{\frac{t^{2}}{2}} \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} e^{-(x- t)^2/2} dx \nonumber \\} \pause 
+ \invisible<1-5>{& = & e^{\frac{t^{2}}{2}} \nonumber } 
+\end{eqnarray}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Extracting Moments of the Normal Distribution}
+$$M(t)=E[e^{tX}]=e^{\frac{t^{2}}{2}}$$
+\pause 
+\begin{eqnarray}
+\invisible<1>{M^{'}(0) & = &E[X] =  e^{t^2/2} t |_{0} = 0 \nonumber \\} \pause
+\invisible<1-2>{M^{''} (0 ) & = & E[X^2] =  e^{t^2/2} (t^2 + 1) |_{0} = 1 \nonumber \\} \pause 
+\invisible<1-3>{M^{'''} (0) & = & E[X^3] = e^{t^2/2} t (t^2 + 3) |_{0} = 0 \nonumber \\} \pause 
+\invisible<1-4>{M^{''''} (0) & = & E[X^4] = e^{t^2/2} (t^4 + 6t^2 + 3)|_{0} = 3 \nonumber } \\ \pause 
+\invisible<1-5>{M^{5} (0) & = & E[X^5] = e^{t^2/2} t (t^4 + 10t^2 + 15)|_{0} = 0 \nonumber } \\ \pause 
+\invisible<1-6>{M^{6} (0) & = & E[X^6] = e^{t^2/2} (t^6 + 15t^4 + 45t^2 + 15 )|_{0} = 15 \nonumber } \pause 
+\end{eqnarray} 
+
+
+\end{frame}
+
+\begin{frame}
+
+\begin{prop}
+Suppose $X_{i}$ are a sequence of independent random variables.  Define 
+\begin{eqnarray}
+Y & = & \sum_{i=1}^{N} X_{i} \nonumber 
+\end{eqnarray}
+
+Then 
+\begin{eqnarray}
+M_{Y}(t) & = & \prod_{i=1}^{N} M_{X_{i}}(t) \nonumber 
+\end{eqnarray}
+
+
+\end{prop}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{proof}
+\begin{eqnarray}
+M_{Y}(t) & = & E[e^{tY}] \nonumber \\ \pause 
+\invisible<1>{& = & E[e^{t\sum_{i=1}^{N} X_{i} } ] \nonumber \\ } \pause 
+ \invisible<1-2>{& = & E[e^{tX_{1} + tX_{2} + \hdots tX_{N} } ] \nonumber \\} \pause 
+  \invisible<1-3>{& = & E[e^{tX_{1} }]E[e^{tX_{2} }] \hdots E[e^{tX_{N} }] \text{ (by independence) } \nonumber \\} \pause 
+   \invisible<1-4>{& = & \prod_{i=1}^{N} E[e^{tX_{i}}] \nonumber } 
+\end{eqnarray}
+
+\end{proof}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Inequalities and Limit Theorems}
+
+
+\alert{Limit Theorems}
+\begin{itemize}
+\item[-] What happens when we consider a long sequence of random variables?
+\item[-] What can we reasonably infer from data?
+\begin{itemize}
+\item[-] Laws of large numbers: averages of random variables converge on expected value?
+\item[-] Central Limit Theorems: sum of random variables have normal distribution?
+\end{itemize}
+\item[-] We'll focus on intuition for both, but we'll prove some stuff too.  
+\end{itemize}
+
+\alert{Review Session}
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Weak Law of Large Numbers}
+
+Proof plan: 
+\begin{itemize}
+\item[-] Markov's Inequality
+\item[-] Chebyshev's Inequality
+\item[-] Weak Law of Large Numbers 
+\end{itemize}
+
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Markov's Inequality}
+
+\begin{prop}
+Suppose $X$ is a random variable that takes on non-negative values.  Then, for all $a>0$, 
+\begin{eqnarray}
+P(X\geq a) & \leq & \frac{E[X]}{a} \nonumber 
+\end{eqnarray}
+\end{prop}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Markov's Inequality} 
+
+
+\begin{proof}
+For $a>0$,  \pause 
+\begin{eqnarray}
+\invisible<1>{E[X] & = & \int_{0}^{\infty} x f(x) dx \nonumber \\} \pause 
+ \invisible<1-2>{& = & \int_{0}^{a} x f(x) dx + \int_{a}^{\infty} x f(x) dx \nonumber } \pause 
+\end{eqnarray}
+
+\invisible<1-3>{Because $X\geq 0$, } \pause 
+
+\begin{eqnarray}
+\invisible<1-4>{E[X] \geq \int_{a}^{\infty} x f(x) dx  \geq \int_{a}^{\infty} a f(x)dx = a P(X \geq a )\nonumber \\} \pause 
+\invisible<1-5>{\frac{E[X]}{a} \geq P(X \geq a )\nonumber } 
+\end{eqnarray}
+
+
+\end{proof}
+
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Chebyshev's Inequality} 
+
+\begin{prop} 
+If $X$ is a random variable with mean $\mu$ and variance $\sigma^2$, then, for any value $k>0$, 
+\begin{eqnarray}
+P(|X - \mu| \geq k) & \leq & \frac{\sigma^2}{k^2} \nonumber 
+\end{eqnarray}
+
+\end{prop}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Chebyshev's Inequality} 
+
+
+\begin{proof}
+Define the random variable 
+\begin{eqnarray}
+ Y & = & (X - \mu)^2 \nonumber 
+\end{eqnarray}
+
+Where $\mu = E[X]$. 
+
+\pause 
+
+\invisible<1>{Then we know $Y$ is a non-negative random variable.  Set $a = k^2$.  \\} \pause 
+\invisible<1-2>{Applying the inequality:} \pause 
+\begin{eqnarray}
+\invisible<1-3>{P(Y \geq k^2) \leq \frac{E[Y]}{k^2} \nonumber \\} \pause 
+\invisible<1-4>{P( (X- \mu)^2 \geq k^2) \leq \frac{E[(X - \mu)^2]}{k^2} \nonumber \\} \pause 
+\invisible<1-5>{P( (X- \mu)^2 \geq k^2) \leq \frac{\sigma^2}{k^2}\nonumber } 
+\end{eqnarray}
+
+\end{proof}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Chebyshev's Inequality} 
+
+
+Further we know that, 
+\begin{eqnarray}
+(X - \mu)^2  \geq k^2 \nonumber 
+\end{eqnarray}
+
+\pause 
+
+\invisible<1>{Implies that } \pause 
+\begin{eqnarray}
+\invisible<1-2>{|X - \mu| \geq k \nonumber } \pause 
+\end{eqnarray}
+
+\invisible<1-3>{Thus, we have shown } \pause 
+\begin{eqnarray}
+\invisible<1-4>{P( |X- \mu| \geq k) \leq \frac{\sigma^2}{k^2}\nonumber } 
+\end{eqnarray}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Sequence of Random Variables}
+
+Sequence of Independent and Identically, Distributed Random variables.
+\begin{itemize}
+\item[-] Sequence: $X_{1}, X_{2}, \hdots, X_{n}, \hdots $
+\item[-] Think of a sequence as sampled \alert{data}:
+\begin{itemize}
+\item[-] Suppose we are drawing a sample of $N$ observations
+\item[-] Each observation will be a random variable, say $X_{i}$
+\item[-] With realization $x_{i}$ 
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Mean/Variance of Sample Mean}
+
+\begin{prop}
+Let $X_{1}, X_{2}, \hdots, X_{n}$ be a random sample from a distribution with mean $\mu$ and variance $\sigma^2$.  Let $\bar{X}_{n}$ be the sample mean.  Then 
+$E[\bar{X}_{n}] = \mu$ and var$(\bar{X}_{n}) = \frac{\sigma^2}{n}$
+\end{prop}
+
+\pause 
+\begin{proof}
+
+\begin{eqnarray}
+\invisible<1>{E[\bar{X}_{n}] & = & \frac{1}{n}\sum_{i=1}^{n} E[X_{i}] \nonumber \\} \pause 
+\invisible<1-2>{& = & \frac{1}{n} n \mu  = \mu \nonumber } 
+\end{eqnarray}
+
+
+
+\end{proof}
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Mean/Variance of Sample Mean}
+
+
+\pause 
+\begin{eqnarray}
+\invisible<1>{\text{var}(\bar{X}_{n}) & = & \frac{1}{n^2} \text{var}(\sum_{i=1}^{n} X_{i}) \nonumber \\} \pause 
+ \invisible<1-2>{&= & \frac{1}{n^2} \sum_{i=1}^{n} \text{var}(X_{i}) \nonumber \\} \pause 
+  \invisible<1-3>{& = & \frac{1}{n^2} n \sigma^2 = \frac{\sigma^2}{n} \nonumber } 
+\end{eqnarray}
+
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Weak Law of Large Numbers} 
+
+\begin{prop}
+Suppose $X_{1}, X_{2}, \hdots, X_{n}$ is a random sample from a distribution with mean $\mu$ and $Var(X_{i})= \sigma^2$.  Then, for all $\epsilon >0$, 
+\begin{eqnarray}
+P\left\{ \left| \frac{X_{1} + X_{2} + \hdots + X_{n} }{n} -\mu \right| \geq \epsilon \right\} \rightarrow 0 \text{ as } n \rightarrow \infty \nonumber 
+\end{eqnarray}
+
+\end{prop}
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Weak Law of Large Numbers}
+
+\begin{proof}
+From our previous proposition \pause 
+\begin{eqnarray}
+\invisible<1>{\frac{\text{E}[X_{1} + X_{2} + \cdots + X_{n} ]}{n} & = & \frac{\sum_{i=1}^{n} E[X_{i}] }{n}  = \mu \nonumber} \pause 
+\end{eqnarray}
+\invisible<1-2>{Further, } \pause 
+\begin{eqnarray}
+\invisible<1-3>{\text{E}[ (\frac{\sum_{i=1}^{n} X_{i} - \mu}{n} )^2] = \frac{\text{Var}(X_{1} + X_{2} + \cdots + X_{n} )}{n^2} & = & \frac{ \sum_{i=1}^{n} \text{Var}(X_{i}) }{n^2} = \frac{\sigma^2}{n} \nonumber } \pause 
+\end{eqnarray}
+\invisible<1-4>{Apply Chebyshev's Inequality: } \pause 
+\begin{eqnarray}
+\invisible<1-5>{P\left\{ \left| \frac{X_{1} + X_{2} + \hdots + X_{n} }{n} -\mu \right| \geq \epsilon \right\}\leq \frac{\sigma^2}{n \epsilon^2} \nonumber }
+\end{eqnarray}
+
+\end{proof}
+
+
+\end{frame}
+
+\begin{frame}
+Suppose $X_{1}, X_{2}, \hdots$ are iid normal distributions,
+\begin{eqnarray}
+X_{i} & \sim & \text{Normal}(0, 10) \nonumber 
+\end{eqnarray}
+
+\begin{eqnarray} 
+P\left\{ \left| \frac{X_{1} + X_{2} + \hdots + X_{n} }{n} -\mu \right| \geq 0.1 \right\} \text{ as } n \rightarrow \infty\nonumber 
+\end{eqnarray}
+\pause 
+
+
+\only<3-6>{Suppose we want to guarantee that we have at most a $0.01$ probability of being more than $0.1$ away from the true $\mu$.  How big do we need $n$?\pause 
+\begin{eqnarray}
+\invisible<1-3>{0.01 & = & \frac{10}{n (0.1^2) } \nonumber} \pause  \\
+\invisible<1-4>{n & = & \frac{1000}{0.01} \nonumber } \pause \\
+\invisible<1-5>{n & = & 100,000 } \nonumber 
+\end{eqnarray}
+}
+
+
+\end{frame}
+
+\end{document}

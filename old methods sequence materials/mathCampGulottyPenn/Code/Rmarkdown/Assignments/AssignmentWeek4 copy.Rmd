@@ -1,0 +1,125 @@
+---
+title: "Assignment for Week 4"
+author: "Author: Your name here!"
+date: "1/22/2016"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+```{r setup, include=FALSE}
+# This code changes "global" settings, here it makes the computer `echo` which refers to 
+# printing the code as well as the output into the pdf document when you knit.
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Change the following code to be your working folder for R
+
+setwd("~/Dropbox/mathCamp/Code/R")
+# The following allows the computer to always get the same result for random stuff.
+set.seed(100)
+
+# install.packages("dplyr")
+# install.packages("ggplot2")
+# install.packages("nycflights13")
+```
+
+## Package Loading
+
+```{r Package Loading}
+library(dplyr, warn.conflicts = FALSE)
+library(ggplot2)
+library(haven)
+```
+
+# Assignment
+<!-- Please Put \newpage commands between long answers.  Avoid allowing answers to spill over pages. --> 
+
+1. 19.2.3 (a) (p. 405)
+
+2. 19.2.6 (p. 406)
+
+3. 11.1.4 (c, e, f) (p. 207)
+
+4. 11.2.4 (p. 213)
+
+5. 11.2.6 (p. 213)
+
+6. 11.3.1 (p. 217)
+
+\newpage
+
+7) Which of the following datasets are tidy?
+
+```
+dta1<- data.frame(year = c(2000:2003,2000:2003), 
+                  CountryA = c(rep("USA",4),rep("CAN",4) ),
+                  CountryB=c(rep("Russia",4),rep("Russia",4) ),
+                  Agreement=c(0,1,1,0,0,1,0,0))
+
+dta2<- data.frame(year = c(2000:2003,2000:2003), 
+                  Dyad = c(rep("USA-RUS",4),rep("USA-RUS",4) ),
+                  ConflictType=c(rep("War",4),rep("Minor MID",4) ),
+                  ConflictLevel=c(0,3,1,0,0,1,0,0))
+
+dta3<- data.frame(Dyad = c("USA-RUS", "CAN-RUS"),
+                  War2002=c(0,2),
+                  War2003=c(0,2),
+                  War2004=c(0,2),
+                  MinorMID2002=c(0,2),
+                  MinorMID2003=c(0,2),
+                  MinorMID2004=c(0,2))
+```
+8) Use spread, gather and seperate from the tidy package to fix the untidy data.frames from question 7.
+
+9) Correct the common mistakes in the following code snippets
+
+  a)  Make the following TRUE
+  
+```{}
+mean(c("3,000", 2, 1, 0, 4)) == 601.4
+```
+  b)  Make the following into a vector TRUE TRUE TRUE
+  
+```{}
+EuclidDistancetoKabul <- function(x) {
+  sqrt((-64 - x[1]) ^ 2 + (16 - x[2]) ^ 2)
+}
+x <- EuclidDistancetoKabul(rbind(c(48, 4), c(12, 3), c(80, 13)))
+x > 20
+```
+      
+      
+  c)  Make the following code install the 'car' package.
+  
+```{}
+install.packages(car)
+```
+      
+  d)  Correct the following plot command:
+  
+```{}
+x <- c(3, 10, 4)
+y <- c(2, 3, 4)
+df <- data.frame(x, y)
+ggplot(df) + geom_bar(aes(x, y))
+```
+      
+  e)  Make the following code report TRUE 
+  
+```{}
+allthetypes <- list(df1 = data.frame(x = c("Iowa"), stringsAsFactors = F))
+is.character(allthetypes[1][[1]])
+```
+\newpage
+
+10)  How many shootings occur in the state with the most active VA hospitals?  The least active?
+
+11)  Plot the following function for $x \in [-4,4]$ by writing a custom function().  Use integrate() on that function to plot the area under the curve of that function from -Inf to x, such that $x \in [-4,4]$.
+
+$$\frac{1}{\sqrt{2\pi}}e^{\frac{-x^2}{2}}$$
+
+
+
+
+
+

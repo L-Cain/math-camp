@@ -1,0 +1,143 @@
+\documentclass[11pt,letterpaper]{article}
+% === graphic packages ===
+\usepackage{epsf,graphicx,psfrag}
+% === bibliography package ===
+\usepackage{natbib}
+% === margin and formatting ===
+\usepackage{setspace}
+%\usepackage{palatino}[1]
+%\usepackage[T1]{fontenc}
+%\usepackage{palatino}
+%\renewcommand{\familydefault}{cmss}
+%\usepackage{cmbright}
+%\usepackage[T1]{fontenc}
+%\usepackage{arev}
+%\usepackage[LGR,T1]{fontenc} %% LGR encoding is needed for loading the package gfsneohellenic
+%\usepackage[default]{gfsneohellenic}
+%\usepackage{times}
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage{endnotes}
+% === math packages ===
+\usepackage[reqno]{amsmath}
+%\usepackage[pdftex]{hyperref}
+\usepackage{amsthm}
+\usepackage{amssymb,enumerate}
+\usepackage[all]{xy}
+\usepackage{lscape}
+\usepackage[compact]{titlesec}
+%\newtheorem{lem} {Lemma}
+%\newtheorem{prop}{Proposition}
+%\newtheorem{thm}{Theorem}
+%\newtheorem{defn}{Definition}
+%\newtheorem{cor}{Corollary}
+%\newtheorem{obs}{Observation}
+ \numberwithin{equation}{section}
+% === dcolumn package ===
+\usepackage{dcolumn}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+% === additional packages ===
+\usepackage{url}
+\newcommand{\makebrace}[1]{\left\{#1 \right \} }
+\newcommand{\determinant}[1]{\left | #1 \right | }
+\title{Mathematical Foundations Practice Questions}
+\date{March 6, 2017}
+\begin{document}
+\maketitle
+\subsection*{Instructions}
+These are practice questions:
+\begin{enumerate}[I]
+\item \textsc{Probability and Mathematical Logic }
+\begin{enumerate}[1)]
+\item Comment on the veracity of the following statements in one sentence:
+\begin{enumerate}
+\item A correlation coefficient of zero between two variables indicates that they are independent.
+\item For events A and B, $P(A\cap B) < P(A)+P(B)-1$
+\item E(XY)=E(X)E(Y)
+\item To show that events $A$, $B$, and $C$ are independent, it is sufficient to show that $$P(A\cap B \cap C)=P(A)P(B)P(C)$$
+\end{enumerate}
+
+\item Let $A$ and $B$ be two independent events with $P(A)= .4$ and $P(A\cup B)=.64$.  What is $P(B)$?
+\item  If E and F are independent, are $E^c$ and $F^c$ independent?
+
+\end{enumerate}
+\pagebreak
+\item \textsc{Word problems}  
+\begin{enumerate}
+\item 20\% of people in a town usually vote for the Green Party. 30\% of the people in town are unhappy with the current government. But 80\% of the people who usually vote for the Green Party are unhappy with the current Government. If you know that your neighbor is not happy with the current government, what is the probability that she usually votes for the Green Party?
+
+\item In a congressional election, the incumbent is a Republican (R). Three Democrats (D1, D2 and D3) are seeking the Democratic nomination. The probabilities that they win are, respectively, 0.35, 0.40 and 0.25. Furthermore, polls show that R would have a 0.40 probability of defeating D1 in the general election, 0.35 probability of defeating D2, and a 0.60 probability of defeating D3. Assuming all these estimates to be accurate, what are the chances that the incumbent retains his seat?
+\end{enumerate}
+\item \textsc{Distributions} 
+\begin{enumerate}
+
+\item Suppose that 
+$$f_{XY}(x,y)=\begin{cases} 6e^{-2x-3y} & \text{for } 0< x \text{ and }0<y \\ \\ 0 &\text{else}
+\end{cases}$$
+\begin{enumerate}[1)]
+\item  Verify that $f_{XY}(x,y$) is a pdf. 
+\item Are X and Y independent?
+\item What is $f_{y|x}(y)$?
+\end{enumerate}
+\item A pizza restaurant promises to deliver your order to the table within 10 minutes. Let Y be the time between ordering and the arrival of the pizza and suppose that the pdf of Y is:
+$$f_{Y}(y)=\begin{cases} ky^2 & \text{for } 0<y< 10\\ 0 &\text{else}\end{cases}$$
+\begin{enumerate}[1)]
+\item Determine the value of k.
+\item What is $Var(Y)$?
+\item  Find the cdf of Y and graph it.
+\end{enumerate}
+\item A median is a value m such that $P (X \leq m) \geq 1/2$ and $P (X \geq m) \geq 1/2$. If $X$ is continuous, $m$ satisfies  $\int_{-\infty}^m f (x)dx = \int_m^{\infty} f(x)dx = 1/2$. Find the median for
+\begin{enumerate}
+\item Uniform(a, b) distribution
+\item Exponential($\lambda$) distribution $f(x)=\lambda e^{-\lambda x}$.
+\end{enumerate}
+\end{enumerate}
+\pagebreak
+\item \textsc{Calculating things}
+\begin{enumerate}[1)]
+\item You receive survey data for N people which includes two pieces of information: variable X and variable Y for each individual. You calculate the following functions of the data,
+$$\mu_X=4$$
+$$\mu_Y=2$$
+$$\mu_{XY}=12$$
+$$\sigma_X^2=8$$
+$$\sigma_Y^2=4$$
+What is the correlation between X and Y?
+\item An insurance company believes that people can be divided into two classes: those who are accident prone and those who are not. The statistics show that an accident-prone person will have an accident at some time with probability 0.4, whereas the probability decreases to 0.2 for a non-accident-prone person. The company also believes that 30\% of the population is accident prone.
+\begin{enumerate}[a)]
+\item What is the probability that a new policyholder will have an accident within a year of purchasing a policy?
+\item  Suppose that a new policyholder has an accident within a year of purchasing a policy: what is the probability that s/he is accident-prone?
+\end{enumerate}
+
+\end{enumerate}
+\item \textsc{Inference} 
+\begin{enumerate}
+
+\item A multiple-choice test item has four options. Assume that a student taking this question either knows the answer or does a pure guess. A random sample of 100 students take the item. 60\% get it correct. Give an estimate and 95\% confidence interval for the percentage in the population who know the answer.
+
+%Let p be the proportion of students in the population who would get the question correct. p has an estimate of 0.6 and a standard error of sqrt(0.5^2/100) = 0.05.
+
+%Let theta be the proportion of students in the population who actually know the answer. Based on the description above, we can write:
+%p = theta + 0.25*(1 ? theta) = 0.25 + 0.75*theta,
+%thus theta = (p ? 0.25)/0.75.
+%This gives us an estimate of theta of (0.6 ? 0.25)/0.75 = 0.47 and a standard error of 0.05/0.75 = 0.07, so the 95% confidence interval is [0.47 +/- 2*0.07] = [0.31, 0.59]
+
+\item Some one gives you an estimated proportion of $.6$ supporting Trump (versus Clinton) based on a poll. He also says the variance of the estimate is .0024.
+\begin{enumerate}
+\item[a)]  He forgot to tell you the sample size; what is it?
+\item[b)] Comment on the plausibility of the hypothesis that Trump has same level support as Clinton in the population.
+\end{enumerate}
+\item  In a simple random sample of 1,000 citizens, 560 oppose a public health care option and 440 support. Is it reasonable to assume that the country is evenly divided on this question?
+
+
+\item Suppose $\bar{X}$ is the sample mean of 90 observations from a population with mean $\mu$ and variance $\sigma^2$.  Find 95\% confidence limits for $\bar{X}$.
+\begin{enumerate}
+\item[a)] Using Chebychev.
+\item[b)] Using Central Limit Theorem.
+\item[c)] Compare the two limits.
+\end{enumerate}
+
+\end{enumerate}
+\end{enumerate}
+\end{document}
+

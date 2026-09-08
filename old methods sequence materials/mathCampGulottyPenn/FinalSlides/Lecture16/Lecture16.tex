@@ -1,0 +1,863 @@
+
+\documentclass{beamer}
+
+%\usepackage[table]{xcolor}
+\mode<presentation> {
+  \usetheme{Boadilla}
+
+%  \usetheme{Pittsburgh}
+%\usefonttheme[2]{sans}
+\renewcommand{\familydefault}{cmss}
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
+%\usepackage{palatino}
+%\usepackage{cmbright}
+  \setbeamercovered{transparent}
+\useinnertheme{rectangles}
+}
+
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{structure}{fg= blue}
+\definecolor{trial}{cmyk}{1,0,0, 0}
+\definecolor{trial2}{cmyk}{0.00,0,1, 0}
+\definecolor{darkgreen}{rgb}{0,.4, 0.1}
+\usepackage{array}
+\beamertemplatesolidbackgroundcolor{white}  \setbeamercolor{alerted
+text}{fg=red}
+\usepackage{tcolorbox}
+\setbeamertemplate{caption}[numbered]\newcounter{mylastframe}
+\usepackage{amsmath}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{colortbl}
+
+\renewcommand{\familydefault}{cmss}
+%\usepackage[all]{xy}
+
+\usepackage{tikz}
+\usepackage{lipsum}
+
+ \newenvironment{changemargin}[3]{%
+ \begin{list}{}{%
+ \setlength{\topsep}{0pt}%
+ \setlength{\leftmargin}{#1}%
+ \setlength{\rightmargin}{#2}%
+ \setlength{\topmargin}{#3}%
+ \setlength{\listparindent}{\parindent}%
+ \setlength{\itemindent}{\parindent}%
+ \setlength{\parsep}{\parskip}%
+ }%
+\item[]}{\end{list}}
+\usetikzlibrary{arrows}
+
+\usecolortheme{lily}
+
+\newtheorem{com}{Comment}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{condition}{Condition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+ \numberwithin{equation}{section}
+ 
+
+\setbeamertemplate{navigation symbols}{}
+
+
+\title[PLSC 43401]{Mathematical Foundations of Political Methodology}
+
+\author{Robert Gulotty}
+\institute[Chicago]{University of Chicago}
+\vspace{0.3in}
+
+
+
+
+\begin{document}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Central Limit Theorem}
+\begin{itemize}
+\item Moment Generating Functions
+\item Limit Theorems
+\item Properties of Estimators
+\end{itemize}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{Approximating functions and second order conditions}
+
+
+\begin{thm}
+\textbf{Taylor's Theorem}
+Suppose $f:\mathbb{R} \rightarrow \mathbb{R}$, $f(x)$ is infinitely differentiable function.  Then, the Taylor expansion of $f(x)$ around \alert{$a$} is given by 
+
+\begin{eqnarray}
+f(x) & = & f(a) + \frac{f^{'}(a)}{1!} (x- a) + \frac{f^{''}(a)}{2!} (x - a)^2 + \frac{f^{'''}(a)}{3!}(x- a)^3 + \hdots \nonumber \\
+f(x) & = & \sum_{n=0}^{\infty } \frac{f^{n} (a) }{n!} (x - a)^n \nonumber
+\end{eqnarray}
+
+\end{thm}
+
+
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example Function}
+
+Suppose $a$ = 0 and $f(x) = e^{x}$.  Then, 
+\begin{eqnarray}
+f^{'}(x) & = & e^{x} \nonumber \\
+f^{''}(x) & = & e^{x} \nonumber \\
+\vdots  & \vdots & \vdots \nonumber \\
+f^{n} (x) & = & e^{x} \nonumber 
+\end{eqnarray}
+
+This implies
+\begin{eqnarray}
+e^{x} & = & 1 + x + \frac{x^{2}}{2!} + \frac{x^3}{3!} \hdots + \frac{x^{n}}{n!} + \hdots \nonumber \end{eqnarray}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{Moment Generating Functions}
+
+
+\begin{defn}
+Suppose $X$ is a random variable with pdf $f$.  Define, 
+\begin{eqnarray}
+E[X^{n}] & = & \int_{-\infty}^{\infty} x^{n} f(x) dx   \nonumber 
+\end{eqnarray}
+
+We will call $X^{n}$ the \alert{$n^{\text{th}}$} moment of $X$ 
+
+\end{defn}
+
+\begin{itemize}
+\item[-] By this definition $var(X) = \text{Second Moment} - \text{First Moment}^{2} $
+\item[-] We are assuming that the integral converges
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Moment Generating Functions}
+
+\begin{prop}
+Suppose $X$ is a random variable with pdf $f(x)$.  Call $M(t) = E[e^{tX}]$, 
+\begin{eqnarray}
+M(t) & = & E[e^{tX}] \nonumber \\
+ & = & \int_{-\infty}^{\infty} e^{tx} f(x) dx \nonumber 
+ \end{eqnarray}
+
+We will call $M(t)$ the moment generating function, because:
+\begin{eqnarray}
+\frac{\partial^{n} M (t) }{\partial^{n} t}|_{0} & = & E[X^{n}] \nonumber 
+\end{eqnarray}
+
+(Assuming that we can interchange derivative and integral)
+
+\end{prop}
+
+
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+\begin{frame}
+\frametitle{Moment Generating Functions}
+
+\begin{small}
+\begin{proof}
+Recall the Taylor Expansion of $e^{tX}$ at $0$, \pause 
+\begin{eqnarray}
+\invisible<1>{e^{tX} & = & 1 + tx + \frac{t^2 x^2}{2!} + \frac{t^3 x^3}{3!} + \hdots \nonumber } \pause 
+\end{eqnarray}
+
+\invisible<1-2>{Then, } \pause 
+\begin{eqnarray}
+\invisible<1-3>{E[e^{tX} ] & = &  1 + tE[X] + \frac{t^2}{2!} E[X^2] + \frac{t^3}{3!} E[X^3] + \hdots \nonumber } \pause 
+\end{eqnarray}
+
+\invisible<1-4>{Differentiate once:} \pause 
+\begin{eqnarray}
+\invisible<1-5>{\frac{\partial M(t)}{\partial t} & = & 0 + E[X]  + \frac{2t}{2!} E[X^2] + \hdots \nonumber \\
+M^{'}(0) & = & 0 + E[X] + 0 + 0 \hdots \nonumber } 
+\end{eqnarray}
+
+
+
+
+
+\end{proof}
+
+\end{small}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{small}
+\begin{proof}
+
+Differentiate $n$ times \pause 
+\begin{eqnarray}
+\invisible<1>{\frac{\partial^{n} M(t)}{\partial^{n} t } & = & 0 + 0 + 0 + \hdots + \frac{n \times n-1 \times \hdots 2 \times t^{0} E[X^{n}] }{n!}  + \frac{n!t E[X^{n+1}] }{(n+ 1)! } + \hdots \nonumber \\} \pause 
+\invisible<1-2>{& = & \frac{n! E[X^{n}] }{n!}  + \frac{n!t E[X^{n+1}] }{(n+ 1)! } + \hdots  \nonumber } \pause 
+\end{eqnarray}
+
+\invisible<1-3>{Evaluated at 0, yields $M^{n}(0)  = E[X^{n}] $} \pause 
+
+\end{proof}
+
+\begin{itemize}
+\invisible<1-4>{\item[-] If two random variables, $X$ and $Y$ have the same moment generating functions, then $F_{X}(x) = F_{Y}(y)$ for \alert{almost all} $x$.  } 
+\end{itemize}
+
+
+\end{small}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{The Moments of the Normal Distribution}
+Suppose $Z \sim N(0,1)$.  \pause 
+
+\begin{eqnarray}
+\invisible<1>{E[e^{tX}] & = & \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} e^{tx} e^{-x^2/2} dx \nonumber } \pause 
+\end{eqnarray}
+
+\begin{eqnarray} 
+\invisible<1-2>{tx - \frac{1}{2} x^2  & = & tx - \frac{1}{2} x^2 - \frac{1}{2}t^2+\frac{1}{2}t^2 \nonumber } \\\pause 
+\invisible<1-3>{ & = & -\frac{1}{2}(x-t)^2 +\frac{1}{2}t^2\nonumber   } \pause 
+\end{eqnarray}
+\begin{eqnarray} 
+\invisible<1-4>{E[e^{tX}] & = & e^{\frac{t^{2}}{2}} \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} e^{-(x- t)^2/2} dx \nonumber \\} \pause 
+ \invisible<1-5>{& = & e^{\frac{t^{2}}{2}} \nonumber } 
+\end{eqnarray}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Extracting Moments of the Normal Distribution}
+$$M(t)=E[e^{tX}]=e^{\frac{t^{2}}{2}}$$
+\pause 
+\begin{eqnarray}
+\invisible<1>{M^{'}(0) & = &E[X] =  e^{t^2/2} t |_{0} = 0 \nonumber \\} \pause
+\invisible<1-2>{M^{''} (0 ) & = & E[X^2] =  e^{t^2/2} (t^2 + 1) |_{0} = 1 \nonumber \\} \pause 
+\invisible<1-3>{M^{'''} (0) & = & E[X^3] = e^{t^2/2} t (t^2 + 3) |_{0} = 0 \nonumber \\} \pause 
+\invisible<1-4>{M^{''''} (0) & = & E[X^4] = e^{t^2/2} (t^4 + 6t^2 + 3)|_{0} = 3 \nonumber } \\ \pause 
+\invisible<1-5>{M^{5} (0) & = & E[X^5] = e^{t^2/2} t (t^4 + 10t^2 + 15)|_{0} = 0 \nonumber } \\ \pause 
+\invisible<1-6>{M^{6} (0) & = & E[X^6] = e^{t^2/2} (t^6 + 15t^4 + 45t^2 + 15 )|_{0} = 15 \nonumber } \pause 
+\end{eqnarray} 
+
+
+\end{frame}
+
+\begin{frame}
+
+\begin{prop}
+Suppose $X_{i}$ are a sequence of independent random variables.  Define 
+\begin{eqnarray}
+Y & = & \sum_{i=1}^{N} X_{i} \nonumber 
+\end{eqnarray}
+
+Then 
+\begin{eqnarray}
+M_{Y}(t) & = & \prod_{i=1}^{N} M_{X_{i}}(t) \nonumber 
+\end{eqnarray}
+
+
+\end{prop}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{proof}
+\begin{eqnarray}
+M_{Y}(t) & = & E[e^{tY}] \nonumber \\ \pause 
+\invisible<1>{& = & E[e^{t\sum_{i=1}^{N} X_{i} } ] \nonumber \\ } \pause 
+ \invisible<1-2>{& = & E[e^{tX_{1} + tX_{2} + \hdots tX_{N} } ] \nonumber \\} \pause 
+  \invisible<1-3>{& = & E[e^{tX_{1} }]E[e^{tX_{2} }] \hdots E[e^{tX_{N} }] \text{ (by independence) } \nonumber \\} \pause 
+   \invisible<1-4>{& = & \prod_{i=1}^{N} E[e^{tX_{i}}] \nonumber } 
+\end{eqnarray}
+
+\end{proof}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Sequences and Convergence} 
+\begin{itemize}
+\item We use the concept of convergence to describe limits, derivatives and integrals in the first half of the course.
+\item Today we will discuss different kinds of convergence for random variables.
+\begin{itemize}
+\item Convergence in distribution.
+\item Convergence in probability.
+\item Convergence almost surely.
+\item Convergence surely or pointwise.
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Sequences and Convergence} 
+
+Sequence (refresher):\\
+\begin{eqnarray}
+\left\{a_{i} \right\}_{i=1}^{\infty} & =  & \left\{a_{1}, a_{2}, a_{3}, \hdots, a_{n}, \hdots, \right\} \nonumber 
+\end{eqnarray}
+
+
+\begin{defn}
+We say that the sequence $\left\{a_{i} \right\}_{i=1}^{\infty} $ converges to real number $A$ if for each $\epsilon>0$ there is a positive integer $N$ such that for $n\geq N$, $|a_{n} - A| < \epsilon$
+\end{defn}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Convergence Pointwise} 
+
+Sequence of functions: 
+\begin{eqnarray}
+\left\{ f_{i} \right\}_{i=1}^{\infty}  & = & \left\{f_{1}, f_{2}, f_{3}, \hdots, f_{n}, \hdots, \right\}\nonumber 
+\end{eqnarray}
+
+\begin{defn}
+Suppose $f_{i}: X \rightarrow \Re$ for all $i$.  Then $\left\{ f_{i} \right\}_{i=1}^{\infty} $ converges \alert{pointwise} to $f$ if, for all $x \in X$ and $\epsilon> 0$, there is an $N$ such that for all $n\geq N$,  
+\begin{eqnarray}
+|f_{n} (x)  - f(x)|<\epsilon \nonumber 
+\end{eqnarray}
+\end{defn}
+We would then say 
+$$lim_{n\rightarrow \infty} f_n(x)=f(x) \ \forall x.$$
+
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{Convergence of sequence of Random Variables}
+
+Define $\widehat{\theta}_{n}$ to be estimator for $\theta$ based on $n$ observations.  \pause  \\
+\invisible<1>{\alert{Sequence} of estimators: increasing sample size} \pause \\
+\begin{eqnarray}
+\invisible<1-2>{\left\{\widehat{\theta}_{i}\right\}_{i=1}^{n} &= & \left\{\widehat{\theta}_{1}, \widehat{\theta}_{2},    \widehat{\theta}_{3}, \hdots, \widehat{\theta}_{n} \right\} \nonumber} \pause  
+ \end{eqnarray}
+
+Question: What can we say about $\left\{\widehat{\theta}_{i}\right\}_{i=1}^{n}$ as $n\rightarrow \infty$?  \pause 
+\begin{itemize}
+\item[-] Does $\widehat{\theta}_{n}(\omega)$ get arbitrarily close to $\theta(\omega)$ for all $\omega$? \pause
+\item[-] Does $\widehat{\theta}_{n}(\omega)$ get arbitrarily close to $\theta(\omega)$ for all $\omega$ that have positive probability? \pause
+\item[-] Does the probability that $\widehat{\theta}_{n}$ differs from $\theta$ go to 0?\pause 
+\item[-] Does the sampling distribution of $\widehat{\theta}_{n}$ converge to the sampling distribution of $\theta$ as $n \rightarrow \infty$ ? 
+\end{itemize}
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Convergence in Probability}
+
+\pause 
+\begin{defn} 
+We will say the sequence $\widehat{\theta}_{n}$ converges \textbf{in probability} to $\theta$  if, 
+\begin{eqnarray}
+\lim_{n\rightarrow\infty} Prob(|\widehat{\theta}_{n} - \theta | > \epsilon ) = 0 \nonumber 
+\end{eqnarray}
+For any $\epsilon>0$
+\end{defn} \pause 
+
+\begin{itemize}
+\item The probability of an `unusual' outcome becomes smaller and smaller as the sequence progresses.
+\item[-] $\epsilon$ is a tolerance parameter: how much error around $\theta$? \pause 
+\item[-] In the limit, convergence in probability implies sampling distribution collapses on a spike at $\theta$. \pause 
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Example of Convergence in Probability}
+\begin{itemize}
+\item Toss a fair coin $n$ times.  Let $R_n$ be the `longest run of heads".  
+\item So if $n=15$ and our experiment gets, HHTTHHHTHTHTHHH, $R_15=3$.
+\item As $n\rightarrow \infty$, $\frac{R_n}{log_2 n}\rightarrow 1$
+\item Plugging in 20 for $R_n$, we find that $n=2^{20}=1048576$.
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Example of Convergence in Probability (Consistency of $S^2$}
+\begin{itemize}
+\item An estimator is called consistent if it converges in probability to the quantity being estimated.
+\item $S^2$ is the sample analogue of $\sigma^2$.
+$$S^2_n=\frac{1}{n-1}\sum(X_i-\bar{X}_n)^2$$\pause
+\item Suppose we have iid random variables $E(X_i)=\mu$ and $Var(X_i)=\sigma^2$
+\item Chebychev tells us that 
+$$P(|S^2-\sigma^2|\geq \epsilon)\leq \frac{E(S^2_n-\sigma^2)^2}{\epsilon^2}=\frac{VarS^2_n}{\epsilon^2}$$.
+\item So $S^2$ converges in probability to $\sigma^2$ so long as $VarS^2_n\rightarrow 0$ as $n\rightarrow \infty$
+
+
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Almost Sure Convergence} 
+
+\pause 
+\begin{defn} 
+\invisible<1>{We will say the sequence $\widehat{\theta}_{n}$ converges almost surely to $\theta$ if, 
+\begin{eqnarray}
+Prob(\lim_{n \rightarrow \infty} |\widehat{\theta}_{n} - \theta| > \epsilon ) = 0 \nonumber } \pause 
+\end{eqnarray}
+
+\end{defn}
+
+
+\begin{itemize}
+\invisible<1-2>{\item[-] This is stronger than convergence in probability, it says that sequence converges to $\theta$ (almost everywhere) ) } \pause 
+\invisible<1-3>{\item[-] Think about definition of random variable: $\widehat{\theta}_{n}$ is a function from sample space to real line.} \pause 
+\invisible<1-4>{\item[-]  Almost sure says that, for all outcomes ($s$)  in  sample space ($S$) $s \in S$, } \pause 
+\begin{eqnarray} 
+\invisible<1-5>{\widehat{\theta}_{n}(s) & \rightarrow& \theta(s) \nonumber } \pause 
+\end{eqnarray}
+\invisible<1-6>{\item[] Except for a subset $\mathcal{N} \subset S $ such that $P(\mathcal{N}) = 0 $.  } 
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Example Almost Sure} 
+\begin{itemize}
+\item Consider an animal of some short-lived species. We record the amount of food that this animal consumes per day. This sequence of numbers will be unpredictable, but we may be quite certain that one day the number will become zero, and will stay zero forever after.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Example (Cassella and Berger)} 
+
+Suppose $S \sim $ Uniform(0,1).\\
+Suppose $X_{n}$ is define as follows: 
+\begin{eqnarray}
+X_{1}(s) = s + I(s \in [0,1]) & ,&  X_{2} (s)  = s +  I(s \in [0,1/2]) \nonumber \\
+ X_{3}(s)  = s + I(s \in [1/2, 1])& ,&  X_{4}(s) = s + I(s \in [0,1/3]) \nonumber \\
+ X_{5} (s)  =  s + I(s \in [1/3,2/3]) & ,&  X_{6}(s) = s + I(s \in [2/3, 1]) \nonumber 
+\end{eqnarray}
+Does $X_{n}(s) $ converge almost surely to $X(s) = s$?\pause 
+
+\invisible<1>{\alert{No!}: the sequence doesn't converge for each $s$} \pause \\
+\invisible<1-2>{For each value of $s$ the sequence varies between $s$ and $s + 1$ infinitely often } 
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Convergence in Distribution}
+We've talked about $\widehat{\theta}_{n}$'s sampling distribution converging to a normal distribution.\pause   \\
+\invisible<1>{This is \alert{convergence in distribution} }\pause 
+
+\begin{defn}
+\invisible<1-2>{A series of random variables, $X_1,\ X_2,\ ...$ with cdf $F_{n}(x)$ converges in distribution to random variable $Y$ with cdf $F(x)$ if 
+\begin{eqnarray}
+\lim_{n\rightarrow \infty} F_{n} (x) - F(x)  = 0 \nonumber 
+\end{eqnarray} 
+For all $x \in \Re$ where $F(x)$ is continuous.  } \pause 
+\end{defn}
+
+\begin{itemize}
+\invisible<1-3>{\item[-] Weakest form of convergence almost sure $\rightarrow$ probability $\rightarrow$ distribution } \pause 
+\invisible<1-4>{\item[-] Says that cdfs are nearly the same, says nothing about convergence of underlying RV } \pause 
+\invisible<1-5>{\item[-] Useful for justifying use of some sampling distributions } 
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Example of Convergence in Distribution}
+\begin{itemize}
+\item Suppose a new dice factory has just been built. The first few dice come out quite biased, due to imperfections in the production process. The outcome from tossing any of them will follow a distribution markedly different from the desired uniform distribution. 
+
+\item As the factory is improved, the dice become less and less loaded, and the outcomes from tossing a newly produced die will follow the uniform distribution more and more closely.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Example of Convergence in Distribution}
+\begin{itemize}
+\item Suppose that X is a continuous random variable with range $\mathbb{X}_n\equiv (0,n]$ for $n>0$ and cdf:
+$$F_{X_n}(x)=1-(1-\frac{x}{n})^n,\ \quad 0<x\leq n$$
+\item As $n\rightarrow \infty$, 
+$$F_{X_n}(x)\rightarrow 1-e^{-x}$$
+\item So $X_n \xrightarrow[]{d} X$, $X\sim$Exponential(1)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Example of Convergence in Distribution}
+\includegraphics[width=5 in]{approxexp.pdf}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{Convergence in Distribution $\not \Rightarrow$ Convergence in Probability}
+
+Define $X \sim N(0,1)$ and each $X_{n} = - X$.  Then:
+
+$X_{n} \sim N(0,1)$ for all $n$ so $X_{n}$ trivially converges to $X$. But, 
+\begin{eqnarray}
+P(|X_{n} - X| > \epsilon ) & = & P(|X + X| > \epsilon) \nonumber \\
+							& = & P( |2X| > \epsilon) \nonumber \\
+						    & =  & P(|X| > \epsilon/2) \not \leadsto 0 \nonumber 
+\end{eqnarray}						    
+
+
+
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Central Limit Theorem}
+
+\begin{prop}
+Let $X_{1}$, $X_{2}, \hdots$ be a sequence of independent random variables with mean $\mu$ and variance $\sigma^2$.  Let $X_{i}$ have a cdf $P(X_{i} \leq x) = F(x)$ and moment generating function $M(t) = E[e^{tX_{i}}]$ .  Let $S_{n} = \sum_{i=1}^{n} X_{i}$.  Then 
+
+\begin{eqnarray}
+\lim_{n\rightarrow \infty} P\left( \frac{S_{n} - \mu n }{\sigma\sqrt{n}} \leq x \right) &  = &  \frac{1}{\sqrt{2\pi} } \int_{-\infty}^{x} \exp\left( -\frac{z^{2} }{2} \right) dz \nonumber 
+\end{eqnarray}
+
+
+\end{prop}
+
+\pause 
+\invisible<1>{Proof plan:}
+\begin{itemize}
+\invisible<1>{\item[1)] Rely on Fact that convergence of MGFs$\leadsto$ convergence in CDFs}
+\invisible<1>{\item[2)] Show that MGFs, in limit, converge on normal MGF}
+\end{itemize}
+
+
+\end{frame}
+
+
+\begin{frame}
+
+\begin{prop}
+Let $F_{n}$ be a sequence of cumulative distribution functions with corresponding moment generating functions $M_{n}$.  $F$ be a cdf with the moment generating functions $M$.  If $\lim_{n\rightarrow \infty} M_{n}(t) \rightarrow M(t)$ for all $t$ in some interval, then $F_{n}(x) \leadsto F(x)$ for all $x$ (when $F$ is continuous).  
+\end{prop}
+
+\pause 
+\invisible<1>{\begin{prop}
+Suppose $\lim_{n\rightarrow \infty} c_{n} \rightarrow c$, then 
+\begin{eqnarray}
+\lim_{n\rightarrow \infty} \left( 1 + \frac{c_{n}}{n}\right)^{n}  & = & e^{c} \nonumber 
+\end{eqnarray}
+
+\end{prop}
+}
+
+\pause 
+
+\invisible<1-2>{\begin{prop}
+Suppose $M(t)$ is a moment generating function of some random variable $X$.  Then $M(0) = 1$.  
+\end{prop}}
+
+
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Proof of Central Limit Theorem}
+
+\large{Proof.}
+Suppose $X_{1}, \hdots, X_{n}$ are i.i.d. variables with $E[X] = 0 $, variance $\sigma^{2}_{x}$, Moment Generating Function (MGF) $M_{x}(s)$. \pause  \\
+
+\invisible<1>{Let $S_{n} = \sum_{i=1}^{n} X_{i}$ and $Z_{n} = \frac{S_{n}}{\sigma_{x} \sqrt{n}}$. } \pause \\
+\invisible<1-2>{$M_{S_{n}}  = (M_{x}(s))^{n} $ and $M_{Z_{n}} (s) = \left(M_{x} \left(\frac{s}{\sigma_{x} \sqrt{n}}    \right)    \right)^{n}$} \pause \\
+\invisible<1-3>{Using Taylor's Theorem we can write
+\begin{eqnarray}
+M_{x} (s) & = & M_{x} (0)  + s M^{'}_{x}(0) + \frac{1}{2} s^2 M_{x}^{''}(0) + e_{s} \nonumber 
+\end{eqnarray}
+$e_{s}/s^2 \rightarrow 0 $ as $s\rightarrow 0$.  } 
+
+\end{frame}
+
+
+\begin{frame}
+\begin{eqnarray}
+M_{x} (s) & = & M_{x} (0)  + s M^{'}_{x}(0) + \frac{1}{2} s^2 M_{x}^{''}(0) + e_{s} \nonumber 
+\end{eqnarray}
+\pause
+Filling  in the derivatives of $M_{x}$ we have 
+\begin{eqnarray}
+M_{x} (s) & = & 1  + 0 + \frac{1}{2} s^2\sigma_{x}^{2}  + \underbrace{e_{s}}_{\text{Goes to zero}} \nonumber 
+\end{eqnarray}
+\pause
+Using the fact that $M_{Z_n}(s)=(M_x(\frac{s}{\sigma_X\sqrt{n}}))^n$
+\pause
+\begin{eqnarray}
+M_{Z_{n}}(s) & = & \left(1 + \frac{1}{2}\left( \frac{s}{\sigma_{x} \sqrt{n}} \right)^{2}\sigma_{x}^{2} \right)^{n} \nonumber \\
+& = & \left( 1 + \frac{s^{2}/2}{n} \right)^{n} \nonumber \\
+\lim_{n\rightarrow \infty} M_{Z_{n}}(s) & = & e^{\frac{s^2}{2}}\nonumber 
+\end{eqnarray}
+
+\end{frame}
+
+\begin{frame}{Estimators}
+\begin{itemize}
+\item Statistics are functions of random variables.  \pause
+\item An \emph{estimator} is statistic that is used to infer the value of an unknown parameter.\pause
+\item An estimate is a particular realization of the estimator.\pause
+\item Estimators are written with a $\hat{\theta}$.\pause
+\item Estimators may provide a single point or an interval.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Properties of Estimators}
+\begin{itemize}
+\item Estimators have distributions, expectations and variances.\pause
+\item Does the expected value of the estimator equal the true value of the parameter? \pause \alert{Bias}\pause
+\item Does the estimator minimize its variance? \pause \alert{Efficiency}\pause
+\item Does the estimator converge in probability to the estimated quantity?\pause \alert{Consistency}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Bias}
+The bias of an estimator is defined to be
+$$\text{Bias}(\hat{\theta})=E(\hat{\theta})-\theta$$.
+\begin{itemize}
+\item If $E(\hat{\theta})>\theta$, the estimator is biased upward.
+\item If $E(\hat{\theta})<\theta$, the estimator is biased downward.
+\item If $E(\hat{\theta})=\theta$, the estimator is unbiased.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Example of Unbiased Estimator}
+\begin{itemize}
+\item Sample mean $E(\bar{X})-\mu$
+\end{itemize}
+\begin{eqnarray}
+\invisible<1>{E[\bar{X}_{n}] & = & \frac{1}{n}\sum_{i=1}^{n} E[X_{i}] \nonumber \\ } \pause 
+\invisible<1-2>{& = & \frac{1}{n} n \mu  = \mu \nonumber } 
+\end{eqnarray}
+$$E[\bar{X}_{n}] -\mu=0$$
+\end{frame}
+
+\begin{frame}{Example of Bias}
+\begin{itemize}
+\item Uncorrected sample variance: $E[\hat{\sigma}^2]-\sigma^2$.
+\end{itemize}
+\scriptsize{
+\begin{eqnarray}
+\invisible<1>{E[\hat{\sigma}^2] & = & E[\frac{1}{n}\sum_{i=1}^{n}(X_i-\bar{X}_n)^2] \nonumber \\ } \pause
+\invisible<1-2>{& = & E[\frac{1}{n}\sum_{i=1}^{n}(X_i^2)-\frac{1}{n}2 \bar{X}_n\sum_{i=1}^{n} X_i +\frac{1}{n}\sum_{i=1}^{n} (\bar{X}_n^2)] \nonumber \\ } \pause 
+\invisible<1-3>{& = & E[\frac{1}{n}\sum_{i=1}^{n}(X_i^2)-\frac{1}{n}2 \bar{X}_n n \bar{X}_n +\frac{n}{n}\bar{X}_n^2] \nonumber \\ } \pause 
+\invisible<1-4>{& = & E[\frac{1}{n}\sum_{i=1}^{n}(X_i^2)- \bar{X}_n^2] \nonumber \\ } \pause 
+\invisible<1-5>{& = & \frac{1}{n}\sum_{i=1}^{n}E[X_i^2]- E[\bar{X}_n^2] \nonumber \\ } \pause 
+\invisible<1-6>{& = & \frac{1}{n}\sum_{i=1}^{n}[\sigma^2+\mu^2] - [\frac{\sigma^2}{n}+\mu^2] \nonumber \\ } \pause 
+\invisible<1-7>{& = &\sigma^2- \frac{\sigma^2}{n} \nonumber } \pause 
+\end{eqnarray}
+}
+\end{frame}
+
+\begin{frame}{Efficiency}
+Given two unbiased estimators, we can compare their sampling error.
+$$\sigma_{\hat{\theta}}^2= E[(\hat{\theta}-E(\hat{\theta}))^2]$$
+\pause
+\begin{itemize}
+\item Estimator $\hat{\theta}$ is more efficient than $\tilde{\theta}$ if $\sigma_{\hat{\theta}}<\sigma_{\tilde{\theta}}$\pause
+\item The estimator with a smaller sampling error is more efficient.\pause
+\item If an estimator $\hat{\theta}$ has a smaller standard error than any other unbiased estimator, it is called \emph{efficient}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example of Efficiency}
+\begin{itemize}
+\item Sample Mean: $\sigma_{\bar{X}}^2=E((\bar{X}-\mu)^2)$\pause
+\begin{eqnarray}
+\invisible<1>{\text{var}(\bar{X}_{n}) & = & \frac{1}{n^2} \text{var}(\sum_{i=1}^{n} X_{i}) \nonumber \\ } \pause 
+ \invisible<1-2>{&= & \frac{1}{n^2} \sum_{i=1}^{n} \text{var}(X_{i}) \nonumber \\ } \pause 
+  \invisible<1-3>{& = & \frac{1}{n^2} n \sigma^2 = \frac{\sigma^2}{n} \nonumber } 
+\end{eqnarray}
+ $$\sigma_{\bar{X}}^2=\frac{\sigma^2}{n}$$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example of Efficiency}
+\begin{itemize}
+\item  `First Impression' Estimator: $\mathcal{W}(X_1,\ X_2,\ X_3, ... )=X_1$
+
+\begin{eqnarray}
+\invisible<1>{\sigma_{\mathcal{W}}^2&=&E((X_1-\mu)^2)\nonumber \\ } \pause 
+\invisible<1-2>{ &=&E[X_1^2]-\mu^2 \nonumber \\ } \pause 
+\invisible<1-3>{& = & [\sigma^2+\mu^2]-\mu^2\nonumber \\ }\pause 
+\invisible<1-4>{& = & [\sigma^2+\mu^2]-\mu^2\nonumber \\ }\pause
+\invisible<1-4>{& = & \sigma^2}\pause
+\end{eqnarray}
+\item Comparing $\sigma_{\mathcal{W}}^2$ to $\sigma_{\bar{X}}^2$
+$$ \sigma^2 >\frac{\sigma^2}{n}$$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example of Efficiency}
+\begin{itemize}
+\item `Five' Estimator:  $\sigma_{\mathcal{F}}^2=E((5-5)^2)$\pause
+$$\sigma_{\mathcal{F}}^2=E(0)=0$$\pause
+\item What is the Bias?\pause
+$$E(\mathcal{F})-\mu)= 5-\mu$$
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Mean squared Error}
+\begin{itemize}
+\item If we have a biased estimator, we can compare sampling error by evaluating \emph{mean squared error}
+$$\text{MSE}(\hat{\theta})=E(\hat{\theta}-\theta)^2$$
+\item MSE compares bias and variance
+$$\text{MSE}(\hat{\theta})=[\text{Bias}(\hat{\theta})]^2+V(\hat{\theta})$$
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Mean squared Error}
+\begin{itemize}
+\item If we have a biased estimator, we can compare sampling error by evaluating \emph{mean squared error}
+$$\text{MSE}(\hat{\theta})=E(\hat{\theta}-\theta)^2$$
+\item MSE compares bias and variance
+$$\text{MSE}(\hat{\theta})=[\text{Bias}(\hat{\theta})]^2+V(\hat{\theta})$$
+$$\text{Efficiency}((\hat{\theta}_1,\hat{\theta}_2))=\frac{\text{MSE}(\hat{\theta}_2)}{\text{MSE}(\hat{\theta}_1)}$$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Design of Studies with a known $\mu$ and $\sigma$}
+\begin{itemize}
+\item How many draws should we get to make sure that our sample mean is close to the truth?\pause
+\item Suppose that we assume that our data is normal, with a known mean $\mu$ and $\sigma^2$\pause
+\item What is 
+$$P((\bar{X}_n-\mu)/(\sigma/\sqrt{n})<z|\mu,\ \sigma^2, n)$$\pause
+\item Fix $\alpha$, and we can calculate $n$.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Design of Studies}
+\begin{itemize}
+\item All we need to do is find the smallest $n$ that produces:
+$$P((\bar{X}_n-\mu)/(\sigma/\sqrt{n})<z|\mu,\ \sigma^2, n)\leq \alpha $$
+\item And solve for n.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Sample size when we know $\mu$ and $\sigma$}
+\begin{itemize}
+\item Imagine that you are running a survey, and have to pick a
+sample size ahead of time such that    
+$$P( | \bar X -\mu| < \sigma / 5) =.95$$\pause
+\item What sample size would you choose? $\Phi^{-1}(.95)=1.644854$\pause
+$$\Phi^{-1}(.975)=1.959$$\pause
+$$P( \frac{| \bar X_1  -\mu|}{\frac{\sigma}{\sqrt{n}}} < 1.96) =.95$$\pause
+$$P(| \bar X_1  -\mu| < \frac{1.96*\sigma}{\sqrt{n}}) = .95$$\pause
+$$\frac{1.96*\sigma}{\sqrt{n}}=\frac{\sigma}{5}$$\pause
+$$n=(1.96*5)^2=96.04$$
+
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Sample size when we know $\mu$ and $\sigma$}
+\begin{itemize}
+\item What if you have a random variable with distribution $X\sim N(\mu, 12)$ and you want $|\bar{X}-\mu|<3$ with a probability of .95.
+$$P( | \bar X -\mu| <3 )=.95$$\pause
+\item What sample size would you choose?
+$$P( \frac{| \bar X  -\mu|}{\frac{\sigma}{\sqrt{n}}} < 1.96) =.95$$\pause
+$$P(| \bar X  -\mu| < \frac{1.96*12}{\sqrt{n}}) = .95$$\pause
+$$\frac{1.96*12}{\sqrt{n}}=3$$\pause
+$$n=(1.96*12/3)^2=61.5$$
+
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Design of studies}
+\begin{itemize}
+\item If you are asked, `How large a sample size do I need'
+\item Ask:
+\item How accurately do you need the answer?
+\item What level of confidence do you intend to use?
+\item What is your current estimate?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Finite Sample Properties of Estimators}
+\begin{itemize}
+\item If $X_i\sim N(\mu,\ \sigma^2)$ 
+$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$\pause
+$$S^2=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X})^2$$\pause
+\item $\bar{X}$ and $S^2$ are independent:
+$$\frac{\bar{X}-\mu}{\sigma/\sqrt{n}}\sim N(0,1)$$\pause
+$$\frac{(n-1)S^2}{\sigma^2}\sim \chi^2_{n-1}$$
+\end{itemize}
+\end{frame}
+
+\end{document}

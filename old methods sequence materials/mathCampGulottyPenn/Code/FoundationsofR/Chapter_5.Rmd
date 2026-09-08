@@ -1,0 +1,407 @@
+---
+title: "Foundations of R Chapter 5"
+author: "Robert Gulotty"
+date: "9/30/2016"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,tidy.opts=list(width.cutoff=60),tidy=TRUE)
+
+```
+******
+
+```{r}
+library(stringr)
+library(dplyr, warn.conflicts = FALSE)
+library(ggplot2)
+library(readr)
+library(tidyr)
+```
+
+# The TIDYVERSE: How to clean messy data
+
+Much of the time spend in quantitative analysis is not exploring data, deriving estimators, or in writing up results.  Instead, it is invariably spent cleaning data.  Consider the following data downloaded from the World Bank.
+
+
+```{r}
+WDI<-read_csv("~/Dropbox/mathCamp/Code/data/GlobalTradepctGDP19602016.csv")
+WDI%>% select(`Country Name`,`Indicator Name`, `1960`:`2016`)
+```
+
+Notice that we use the `read_csv` function, rather than the base R function. This function is much faster, and is explicit about how it treats the columns, so you never make a mistake on that front.  
+
+These data contain an indicator for the level of interdependence experienced by nations, imports plus exports divided by GDP for countries from 1960-2015.  The data is in an untidy format, with years along the top, and variable names in each of the rows.   ___tidy data___ is data that has exactly one observation per row, with columns for each variable.  Here each row contains up to 57 observations.  
+
+## Gather the columns
+
+The `tidyr` package has a solution which gathers all these columns into one. You identify a ___key___, in this case the Year, which will contain the variable names from the original dataset.  You then give the name for the new column which will be filled in for each ____value___ of the original dataset.  Finally, you list all the row characteristics you do not want to be gathered.
+
+```{r}
+WDI%>% select(`Country Name`, `1960`:`2016`)%>%
+  gather( key = Year, value = Trade, -`Country Name`)
+```
+
+Notice there are 15,048 rows, or 264*57.  Many of the `Trade` column observations are missing, which you can establish with the `table(is.na())` functions.
+
+```{r}
+longWDI<-WDI%>% select(`Country Name`, `1960`:`2016`)%>%
+  gather( key = Year, value = Trade, -`Country Name` )
+table(is.na(longWDI$Trade))
+```
+\newpage
+
+Now that we have gathered the data, we can easily pass it to our favorite plotting technology, ggplot.  Lets take some time to pull apart this complicated function.  
+```{r, fig.width=7, fig.height=4}
+longWDI %>% filter(`Country Name` %in% c("United States", "Mexico")) %>%
+  na.omit() %>%
+  ggplot(aes(as.numeric(Year),
+  as.numeric(Trade))) + geom_line(aes(group = `Country Name`,
+  color = `Country Name`)) + labs(x = "Year", y = "Trade (% GDP)") +
+  geom_label(aes(x = 1979, y = 8, label = "Waltz (1979)")) +
+  geom_segment(aes( x = 1979, xend = 1979, y = 12,yend = 17.5),
+  arrow = arrow(angle = 20, length = unit(.2, "cm")))
+
+```
+
+*  We begin by selecting the US and Mexico.  Note the use of the logical `%in%` and the use of the quote around Country Name, a problem typical of variable names with spaces in them.  
+
+*  We then pipe the filtered result to a `na.omit()` command, which drops any row with any variable that is missing.  This is a rough way to deal with data.   
+
+* The data frame is then fed to a ggplot, where we put Year and Trade on the x and y axis respectively.  as.numeric transforms our variables, which are currently not numeric, to numeric types.
+
+* The last 6 lines add features to the plot, including a nice little arrow, which is a kind of line segment.
+
+\newpage
+
+### Spread (the Reverse Gather)
+
+Having gathered the data, we can also spread it to do interesting analysis. Here we spread the long data to have Countries as columns, and each years trade as an observation.  
+
+```{r}
+longWDI%>%filter(`Country Name` %in% c("United States", "Mexico", "Canada"))%>%spread(`Country Name`, Trade )
+```
+
+\newpage
+
+# Calculating statistics by groups of data using group_by.
+
+This week we will study a dataset of all police shootings in 2015.  I split up the URL so that it can fit on the page, but you may use the full URL directly in your code.
+
+
+```{r}
+URLchunkA <- "https://raw.githubusercontent.com/washingtonpost/"
+URLchunkB <- "data-police-shootings/master/fatal-police-shootings-data.csv"
+shootings <- read_csv(paste0(URLchunkA, URLchunkB))
+```
+
+
+
+\pagebreak
+
+We have already seen some of dplyr's power, particularly in it's ability to quickly do subgroup analysis, here we are calculating the mean of some variables by state.
+```{r}
+shootings %>%
+  group_by(state) %>% 
+  summarise(meanage = mean(age, na.rm = TRUE), 
+            prop_white =  mean(race == "W", na.rm = TRUE))
+```
+
+ We can easily arrange the outcomes with the arrange function.  Here we use desc to make the states sort by descending order.
+ 
+```{r}
+shootingbystate <- shootings%>%
+  group_by(state)%>%
+  summarise(
+    meanage=mean(age,na.rm=TRUE), 
+    prop_white=mean(race=="W", na.rm=TRUE),
+    nkilled = length(race)
+    )%>%
+  arrange(desc(prop_white))
+
+shootingbystate
+```
+
+
+\newpage 
+
+We can order within bar plots by using the reorder command:
+```{r,fig.width=5, fig.height=4}
+ggplot(shootingbystate, aes(reorder(state, prop_white), prop_white)) +
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 7.5))
+  # Here I change the text size
+```
+
+\newpage
+
+ We can add a fill aesthetic for the proportion of those killed that are white as follows:
+```{r,fig.width=5, fig.height=4}
+ggplot(shootingbystate, 
+       aes(reorder(state, prop_white), prop_white, 
+                            fill = log(nkilled))) + 
+  geom_bar(stat = "identity") +
+  theme(text = element_text(size = 7.5))
+```
+
+ We might think that the number killed should be normalized somehow, perhaps by population.  We have the most accurate, 2010 numbers, in the package, noncensus:
+```{r}
+library(noncensus)
+data(states)
+```
+
+We have talked about help files, but one thing to begin to become good at is finding the underlying structure of R things:  We can do that with the str() command
+```{r}
+str(states)
+```
+
+```{r}
+shootingbystatecensus <-
+  shootingbystate %>% left_join(states) %>% 
+  mutate(nkilledpercap = nkilled / as.numeric(population))
+```
+
+\newpage
+
+ Here is a trick that uses factors and numbers.  Region is normally a string, but if you turn it into a factor, it will make the variable categorical.  Factors are somewhat challenging to deal with, but they can be useful.  If you turn region into a factor, it will in fact turn region into an alphabetically ordered list of numbered categories.  
+ For example, consider the following string vector:
+ 
+```{r, collapse=T}
+stringstates<- c("Ohio", "Michigan", "California")
+as.numeric(stringstates)
+as.numeric(factor(stringstates))
+```
+
+ We then use those numbered categories to reorder the states.  
+ 
+```{r, fig.width=5, fig.height=4}
+ggplot(shootingbystatecensus,
+       aes( reorder(state, as.numeric(as.factor(region))), 
+         nkilledpercap, 
+         fill = region)) + 
+  geom_bar(stat = "identity")+coord_flip() +
+  theme(text = element_text(size = 7.5))
+```
+
+ NOTE: If you want to deal with the date format, check out library(lubridate)
+
+
+\pagebreak
+
+## Labeling the plot
+
+The labeling technology in ggplot2 has improved a great deal.  In the following code, we relabel every aspect of the plot.  
+
+```{r,fig.width=5, fig.height=4}
+shootingplot <-
+  ggplot(shootingbystatecensus,
+  aes(reorder(state, as.numeric(as.factor( region))), nkilledpercap, fill = region)) +
+  geom_bar(stat = "identity")
+
+  shootingplot +
+  labs(title="Number Killed by the Police Accross States", 
+       x ="State", y="Police killings per capita", 
+       fill="Region of USA", 
+       caption="Data drawn from Washington Post (2016)" ) +
+  coord_flip() + theme_classic() +
+  theme(text = element_text(size = 7.5))
+```
+
+\newpage
+
+****************
+
+# Cleaning data with tidyr, government data, and the VA.
+
+```{r}
+library(jsonlite)
+library(tidyr)
+```
+
+ So far, all of the data we have been using is in a nice ___tidy___ format.  That is, all of the data we have been using has each row characterise an observed outcome, here a police shooting, and each column is a characteristic of that shooting.  Much of the time, we need to transform data before it can be used.
+
+ Here are a bunch of variables from the government on Veterans Adminstriation services, a major provider of mental health care.  We are again getting this directly from the internet.  Again, we are only using paste so it fits on the pdf in a nice way.
+
+```{r}
+
+VAest<-fromJSON(paste0("https://raw.githubusercontent.com/vacobrydsk/",
+"VHA-Files/master/NEPEC_AnnualDataSheet_MH_FY15.json"), flatten=T)
+  
+head(VAest)
+```
+
+ This is another classic example of 'untidy' data.  Notice that the variables are listed in columns, alongside the observation name (here a 'Station').  ___tidy data___ is data that has exactly one observation per row, with columns for each variable.
+
+The `tidyr` package handles this sort of thing.  The spread command takes as inputs the variables, here "item", and the inputs to that varable, here "Value" and then creates a new column for each.
+
+```{r}
+VAtidy<-VAest %>% 
+  select(-ValueType,-Category) %>%
+  spread(Item, Value)
+```
+
+\newpage
+
+ Unfortunately, the variable names are pretty long.  We can get the content of a long column name by using quotes like this:
+`VAtidy$'Proportion of Non-Mental Health Services Rendered to VHA Users with a Confirmed Mental Illness - Outpatient Encounters`
+
+ But it is better to fix the column names.
+
+# Renaming variables
+ 
+ There are `r dim(VAtidy)[2]` variables in the dataset.  Ideally, each variable name is descriptive, not too long, and has no spaces in it.  To do so, it is often easiest to do things by hand.  Here I used the `dput` command to print the names in a nice concatonated list.  Then it was just a matter of picking 41 names.
+ 
+```{r, eval=FALSE}
+# dput(names(VAtidy))
+
+
+fixednames <- c(
+"Station",
+"ADC_all_beds",
+"ADC_inpatient",
+"ADC_residential",
+"ADC_psych_encounters",
+"ADC_psych_unique",
+"Avestops_MH",
+"Avestops_Psychiatry",
+"Avestops_Substance",
+"Setting_Inpatient",
+"Setting_Outpatient",
+"Setting_Resident",
+"N_serviceusers",
+"N_serviceusers_confirmed",
+"N_serviceusers_possible",
+"Pct_confirmed",
+"Pct_possible",
+"NMH_Prop_community_confirmed",
+"NMH_Prop_inpatient_confirmed",
+"NMH_Prop_outpatient_confirmed",
+"NMH_Prop_community_possible",
+"NMH_Prop_inpatient_possible",
+"NMH_Prop_outpatient_possible",
+"Prop_Vets_confirmed_any",
+"Prop_Vets_confirmed_outpatient",
+"Prop_Vets_confirmed_inpatient",
+"Prop_Vets_confirmed_resident",
+"Prop_Vets_possible_any",
+"Prop_Vets_possible_outpatient",
+"Prop_Vets_possible_inpatient",
+"Prop_Vets_possible_resident",
+"testing_encounters",
+"testing_uniques",
+"ServiceUserswithMH",
+"Total_NHM_stays_community",
+"Total_NHM_stays_inpatient",
+"Total_NHM_stays_outpatient",
+"Total_Service_Users",
+"Unique_Vets_inpatient",
+"Unique_Vets_outpatient",
+"Unique_Vets_resident"
+)
+
+names(VAtidy)<-fixednames
+```
+
+
+
+****************************************
+
+\newpage
+## Strings to Numbers
+
+VAtidy data has many of its columns as strings rather than numbers. We can turn these into numbers by doing the following, which deploys regular expressions, which we will learn about next week.  For now, just know that in the pattern part of `str_replace_all`, we are using a code which reads, replace either a percent sign or a comma.  The pipe `|` is the logical or.
+
+```{r}
+stringtonumber <- function(sortanumber) {
+  as.numeric(str_replace_all(as.character(sortanumber), "%|,", ""))
+ }
+
+VAtidy2 <- VAtidy %>% mutate_all(stringtonumber)
+```
+
+To connect this data to the shootings, here are the locations of each VA station:
+
+```{r}
+VAfacilities<-fromJSON(paste0("https://raw.githubusercontent.com/department-of-veterans-affairs",
+"/VHA-Facilities/master/VAFacilityLocation.json"), flatten=T)
+
+VAfacdta<-VAfacilities$VAFacilityData%>%mutate(Sttn=facility_id)
+
+```
+
+\newpage
+
+# Problems
+
+
+1) Which of the following datasets are tidy?
+
+```
+dta1<- data.frame(year = c(2000:2003,2000:2003), 
+                  CountryA = c(rep("USA",4),rep("CAN",4) ),
+                  CountryB=c(rep("Russia",4),rep("Russia",4) ),
+                  Agreement=c(0,1,1,0,0,1,0,0))
+
+dta2<- data.frame(year = c(2000:2003,2000:2003), 
+                  Dyad = c(rep("USA-RUS",4),rep("USA-RUS",4) ),
+                  ConflictType=c(rep("War",4),rep("Minor MID",4) ),
+                  ConflictLevel=c(0,3,1,0,0,1,0,0))
+
+dta3<- data.frame(Dyad = c("USA-RUS", "CAN-RUS"),
+                  War2002=c(0,2),
+                  War2003=c(0,2),
+                  War2004=c(0,2),
+                  MinorMID2002=c(0,2),
+                  MinorMID2003=c(0,2),
+                  MinorMID2004=c(0,2))
+```
+2) Use spread, gather and seperate from the tidy package to fix the untidy data.frames from question 7.
+
+3) Correct the common mistakes in the following code snippets
+
+  a)  Make the following TRUE
+  
+```{}
+mean(c("3,000", 2, 1, 0, 4)) == 601.4
+```
+  b)  Make the following into a vector TRUE TRUE TRUE
+  
+```{}
+EuclidDistancetoKabul <- function(x) {
+  sqrt((-64 - x[1]) ^ 2 + (16 - x[2]) ^ 2)
+}
+x <- EuclidDistancetoKabul(rbind(c(48, 4), c(12, 3), c(80, 13)))
+x > 20
+```
+      
+      
+  c)  Make the following code install the 'car' package.
+  
+```{}
+install.packages(car)
+```
+      
+  d)  Correct the following plot command:
+  
+```{}
+x <- c(3, 10, 4)
+y <- c(2, 3, 4)
+df <- data.frame(x, y)
+ggplot(df) + geom_bar(aes(x, y))
+```
+      
+  e)  Make the following code report TRUE 
+  
+```{}
+allthetypes <- list(df1 = data.frame(x = c("Iowa"), stringsAsFactors = F))
+is.character(allthetypes[1][[1]])
+```
+\newpage
+
+4)  How many shootings occur in the state with the most active VA hospitals?  The least active?  For this question you will be using the Washington Post shootings data and the VA data described in the R lab for Week 4.
+
+5)  Plot the following function for $x \in [-4,4]$ by writing a custom function().  Use integrate() on that function to plot the area under the curve of that function from -Inf to x, such that $x \in [-4,4]$.
+
+$$\frac{1}{\sqrt{2\pi}}e^{\frac{-x^2}{2}}$$
+
+

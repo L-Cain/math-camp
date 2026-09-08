@@ -1,0 +1,114 @@
+
+ \documentclass[12pt]{article} 
+
+
+%\setlength{\topmargin}{.25in}
+
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{.0in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.25in}
+
+
+\usepackage{amsmath}
+\usepackage{epsfig}
+\usepackage{amssymb}
+\usepackage{amscd}
+\usepackage{times}
+\usepackage{graphics}
+\usepackage{enumerate}
+%\usepackage{chicago}
+%\usepackage{fullpage}
+%\usepackage{apalike}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{example}{Example}
+\newtheorem{observation}{Observation}
+\newtheorem{claim}{Claim}
+\newtheorem{condition}{Condition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{definition}{Definition}
+\newtheorem{aggregation}{Aggregation rule}
+\def\argmax{\mathop{\rm argmax}\limits}
+\def\max{\mathop{\rm max}\limits}
+\def\argmin{\mathop{\rm argmin}\limits}
+\renewcommand{\baselinestretch}{1.3}
+
+\begin{document}
+
+\begin{center}
+\large {\sc Mathematical Symbols}
+\end{center}
+\small
+
+\begin{tabular}{|l|l|l|} \hline
+{\bf Symbol}&{\bf How to read it}&{\bf Notes on meaning and usage}\\ \hline 
+$a=b$&$a$ equals $b$& $a$ and $b$ have exactly the same value \\ \hline 
+
+$A \equiv B$&Equal by definition &\$ 1 $\equiv$ 100 pennies \\ \hline
+
+$P \Rightarrow Q$&  $P$ implies $Q$ &If $P$ true, then $Q$ true; Don't confuse with $\rightarrow$ \\ \hline
+
+$f: X\rightarrow Y$& Function $f$ maps set $X$ into set $Y$ & Every function is a mapping \\ \hline
+
+$P\Leftrightarrow Q$&$P$ equivalent to $Q$, or & $P$ and $Q$ imply each other\\ 
+
+$P$ iff $Q$& $P$ if and only if $Q$& \\ \hline
+
+$(a, b)$&Open interval from $a$ to $b$ &Points between $a$ and $b$, not including $a$ and $b$ \\ \hline
+
+$[a, b]$&Closed interval from $a$ to $b$  & Points between $a$ and $b$, including $a$ and $b$\\ \hline
+
+$\mathbb{R}$&The real numbers & {\it All} numbers either positive, negative or zero \\ \hline
+
+$\mathbb{Z}$&The integers & $..., -2, -1, 0, 1, 2, 3, ...$\\ \hline
+
+$\mathbb{N}$&The natural numbers & $ 1, 2, 3, 4, ...$\\ \hline
+
+$\mathbb{R}^n$&$n$-dimensional vector space over $\mathbb{R}$ &Ex: $(2, 4.1, 0.2, 1, 3)\in \mathbb{R}^5$ \\ \hline
+
+$a\in B$& $a$ is an element of $B$ &Not to confuse with $\subset$, which refers to set inclusion \\
+
+&& or $\epsilon$, which is the Greek letter epsilon\\ \hline
+
+$a\not\in B$& $a$ is not an element of $B$ & \\ \hline
+
+$A\subset B$&Set $A$ is a strict subset of $B$ &Anything in $A$ is also in $B$ and $A\not= B$ \\ \hline
+
+$A\subseteq B$&Set $A$ is a weak subset of $B$ &Anything in $A$ is also in $B$, and possibly $A=B$ \\ \hline
+
+$A \cup B$&$A$ union $B$ & Set of all points that are either in $A$ or $B$ or both \\ \hline
+
+$A\cap B$&$A$ intersection $B$ &Set of all points that are both in $A$ and $B$ \\ \hline
+
+$\exists$&There exists &Just shorthand \\ \hline
+
+s.t.&Such that &Shorthand.  Sometimes also written as $:$ \\ \hline
+
+$\forall x$& For all $x$ &Ex: $\forall x>0$, $\exists y\in \mathbb{R}$ s.t. $y<x$ and $y>0$ \\ \hline
+
+$\exists !$&There exists a unique &$\exists !$ $x: x=4.78943$ \\ \hline
+
+$\emptyset$&The empty set &The set containing nothing (scary...) \\ \hline
+
+$2^X$&Set of all subsets of $X$,  &$X=\{a, b, c\}\Rightarrow$ \\ 
+
+&also called the power set of $X$&$2^X=\{\emptyset, \{a\}, \{b\}, \{c\}, \{a,b\}, \{a, c\}, \{b, c\}, \{a, b, c\}\}$\\ \hline
+
+$\{ \cdot \cdot \cdot \}$& An unordered set of things & Ex: $\{a, b, c\}=\{c, a, b\}=\{b, c, a\}$, etc.\\ \hline
+
+$(\cdot \cdot \cdot)$& A vector, or ordered set &Ex: $(a, b, c)$ as a point in 3-D space \\ \hline
+
+$X\setminus Y$&$X$ minus all elements of  $Y$  &Ex: $2^{\{a, b, c\}}\setminus 2^{\{a, b\}}= \{\{c\}, \{a, c\}, \{b, c\}, \{a, b, c\}\}$ \\ \hline
+
+$|X|$&Cardinality of $X$ (\# elements in $X$) & $|\{a, b, c, d\}|=4$\\ \hline
+
+
+
+\end{tabular}
+
+
+\end{document}
+

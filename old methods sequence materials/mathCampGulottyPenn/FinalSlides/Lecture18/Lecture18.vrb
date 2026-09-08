@@ -1,0 +1,6 @@
+\frametitle{$\chi ^2$ in R}
+\begin{verbatim}
+
+chisq.test(c(21,24,24,38),
+	p=c(.125,.25,.3125,.3125))
+\end{verbatim}

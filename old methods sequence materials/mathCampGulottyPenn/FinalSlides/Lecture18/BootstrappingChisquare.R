@@ -1,0 +1,29 @@
+devdta<-matrix(c(40,30,26,5,40,5,5,20,25),
+ nrow=3,byrow=TRUE)
+ 
+chisq.test(devdta)
+
+
+k <- length(devdta)
+n <- sum(devdta)
+px<-rowSums(devdta)/n
+py<-colSums(devdta)/n
+
+p0 <- outer(px,py)
+
+ex <- n * p0
+print(tstat.hat <- sum((devdta - ex)^2 / ex))
+
+nboot <- 100000
+tstat.star <- double(nboot)
+
+for (i in 1:nboot) {
+    c.star <- sample(1:k, n, prob = p0, replace = TRUE)
+    x.star <- tabulate(c.star, k)
+    tstat.star[i] <- sum((x.star - ex)^2 / ex)
+}
+
+(sum(tstat.star >= tstat.hat) + 1) / (nboot + 1)
+
+hist(tstat.star)
+abline(v = tstat.hat, lty = 2)

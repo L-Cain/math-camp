@@ -1,0 +1,51 @@
+---
+title: "Assignment for Week 4"
+author: "Author: Your name here!"
+date: "1/22/2016"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+```{r setup, include=FALSE}
+# This code changes "global" settings, here it makes the computer `echo` which refers to 
+# printing the code as well as the output into the pdf document when you knit.
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Change the following code to be your working folder for R
+
+setwd("~/Dropbox/mathCamp/Code/R")
+# The following allows the computer to always get the same result for random stuff.
+set.seed(100)
+
+# install.packages("dplyr")
+# install.packages("ggplot2")
+# install.packages("nycflights13")
+```
+
+## Package Loading
+
+```{r Package Loading}
+library(dplyr, warn.conflicts = FALSE)
+library(ggplot2)
+library(haven)
+```
+
+# Assignment
+<!-- Please Put \newpage commands between long answers.  Avoid allowing answers to spill over pages. --> 
+1) 11.1.4 (c, e, f) (p. 207)
+2) 11.2.4 (p. 213)
+3) 11.2.6 (p. 213)
+4) 11.3.1 (p. 217)
+5) 14.1.2 (d) (p. 274)
+6) 14.2.2 (p. 279)
+7) 16.1.5 (a) (p. 323)
+8) 16.2.6 (p. 331)
+9) 17.2.1 (p. 349)
+
+
+
+
+
+
+

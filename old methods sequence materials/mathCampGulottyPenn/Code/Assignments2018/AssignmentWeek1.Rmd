@@ -1,0 +1,68 @@
+---
+title: "Assignment for Week 1"
+author: "Author: Robert Gulotty"
+date: "10/1/2019"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+```{r setup, include=FALSE}
+# This code changes "global" settings, here it makes the computer `echo` which refers to 
+# printing the code as well as the output into the pdf document when you knit.
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Change the following code to be your working folder for R
+knitr::opts_knit$set(root.dir = '~/Dropbox/mathCamp/Code/R')
+
+```
+
+# Assignment
+<!-- Please Put \newpage commands between long answers.  Avoid allowing answers to spill over pages. --> 
+\begin{enumerate}
+\item Briefly, what is the difference between a sketch and a plot?
+
+
+\item[3.1.1]  For each of the following pairs of sets A and B, state which, if either, is a subset of the other:
+
+(a) A is the set of people living in Scotland; B is the set of people living in the UK.
+
+(b) A is the set of people living in the USA; B is the set of people living in California.
+
+(c) A is the set of dogs; B is the set of furry creatures.
+
+
+\item[3.1.3] Let $A, B, C$ be subsets of a set $X$.  Which of the expressions $(A\cap B)\cup (A\cap B^c)$, $(A\cap B)\cup (A\cap B^c)^c$, $(A\cap B)\cup (A^c\cup C)^c$ can be simplified, and how?
+
+
+
+
+\item[3.4.2] Let $g$ be the mapping from $\mathbb{R}^2$ to $\mathbb{R}^2$ defined by $$g(x, y)=(y, -x),$$ and let the mapping $h$ be as in Exercise 3.4.1.  Find the image of $(x, y)$ under each of the composite mappings $g\circ h$ and $h\circ g$.
+
+
+\item[31.1.1] As in the text, let $\mathbb{Q}$ be the set of all rational numbers. If $x\in \mathbb{Q}$, which of the following statements (P, Q, R, S) imply which of the others?
+
+\begin{itemize}
+
+\item[P:] $x\geq 0$
+\item[Q:] $\exists w\in \mathbb{Q} $ such that $x=w^2$
+\item[R:] $nx>-1$ $\forall n\in \mathbb{N}$
+\item[S:] $\exists n\in \mathbb{N}$ such that $nx>-1$.
+
+\end{itemize}
+
+\item[5.1.3] In each of the following cases, state whether the sequence $\{u_n\}$ tends to a limit, and find the limit if it exists:
+
+\begin{itemize}
+\item[(a)] $u_n=1+\frac{1}{2}n$
+\item[(b)] $u_n=1-\frac{1}{2}n$
+\item[(c)] $u_n=(\frac{1}{2})^n$
+\item[(d)] $u_n=-(\frac{1}{2})^n$
+\end{itemize}
+
+\item[5.2.1] (p. 87) Find the sum of the natural numbers from 1 to 100 inclusive.
+
+\end{enumerate}
+
+
+ 

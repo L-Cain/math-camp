@@ -1,0 +1,20 @@
+---
+title: "R Notebook"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+```{r table, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(kableExtra)
+
+my_data <- array(rnorm(12), dim=c(3,4))
+rownames(my_data) <- c("Ursula","Victor","Wilma")
+colnames(my_data) <- c("A", "B", "C", "D")
+
+kbl(my_data, caption="Some titie...", booktabs = T) %>%
+ kable_paper(full_width=F) %>%
+ add_header_above(c("Names" = 1, "Good" = 2, "Bad"=2))
+```
+

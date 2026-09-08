@@ -1,0 +1,621 @@
+
+\documentclass{beamer}
+
+%\usepackage[table]{xcolor}
+\mode<presentation> {
+  \usetheme{Boadilla}
+
+%  \usetheme{Pittsburgh}
+%\usefonttheme[2]{sans}
+\renewcommand{\familydefault}{cmss}
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
+%\usepackage{palatino}
+%\usepackage{cmbright}
+ \useinnertheme{rectangles}
+}
+
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{structure}{fg= blue}
+\definecolor{trial}{cmyk}{1,0,0, 0}
+\definecolor{trial2}{cmyk}{0.00,0,1, 0}
+\definecolor{darkgreen}{rgb}{0,.4, 0.1}
+\usepackage{array}
+\beamertemplatesolidbackgroundcolor{white}  \setbeamercolor{alerted
+text}{fg=red}
+\usepackage{tcolorbox}
+\setbeamertemplate{caption}[numbered]\newcounter{mylastframe}
+
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{colortbl}
+
+\renewcommand{\familydefault}{cmss}
+%\usepackage[all]{xy}
+
+\usepackage{tikz}
+\usepackage{lipsum}
+
+ \newenvironment{changemargin}[3]{%
+ \begin{list}{}{%
+ \setlength{\topsep}{0pt}%
+ \setlength{\leftmargin}{#1}%
+ \setlength{\rightmargin}{#2}%
+ \setlength{\topmargin}{#3}%
+ \setlength{\listparindent}{\parindent}%
+ \setlength{\itemindent}{\parindent}%
+ \setlength{\parsep}{\parskip}%
+ }%
+\item[]}{\end{list}}
+\usetikzlibrary{arrows}
+
+\usecolortheme{lily}
+
+\newtheorem{com}{Comment}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{condition}{Condition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+ \numberwithin{equation}{section}
+ 
+
+\setbeamertemplate{navigation symbols}{}
+
+
+\title[PLSC 43401]{Mathematical Foundations of Political Methodology}
+
+\author{Robert Gulotty}
+\institute[Chicago]{University of Chicago}
+\vspace{0.3in}
+
+
+
+
+\begin{document}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+
+
+
+
+\begin{frame}
+\frametitle{Topics for Today}
+\begin{itemize}
+\item LIE and LTV
+\item Change of coordinates when Random Variables are Tranformed.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Application of LIE: Conditional Expectation as an Estimator}
+Suppose $Y$ is a random variable, and $X$ is some data.
+
+\begin{eqnarray}
+\hat{Y} & = & E[Y|X] \nonumber 
+\end{eqnarray}\pause
+So we know $\hat{Y}$ is an estimator.\\
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Estimation error}
+Suppose $\hat{Y}$ is an estimator from before, the estimation error:
+\begin{eqnarray}
+\tilde{Y} & = & \hat{Y}-Y \nonumber 
+\end{eqnarray}\pause
+is a random variable where:
+\begin{eqnarray}
+E[\tilde{Y}|X] & = & E[ \hat{Y}-Y|X]=E[ \hat{Y}|X]-E[Y|X]=\hat{Y} -\hat{Y} =0\nonumber 
+\end{eqnarray}\pause
+By iterated expectations:\pause
+\begin{eqnarray}
+E[\tilde{Y}] & = & E[E[ \tilde{Y}|X]]=0 \nonumber 
+\end{eqnarray}\pause
+This estimator's error centers on 0.
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Correlation of  Estimator and Estimation Error}
+Suppose $\hat{Y}$ is the estimator from before, and $\tilde{Y}$ the estimation error.
+\begin{eqnarray}
+E[\tilde{Y}\hat{Y}] & = & E[E[\tilde{Y}\hat{Y}|X]]=E[\hat{Y}E[\tilde{Y}|X]]=0 \nonumber 
+\end{eqnarray}\pause
+because $\hat{Y}$ only depends on $X$.\pause
+\begin{eqnarray}
+cov(\tilde{Y},\hat{Y}) & = & E[ \tilde{Y}\hat{Y}]-E[\tilde{Y}]E[\hat{Y}]=0- E[\tilde{Y}]0=0\nonumber 
+\end{eqnarray}\pause
+The error is uncorrelated with the estimate. 
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Law of Total Variance}
+Suppose $X$ and $Y$ are random variables.  Then 
+
+\begin{eqnarray}
+var[X] & = & E[var[X|Y]]+var(E[X|Y]) \nonumber 
+\end{eqnarray}
+The first term is the average of the variation for each value of Y.\pause
+The second term is the variation across the averages within each value of Y.
+\end{frame}
+
+\begin{frame}
+\frametitle{Law of Total Variance: application}
+Suppose $\theta$ is a parameter, and $x$ is data.
+
+\begin{eqnarray}
+var[\theta] & = & E[var[\theta|x]]+var(E[\theta|x]) \nonumber 
+\end{eqnarray}
+The expected variance of $\theta$ conditional on data (the posterior) is less than the variance in $\theta$ without the data (the prior).
+\end{frame}
+
+
+%
+%
+%\begin{frame}
+%
+%\begin{defn}
+%$\boldsymbol{X} = (X_{1}, X_{2}, \hdots, X_{N}) $ is a vector of random variables.  If $\boldsymbol{X}$ has pdf 
+%
+%\begin{eqnarray}
+%f(\boldsymbol{x}) & = & (2 \pi)^{-N/2} \text{det}\left(\boldsymbol{\Sigma}\right)^{-1/2} \exp\left(-\frac{1}{2}(\boldsymbol{x} - \boldsymbol{\mu})^{'}\boldsymbol{\Sigma} (\boldsymbol{x} - \boldsymbol{\mu} ) \right) \nonumber 
+%\end{eqnarray}
+%$\boldsymbol{X}$ is a \alert{Multivariate Normal} Distribution, 
+%\begin{eqnarray}
+%\boldsymbol{X} & \sim & \text{Multivariate Normal} (\boldsymbol{\mu}, \boldsymbol{\Sigma}) \nonumber 
+%\end{eqnarray}
+%
+%
+%\end{defn}
+%
+%
+%\end{frame}
+%
+%
+%\begin{frame}
+%
+%\begin{prop}
+%Suppose $\boldsymbol{X} \sim \text{Multivariate Normal}(\boldsymbol{\mu}, \boldsymbol{\Sigma})$.  
+%where $\boldsymbol{X}= (X_{1}, X_{2}, \hdots, X_{N})$. \\
+%If $\text{cov}(X_{i}, X_{j})  = 0  $, then $X_{i}$ and $X_{j}$ are independent 
+%
+%\end{prop}
+%\end{frame}
+%
+%
+%
+%\begin{frame}
+%
+%\begin{proof}
+%Suppose $\mathbf{X}=(X_1,\ ... X_N)$ are MVN distributed \\ \pause 
+%Partition these into two groups $\mathbf{X_A}$ and $\mathbf{X_B}$, with means $\boldsymbol{\mu_A}$ and $\boldsymbol{\mu_B}$, and variance covariance 
+%$$\boldsymbol{\Sigma}=\ \begin{pmatrix} 
+%\text{var}(X_{1}) & \text{cov}(X_{1}, X_{2}) & \hdots & \text{cov}(X_{1}, X_{N}) \\
+%\text{cov}(X_{2}, X_{1}) & \text{var}(X_{2}) & \hdots & \text{cov}(X_{2}, X_{N} ) \\
+%\vdots & \vdots & \ddots & \vdots \\
+%\text{cov}(X_{N}, X_{1} ) & \text{cov}(X_{N}, X_{2} ) & \hdots & \text{var}(X_{N} ) \\
+%\end{pmatrix}=\begin{pmatrix} \boldsymbol{\Sigma}_{AA} & \boldsymbol{\Sigma}_{AB} \\ \boldsymbol{\Sigma}_{BA} &\boldsymbol{\Sigma}_{BB} \\\end{pmatrix}$$
+%
+%\pause
+%Now assume: $\boldsymbol{\Sigma}_{AB}=\boldsymbol{\Sigma}_{BA}=0$\pause
+%\begin{eqnarray}
+%\invisible<1-3>{& & [\mathbf{x_A^T}-\boldsymbol{\mu_A^T}, \quad \mathbf{x_B^T}-\boldsymbol{\mu_B^T}]\begin{bmatrix} \boldsymbol{\Sigma}_{AA} & 0\\ 0 &\boldsymbol{\Sigma}_{BB} \end{bmatrix}^{-1}  \begin{bmatrix}\mathbf{x_A}-\boldsymbol{\mu_A} \\ \mathbf{x_B}-\boldsymbol{\mu_B}\end{bmatrix} \nonumber } 
+%\end{eqnarray}
+%
+%\end{proof}
+%\end{frame}
+%
+%\begin{frame}
+%Now taking that equation:
+%\begin{eqnarray}
+%\invisible<1>{& & [\mathbf{x_A^T}-\boldsymbol{\mu_A^T}, \quad \mathbf{x_B^T}-\boldsymbol{\mu_B^T}]\begin{bmatrix} \boldsymbol{\Sigma}_{AA} & 0\\ 0 &\boldsymbol{\Sigma}_{BB} \end{bmatrix}^{-1}  \begin{bmatrix}\mathbf{x_A}-\boldsymbol{\mu_A} \\ \mathbf{x_B}-\boldsymbol{\mu_B}\end{bmatrix} \nonumber \\ } \pause 
+%\invisible<1-2>{& & [\mathbf{x_A^T}-\boldsymbol{\mu_A^T}, \quad \mathbf{x_B^T}-\boldsymbol{\mu_B^T}]\begin{bmatrix} \boldsymbol{\Sigma}_{AA}^{-1} & 0\\ 0 &\boldsymbol{\Sigma}_{BB}^{-1} \end{bmatrix}  \begin{bmatrix}\mathbf{x_A}-\boldsymbol{\mu_A} \\ \mathbf{x_B}-\boldsymbol{\mu_B}\end{bmatrix} \nonumber \\ } \pause 
+%\invisible<1-3>{& &(\mathbf{x_A}-\boldsymbol{\mu_A})^T\boldsymbol{\Sigma}_{AA}^{-1}(\mathbf{x_A}-\boldsymbol{\mu_A})+ (\mathbf{x_B}-\boldsymbol{\mu_B})^{T} \boldsymbol{\Sigma}_{BB}^{-1}(\mathbf{x_B}-\boldsymbol{\mu_B}) \nonumber } \pause
+%\end{eqnarray}
+%
+%\invisible<1-4>{So $exp\{(\mathbf{x}-\boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})\}$ factorizes into :
+%$$exp\{(\mathbf{x_A}-\boldsymbol{\mu_A})^T\boldsymbol{\Sigma}_{AA}^{-1}(\mathbf{x_A}-\boldsymbol{\mu_A})\}*exp\{(\mathbf{x_B}-\boldsymbol{\mu_B})^{T} \boldsymbol{\Sigma}_{BB}^{-1}(\mathbf{x_B}-\boldsymbol{\mu_B})\}$$}
+%\pause
+%so :\pause
+%\invisible<1-5>{$$f(\mathbf{x})=g(\mathbf{x_A})h(\mathbf{x_B})$$}
+%
+%\end{frame}
+
+
+\begin{frame}
+\frametitle{Change of Coordinates}
+
+
+\begin{prop}
+Suppose $X$ is a random variable and $Y = g(X)$, where $g:\mathbb{R} \rightarrow \mathbb{R}$ that is a $monotonic$ function.  \\
+Define $g^{-1}:\mathbb{R} \rightarrow \mathbb{R}$ such that $g^{-1}(g(X)) = X$ and is differentiable.  Then, 
+\begin{eqnarray}
+f_{Y}(y) & = & f_{X}(g^{-1}(y))\left|\frac{\partial g^{-1}(y)}{\partial y} \right| \text{ if $y = g(x)$ for some $x$ } \nonumber \\
+& = & 0 \text{ otherwise } \nonumber 
+\end{eqnarray}
+
+\end{prop}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Change of Coordinates}
+
+
+\begin{proof}
+
+Suppose $g(\cdot)$ is monotonically increasing (WLOG)\pause 
+\begin{eqnarray}
+F_{Y}(y) & = & P(Y \leq y) \nonumber \\ \pause 
+& = & P(g(X) \leq y) \nonumber \\ \pause 
+& = & P(X \leq g^{-1}(y) ) \nonumber \\ \pause 
+& = & F_{X}(g^{-1}(y) ) \nonumber  \pause 
+\end{eqnarray}
+Now differentiating to get the pdf  \pause 
+\begin{eqnarray}
+\frac{\partial F_{Y}(y)}{\partial y} & = & \frac{\partial F_{X}(g^{-1}(y) )} {\partial y } \nonumber \\
+ & = & f_{X}(g^{-1}(y) ) \frac{\partial g^{-1}(y)}{\partial y }   \nonumber  \pause 
+\end{eqnarray}
+Then this is a pdf because $\frac{\partial g^{-1}(Y)}{\partial y } > 0$.   
+
+
+\end{proof}
+
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Application of Change of Coordinates}
+
+Suppose $X$ is a random variable with pdf $f_{X}(x)$.  Suppose $Y =  X^{n}$.  Find $f_{Y}(y)$. \pause  \\
+Then $g^{-1} (x)  =  x^{1/n}$.   \pause 
+\begin{eqnarray}
+f_{Y}(y) & = & f_{X}(g^{-1}(y)) \left| \frac{\partial g^{-1}(Y)}{\partial y } \right| \nonumber \\ \pause 
+& = & f_{X} (y^{1/n} ) \frac{y^{\frac{1}{n} - 1}}{n} \nonumber 
+\end{eqnarray}
+\pause
+\alert{We've used this to derive many of the pdfs} \pause 
+\begin{itemize}
+\item[-] General Normal distribution 
+\item[-] Chi-Squared Distribution
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Example: Two Candidates}
+
+Two candidates put out advertisements to persuade the median voter.  Suppose that each is off by a uniform error U(0,1).
+\begin{itemize}
+\item What is the PDF of the miss of the less persuasive advertisement?  What is its expectation?
+\item Let X and Y be the error for the two candidates, and Z be the miss of the least persuasive advertisement.
+$$Z=\max\{X,\ Y\}$$
+\item $P(X\leq z)=P(Y\leq z) =z$
+\item By independence of X and Y: $F_z(z)=P(\max\{X,\ Y\}\leqz)=P(X\leq z, Y \leq z)=P(X\leq z)P(Y \leq z)$
+\item  $F_z(z)=z*z$
+\item Take derivative, $f_z(z)=2z$
+\item E(Z)=\int_0^1z 2z dz
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Getting to Central Limit Theorem}
+\begin{itemize}
+\item Use inequalities to prove Weak Law of Large Numbers (WLLN)
+\item Use Taylor's Theorem to show how a Moment Generating Function (MGF) works.
+\item  Use MGF and WLLN to prove Central Limit Theorem.
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Inequalities and Limit Theorems}
+
+\alert{Limit Theorems}
+\begin{itemize}
+\item[-] What happens when we consider a long sequence of random variables?
+\item[-] What can we reasonably infer from data?
+\begin{itemize}
+\item[-] Laws of large numbers: averages of random variables converge on expected value?
+\item[-] Central Limit Theorems: sum of random variables have normal distribution?
+\end{itemize}
+\end{itemize}
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Weak Law of Large Numbers}
+
+Proof plan: 
+\begin{itemize}
+\item[-] Markov's Inequality
+\item[-] Chebyshev's Inequality
+\item[-] Weak Law of Large Numbers 
+\end{itemize}
+
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Markov's Inequality}
+
+\begin{prop}
+Suppose $X$ is a random variable that takes on non-negative values.  Then, for all $a>0$, 
+\begin{eqnarray}
+P(X\geq a) & \leq & \frac{E[X]}{a} \nonumber 
+\end{eqnarray}
+\end{prop}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Markov's Inequality} 
+
+
+\begin{proof}
+For $a>0$,  \pause 
+\begin{eqnarray}
+E[X] & = & \int_{0}^{\infty} x f(x) dx \nonumber \\ \pause
+& = & \int_{0}^{a} x f(x) dx + \int_{a}^{\infty} x f(x) dx \nonumber  \pause 
+\end{eqnarray}
+
+Because $X\geq 0$,  \pause 
+
+\begin{eqnarray}
+E[X] \geq \int_{a}^{\infty} x f(x) dx  \geq \int_{a}^{\infty} a f(x)dx = a P(X \geq a )\nonumber \\ \pause 
+\frac{E[X]}{a} \geq P(X \geq a )\nonumber 
+\end{eqnarray}
+
+
+\end{proof}
+
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Chebyshev's Inequality} 
+
+\begin{prop} 
+If $X$ is a random variable with mean $\mu$ and variance $\sigma^2$, then, for any value $k>0$, 
+\begin{eqnarray}
+P(|X - \mu| \geq k) & \leq & \frac{\sigma^2}{k^2} \nonumber 
+\end{eqnarray}
+
+\end{prop}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Chebyshev's Inequality} 
+
+
+\begin{proof}
+Define the random variable 
+\begin{eqnarray}
+ Y & = & (X - \mu)^2 \nonumber 
+\end{eqnarray}
+
+Where $\mu = E[X]$. 
+
+\pause 
+
+Then we know $Y$ is a non-negative random variable.  Set $a = k^2$.  \\ \pause 
+Applying the inequality: \pause 
+\begin{eqnarray}
+P(Y \geq k^2) \leq \frac{E[Y]}{k^2} \nonumber \\ \pause 
+P( (X- \mu)^2 \geq k^2) \leq \frac{E[(X - \mu)^2]}{k^2} \nonumber \\ \pause 
+P( (X- \mu)^2 \geq k^2) \leq \frac{\sigma^2}{k^2}\nonumber 
+\end{eqnarray}
+
+\end{proof}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Chebyshev's Inequality} 
+
+
+Further we know that, 
+\begin{eqnarray}
+(X - \mu)^2  \geq k^2 \nonumber 
+\end{eqnarray}
+
+\pause 
+
+Implies that  \pause 
+\begin{eqnarray}
+|X - \mu| \geq k \nonumber  \pause 
+\end{eqnarray}
+
+Thus, we have shown  \pause 
+\begin{eqnarray}
+P( |X- \mu| \geq k) \leq \frac{\sigma^2}{k^2}\nonumber 
+\end{eqnarray}
+
+\end{frame}
+
+
+
+\begin{frame}{Example of Markov and Chebyshev}
+Suppose that we know that the number of items produced in a factory is a random variable with mean 500.
+\begin{itemize}
+\item How likely are we to see a production of 1000?
+\item If the variance is 50, how likely is the production between 400 and 600?
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Solution}
+\begin{itemize}
+\item How likely are we to see a production of 1000?
+\item Markov Solution:
+$$P(X\geq 1000)\leq\frac{E(X)}{1000}=\frac{500}{1000}$$\pause
+\item If the variance is 50, how likely is the production between 400 and 600?
+\item Chebyshev Inequality (set k to 100, $\sigma^2=50$):
+$$P(|X-500| \geq 100)\leq\frac{\sigma^2}{(100)^2}=\frac{50}{10000}=\frac{1}{200}$$
+$$P(|X-500| < 100)\geq 1-\frac{1}{200}$$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Random Variables, Data and the True parameters}
+\begin{itemize}
+\item Capital letters X, Y, Z are random variables.
+\item Greek letters $\mu,\ \sigma, \alpha, \beta, \lambda, \theta, \delta$ are the True parameters.\pause
+\item Observed facts about the world are not the TRUTH - we see only shadows!
+\begin{itemize}\pause
+\item We infer the true value by observing data, but we can only approximate the truth. 
+\item e.g. Fundamental problem causal inference $\delta=Y_t(i)-Y_c(i)$
+\end{itemize}
+\item To recognize this, we model our data as random variables, summaries of which are also random variables.
+$$\bar{X}=\frac{X_{1}+ X_{2}+ \hdots+ X_{n}}{n}$$
+\item $\bar{X}\neq \mu$
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Sequences of Random Variables}
+
+Sequence of Independent and Identically Distributed Random variables.
+\begin{itemize}
+\item[-] Sequence: $X_{1}, X_{2}, \hdots, X_{n}, \hdots $
+\item[-] Think of a sequence as sampled \alert{data}:
+\begin{itemize}
+\item[-] Suppose we are drawing a sample of $N$ observations
+\item[-] Each observation will be a random variable, say $X_{i}$
+\item[-] With realization $x_{i}$ 
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Mean/Variance of Sample Mean}
+
+\begin{prop}
+Let $X_{1}, X_{2}, \hdots, X_{n}$ be a random sample from a distribution with mean $\mu$ and variance $\sigma^2$.  Let $\bar{X}_{n}$ be the sample mean.  Then 
+$E[\bar{X}_{n}] = \mu$ and var$(\bar{X}_{n}) = \frac{\sigma^2}{n}$
+\end{prop}
+
+\pause 
+\begin{proof}
+
+\begin{eqnarray}
+E[\bar{X}_{n}] & = & \frac{1}{n}\sum_{i=1}^{n} E[X_{i}] \nonumber \\ \pause 
+& = & \frac{1}{n} n \mu  = \mu \nonumber 
+\end{eqnarray}
+
+
+
+\end{proof}
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Mean/Variance of Sample Mean}
+
+
+\pause 
+\begin{eqnarray}
+\text{var}(\bar{X}_{n}) & = & \frac{1}{n^2} \text{var}(\sum_{i=1}^{n} X_{i}) \nonumber \\ \pause 
+ &= & \frac{1}{n^2} \sum_{i=1}^{n} \text{var}(X_{i}) \nonumber \\ \pause 
+ & = & \frac{1}{n^2} n \sigma^2 = \frac{\sigma^2}{n} \nonumber  
+\end{eqnarray}
+
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Weak Law of Large Numbers} 
+
+\begin{prop}
+Suppose $X_{1}, X_{2}, \hdots, X_{n}$ is a random sample from a distribution with mean $\mu$ and $Var(X_{i})= \sigma^2$.  Then, for all $\epsilon >0$, 
+\begin{eqnarray}
+P\left\{ \left| \frac{X_{1} + X_{2} + \hdots + X_{n} }{n} -\mu \right| \geq \epsilon \right\} \rightarrow 0 \text{ as } n \rightarrow \infty \nonumber 
+\end{eqnarray}
+
+\end{prop}
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Weak Law of Large Numbers}
+
+\begin{proof}
+From our previous proposition \pause 
+\begin{eqnarray}
+\invisible<1>{\frac{\text{E}[X_{1} + X_{2} + \cdots + X_{n} ]}{n} & = & \frac{\sum_{i=1}^{n} E[X_{i}] }{n}  = \mu \nonumber} \pause 
+\end{eqnarray}
+\invisible<1-2>{Further, } \pause 
+\begin{eqnarray}
+\invisible<1-3>{\text{E}[ (\frac{\sum_{i=1}^{n} X_{i} - \mu}{n} )^2] = \frac{\text{Var}(X_{1} + X_{2} + \cdots + X_{n} )}{n^2} & = & \frac{ \sum_{i=1}^{n} \text{Var}(X_{i}) }{n^2} = \frac{\sigma^2}{n} \nonumber } \pause 
+\end{eqnarray}
+\invisible<1-4>{Apply Chebyshev's Inequality: } \pause 
+\begin{eqnarray}
+\invisible<1-5>{P\left\{ \left| \frac{X_{1} + X_{2} + \hdots + X_{n} }{n} -\mu \right| \geq \epsilon \right\}\leq \frac{\sigma^2}{n \epsilon^2} \nonumber }
+\end{eqnarray}
+
+\end{proof}
+
+
+\end{frame}
+
+\begin{frame}
+Suppose $X_{1}, X_{2}, \hdots$ are iid normal distributions,
+\begin{eqnarray}
+X_{i} & \sim & \text{Normal}(0, 10) \nonumber 
+\end{eqnarray}
+
+\begin{eqnarray} 
+P\left\{ \left| \frac{X_{1} + X_{2} + \hdots + X_{n} }{n} -\mu \right| \geq 0.1 \right\} \text{ as } n \rightarrow \infty\nonumber 
+\end{eqnarray}
+\pause 
+
+Suppose we want to guarantee that we have at most a $0.01$ probability of being more than $0.1$ away from the true $\mu$.  How big do we need $n$?\pause 
+\begin{eqnarray}
+0.01 & = & \frac{10}{n (0.1^2) } \nonumber \pause  \\
+n & = & \frac{1000}{0.01} \nonumber  \pause \\
+n & = & 100,000  \nonumber 
+\end{eqnarray}
+
+
+
+\end{frame}
+
+\end{document}

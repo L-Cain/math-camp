@@ -1,0 +1,81 @@
+---
+title: "Assignment for Week 8"
+author: "Author: Your name here!"
+date: "2/20/2017"
+output: pdf_document
+---
+<!-- Please turn in a PDF version of this assignment with answers.  For help, see the template.--> 
+
+```{r setup, include=FALSE}
+# This code changes "global" settings, here it makes the computer `echo` which refers to 
+# printing the code as well as the output into the pdf document when you knit.
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Change the following code to be your working folder for R
+
+knitr::opts_knit$set(root.dir = '~/Dropbox/mathCamp/Code/data/')
+# The following allows the computer to always get the same result for random stuff.
+set.seed(100)
+
+```
+
+## Package Loading
+
+```{r Package Loading}
+library(ggplot2)
+library(dplyr, warn.conflicts = F)
+```
+
+# Assignment
+<!-- Please Put \newpage commands between long answers.  Avoid allowing answers to spill over pages. --> 
+1)  5.1 (p 284)
+
+2)  5.8 (p 290)
+
+3)  9.20 (p 518)
+
+4) 9.22 (a) (b) (p 519)
+
+5) 9.26 (p 519)
+
+6) 9.27 (p 519)
+
+7) 9.30 (p 520)
+
+8) Suppose $\bar{X}$ is the mean of 100 observations from a popualtion
+  with mean $\mu$ and variance $\sigma^2$.  Find limits between which
+  $\bar X - \mu$ will lie with a probability of at least .85 using the Central Limit Theorem.
+  
+9) Consider the function $f(x,y)$ defined by the following table
+
+|  |y= 1|  2  |3   |
+|------:|:------:|:------:|:------:|
+|x= 1  | .1  |    0   |   .1  |
+|  2  |  0  |   .2|   .2 |
+|   3|    .1  |     .2   | .1  |
+
+Table: $f(x,y)$
+
+(a) Verify that $f(x,y)$ is a PDF.
+(b) Find the marginal probability functions of X and Y.
+(c) Compute E(X) and V(X).
+(d) Compute the covariance between X and Y. 
+(e) Find $P(X<Y)$.
+(f) Are X and Y independent? Justify your answer.
+
+
+\newpage
+
+# R assignment
+
+10) Write your own functional equivalents to the listed values of each of the following functions.  Each should take on a vector and output one of the listed values.
+
+a) `t.test(X,Y, var.equal=TRUE)` - statistic, parameter, p.value, conf.int.
+
+b) `var.test(X,Y)` - statistic, parameter, p.value, conf.int.
+
+11) What Departments have the highest gender differences in salary in Chicago?  What Departments have the lowest gender differences in salary?
+
+
+

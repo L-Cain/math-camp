@@ -1,0 +1,211 @@
+\documentclass{beamer}
+
+%\usepackage[table]{xcolor}
+\mode<presentation> {
+  \usetheme{Boadilla}
+%  \usetheme{Pittsburgh}
+%\usefonttheme[2]{sans}
+\renewcommand{\familydefault}{cmss}
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
+%\usepackage{palatino}
+%\usepackage{cmbright}
+  \setbeamercovered{transparent}
+\useinnertheme{rectangles}
+}
+%\usepackage{normalem}{ulem}
+%\usepackage{colortbl, textcomp}
+\setbeamercolor{normal text}{fg = black}
+\setbeamercolor{structure}{fg = blue}
+\definecolor{trial}{cmyk}{1,0,0, 0}
+\definecolor{trial2}{cmyk}{0.00,0,1, 0}
+\definecolor{darkgreen}{rgb}{0,.4, 0.1}
+\definecolor{mygray}{gray}{0.8}
+\definecolor{myblack}{rgb}{0, 0, 0}
+\usepackage{array}
+\beamertemplatesolidbackgroundcolor{white}  \setbeamercolor{alerted
+text}{fg=red}
+
+\setbeamertemplate{caption}[numbered]\newcounter{mylastframe}
+
+\usepackage{color}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{colortbl}
+\usepackage{graphicx}
+\usepackage{epsfig}
+
+%\usepackage[usenames, dvipsnames]{color}
+%\setbeamertemplate{caption}[numbered]\newcounter{mylastframe}c
+%\newcolumntype{Y}{\columncolor[cmyk]{0, 0, 1, 0}\raggedright}
+%\newcolumntype{C}{\columncolor[cmyk]{1, 0, 0, 0}\raggedright}
+%\newcolumntype{G}{\columncolor[rgb]{0, 1, 0}\raggedright}
+%\newcolumntype{R}{\columncolor[rgb]{1, 0, 0}\raggedright}
+
+%\begin{beamerboxesrounded}[upper=uppercol,lower=lowercol,shadow=true]{Block}
+%$A = B$.
+%\end{beamerboxesrounded}}
+\renewcommand{\familydefault}{cmss}
+%\usepackage[all]{xy}
+
+\usepackage{tikz}
+\usepackage{lipsum}
+
+ \newenvironment{changemargin}[3]{%
+ \begin{list}{}{%
+ \setlength{\topsep}{0pt}%
+ \setlength{\leftmargin}{#1}%
+ \setlength{\rightmargin}{#2}%
+ \setlength{\topmargin}{#3}%
+ \setlength{\listparindent}{\parindent}%
+ \setlength{\itemindent}{\parindent}%
+ \setlength{\parsep}{\parskip}%
+ }%
+\item[]}{\end{list}}
+\usetikzlibrary{arrows}
+%\usepackage{palatino}
+%\usepackage{eulervm}
+\usecolortheme{lily}
+
+\newtheorem{com}{Comment}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+ \numberwithin{equation}{section}
+
+
+\title[PLSC 43401] % (optional, nur bei langen Titeln nötig)
+{Mathematical Foundations of Political Methodology}
+
+\author{Robert Gulotty}
+\institute[University of Chicago]{Associate Professor\\Department of Political Science \\  University of Chicago}
+\vspace{0.3in}
+\date{August 28th, 2017}
+
+\setbeamertemplate{navigation symbols}{}
+
+\begin{document}
+
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Why Do We Need to Learn Calculus}
+
+\ \\Broadly to say, without calculus, the First Industrial Revolution will never happen. \pause
+
+\ \\And, for political science, calculus is also very important. \pause
+
+\ \\To justify this claim, let's see following two examples.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Why Do We Need to Learn Calculus}
+
+\ \\Example 1: Derivative in Positive Political Economy \pause
+
+\ \\Derivative is very important in positive political economy's research. \pause
+
+\ \\There are overlaps between positive political economy, American politics, comparative politics and international relation.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Why Do We Need to Learn Calculus}
+
+\ \\Example 1: Derivative in Positive Political Economy \pause
+
+\ \\We consider an example on redistributive distortionary taxation. The example comes from a textbook, Political Economics: Explaining Economic Policy, by Persson and Tabellini. \pause
+
+\ \\The individual has quasi-linear preferences:
+$$w = c + V(x)$$
+where $c$ and $x$ denote individual consumption and leisure, and $V()$ is a well-behaved concave utility function. \pause
+
+\ \\The private budget constraint is:
+$$c \leq (1 - \tau)l + f$$
+where $\tau$ denotes the income tax rate, $l$ the individual labor supply, and $f$ a lump sum transfer.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Why Do We Need to Learn Calculus}
+
+\ \\Example 1: Derivative in Positive Political Economy
+
+\ \\In addition to that, individuals are subject to the "time constraint":
+$$\alpha \geq x + l$$
+where $\alpha$ is individual productivity. \pause
+
+\ \\We can maximize individual's utility subject to the budget and time constraints. \pause
+
+\ \\The first-oder condition implies:
+$$1 - \tau = \frac{\partial V } {\partial x}(\alpha - l)$$
+where a subscript denotes a derivative. \pause
+
+\ \\Then, we can get individual's labor supply: $l = \alpha - \frac{\partial V } {\partial x}^{-1}(1 - \tau)$.
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+\frametitle{Why Do We Need to Learn Calculus}
+
+\ \\Example 2: Integral in Statistics \pause
+
+\ \\Now, suppose we have the SAT score in 2018, and suppose the distribution of SAT score is normal distribution with mean 1000, standard deviation 300. \pause
+
+\ \\Now, let's see a picture of this normal distribution.
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Why Do We Need to Learn Calculus}
+
+\begin{center}
+\epsfig{file = plsc43401_motivation_calculus_pic.eps, scale=.7}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Why Do We Need to Learn Calculus}
+
+\ \\Example 2: Integral in Statistics \pause
+
+\ \\Suppose that you get a very decent score, say, 1500. \pause
+
+\ \\A natural question to ask is: what's the probability of getting a score higher than 1500 in SAT test in 2018.
+
+\ \\We need to compute this probability by: \pause
+
+$$Pr(x \geq 1500) = \int_{1500}^{+ \infty} {\frac {1}{\sqrt {2\pi \sigma ^{2}}}}e^{-{\frac {(x-\mu )^{2}}{2\sigma ^{2}}}} dx = 0.04779$$
+where $\sigma = 300$, $\mu = 1000$.
+
+\end{frame}
+
+
+
+
+\end{document}

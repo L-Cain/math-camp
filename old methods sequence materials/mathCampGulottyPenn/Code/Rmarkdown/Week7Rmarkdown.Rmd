@@ -1,0 +1,206 @@
+---
+title: "Foundations of R Chapter 8"
+author: "Robert Gulotty"
+date: "1/31/2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, tidy.opts=list(width.cutoff=80),tidy=TRUE)
+set.seed(120)
+
+```
+******
+
+```{r, include=F}
+library(httr)
+library(dplyr, warn.conflicts = F)
+library(purrr, warn.conflicts = F)
+library(stringr)
+```
+
+This chapter covers the manipulation of strings and how string manipulation can be used to scrape websites.  We have seen already that strings are a kind of datatype in R, made up of characters or letters, and it turns out that this is the language of the internet.  
+
+Most of the prior chapters involved some basic string manipulaiton.  We made strings by using the `as.character()` command, by encasing our data in quotes, or by using the ubiquitous `paste`.  Here we describe in more depth the most useful package for string data: `stringr`. It is pronounced the same way as Idriss Elba's character in the Wire.  
+
+Stringr commands take as input a string or string vector, a regular expression, and some control commands.  The following,`str_replace`, is typical.  `str_replace` finds the pattern in the second entry, and replaces it with the third entry.
+
+```{r}
+str_replace("banana", "n", "f")
+str_replace_all("banana", "n", "f")
+```
+
+We can also extract things from a vector of strings
+```{r}
+str_extract_all("banana", "n")
+
+str_extract_all(c("Alabama", "Alaska", "Arizona","Arkansas"), "a")
+```
+
+ Notice it returns a list, which we can turn into a simple vector with the `unlist` command.
+
+\newpage
+
+So far, we have been looking for patterns in the data that are simple, single letters and the like.  However, as you have already seen, there is a powerful programming language for pattern regognition in strings called regular expressions.  This computer language is embedded in many other software packages, and is one of the most compact (and most difficult to read) programming languages.  You can place regular expressions in many places that do patterns in R.
+
+
+# Regular Expressions
+
+## Square brackets
+Regular expressions include being able to match multiple letters contained in `[]`.  These can be interpreted asking for a single character that matches at one element of the set inside the square brackets.
+```{r}
+str_replace("banana", "[bn]", "f")
+str_replace_all("banana", "[bn]", "f")
+str_replace_all("banana cream pie", "[an]", "e")
+```
+
+We can get a range of letters using a hyphen. `[A-z]` represents all the capital letters and lower case letters.
+```{r}
+str_replace_all("banana cream pie", "[a-z]", "e")
+```
+
+Notice that regular expressions are case sensitive
+```{r}
+str_replace_all("banana Cream pie", "[A-Z]", "e")
+```
+
+\newpage
+
+## Negative search
+
+Regular expressions default to finding a match.  We can also do negative search, with things in `[^ ]`.  Here we find all the letters that are not `i`.
+```{r}
+str_replace_all("Mississippi", "[^i]", "s")
+```
+
+
+## wildcards  `\\d \\s \\w`
+
+Regular expressions include wildcards for digits `(\\d)`, spaces (`\\s`), and many characters (`\\w`) or any character (`.`)
+
+```{r}
+str_replace("3 banana cream pies", "\\d", "4")
+
+str_replace("3 banana cream pies", "\\s", "-")
+
+str_replace("3 banana cream pies", "\\w", "9")
+
+
+str_replace("3 banana cream pies", ".", "2")
+
+str_replace("3 banana cream pies", "\\d\\s\\w", "B")
+
+```
+
+ The opposite is done with capital letters
+
+```{r}
+str_replace("3 banana cream pies", "\\D", "-")
+
+str_replace("3 banana cream pies", "\\S", "4")
+
+str_replace("3 banana cream pies", "\\W", "-")
+```
+
+\newpage
+
+# Repeated terms + * ?
+
+Regular expressions become complicated with repeats.
+
+`+` matches 1 or more instances of a pattern that preceeds it.
+
+```{r}
+str_replace("3 banana cream pies", "(an)+", "o")
+str_replace("3 bananana cream pies", "(an)+", "o")
+str_replace("3 bananana cream pies", "[A-z]+", "")
+```
+
+`*` allows there to be 0 or more instances of a pattern that preceeds it.
+
+```{r}
+str_replace("South Carolina", "South\\s*", "")
+str_replace("SouthCarolina", "South\\s*", "")
+str_replace("South-Carolina", "South\\s*", "")
+```
+
+## Greedy vs Lazy evaluations
+
+`+` and `*` are 'greedy' meaning that they will search as far as they can:
+
+```{r}
+str_extract("Alabama, Alaska, Arizona, Arkanasas, California,", "A.+,")
+```
+
+If the command were lazy, it would stop after the first one it found.  We can force these commands to stop at the first instance with a `?` mark.
+```{r}
+str_extract("Alabama, Alaska, Arizona, Arkanasas, California", "A.+?,")
+```
+
+For if you actually want to match on question marks or any other wildcard, you need to put `\\` in front.
+```{r}
+str_replace("Who? are you?", "\\?","")
+```
+
+\pagebreak
+
+# Exercise:  Pickle Industry Recipe
+
+Here we get the recipes from the pickle packer association:
+
+```{r}
+PickleRecipesSite<-GET("http://web.archive.org/web/20170307183305/http://ilovepickles.org/book/export/html/2")
+PickleRecipesText<-content(PickleRecipesSite, as="text")
+```
+
+ The recipes are one long character string.
+
+We can use regular expressions to unpack these recipies.
+
+First we will replace all the `\n`'s,  These are new line commands, and not useful for us.
+```{r}
+PickleRecipesText<-str_replace_all(PickleRecipesText,"[\n]", " ")
+```
+
+Ok, Suppose I want a list of all the ingredients:  We can do that by looking for everything between What you need, and the end of the section, marked by `</div>`.  I noticed a pattern reading it.  Now we will use extract, which returns a nested list.  We can undo that with an unlist command.
+```{r}
+ingredients<-unlist(str_extract_all(PickleRecipesText, "What You Need:&nbsp;</div>.+?</div>" ))
+
+ingredients<-str_replace_all(ingredients, "<.+?>",", ")
+```
+ to seperate the ingredients, we "split" on commas, again, making a list.
+```{r}
+ingredientslist<-str_split(ingredients, ",")
+```
+
+Remember, the map family of commands applies a function to each element of the list, and returns a list, Here we use `str_trim`.
+
+```{r}
+trimingredients<-map(ingredientslist, str_trim )
+```
+
+Ok, now this next command is a little complicated.  We calculate the list of each recipe with the map command, then we use that as the input into a rep command, which repeats each element of a vector a set number of times.  
+```{r}
+rep(c("a","b"), c(1,3))
+```
+
+```{r}
+recipenumber<-rep(1:length(trimingredients),map(ingredientslist,length))
+```
+
+Now we pass it do a data frame
+```{r}
+dfpickles<-data.frame(recipenumber=recipenumber, ingredient=unlist(trimingredients))
+```
+
+Cut out some stuff that is not interesting
+```{r}
+dfpickles <-
+  dfpickles %>% 
+  filter(!ingredient %in% c("What You Need:&nbsp;", "&nbsp;", "")) %>%
+  mutate(
+  ingredient = tolower(ingredient),
+  ingredient = str_replace(ingredient, "[\\d/-]+\\s\\w+", "")
+  ) 
+```
+

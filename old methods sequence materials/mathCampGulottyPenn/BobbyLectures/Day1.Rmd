@@ -1,0 +1,168 @@
+---
+title: "Day 1 Presentation"
+author: "Robert Gulotty"
+date: "9/26/2017"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width = 40)
+```
+
+## Introduction to the Course
+
+Our class has several goals:
+
+- Mathematical prerequisites for first year of methods courses.
+- Introduction to probability and statistical inference.
+- Introduction to computational methods.
+
+
+## Goals of statistical inference/probability
+- Generate knowledge on the basis of observed data.
+- The goal is to make claims about unobserved phenomena, often referred to as a theoretical __population__.
+- The phenomena may be unobserved because 
+    - it is in the future (forecasting)
+    - outside the sample (extrapolation)
+    - not directly measured (latent)
+- A special case is when we want to predict counterfactual outcomes (also called causal inference).
+
+
+## Advantages of statistics 
+- Make explicit our assumptions.
+- We learn non-obvious properties of inferences.
+- We get a measure of the degree of certainty in our inferences.
+
+
+## Toolbox: Probability theory 
+- The second half of the course begins with probability, goes through statistical inference.
+- This is a necessary prerequisit for linear models, the workhorse of quantitative work.
+
+## Connections between subjects
+- Set theory + Logic : Analytic political theory, programming, almost everything.
+- Calculus : a p-value is the solution to an integral, the M in MLE, game theory.
+- Linear algebra : basis of linear regression.
+- Mathematical thinking : Everything.
+
+
+
+
+## R + RStudio
+
+- For this class, we will use R, but interact with it using RStudio.
+    - R is a flexible language for data analysis.
+    - RStudio is an IDE, or ___Integrated Development Environment___, which offers an interface to R.
+- Your assignments can all be turned in pdf format using Latex + Rmarkdown, which is built into RStudio.
+
+## Principles to keep in mind
+
+- You can learn this, it will take time and practice.
+- You will not break anything important.
+- It is fun.
+
+## Rstudio Panes
+
+![RStudio In Action](~/Dropbox/mathCamp/Code/pictures/rstudiopanes.png)
+
+
+## Source: Where your code is edited.
+
+The top left part of the screen is the Source.
+
+- This is where you type in your code, in what is called a script.
+- The default document is a .R document (plain text).
+- The more advanced documents are called Rmarkdown documents, .Rmd
+- RStudio highlights syntax and autocompletes code (tab)
+
+## Console: Where your code is run.
+
+The bottom left part of the screen is the Console.  
+
+- This is an interactive code environment.
+- The little > is where the code runs.
+- A `+` means that it is waiting for a command. `esc` to cancel.
+- control - l to clear the Console. 
+
+## Environment/History
+
+The top right part of the screen has the Environment and History tabs.
+
+- Environment includes all the objects in RAM.
+- As you load or create data, this populates your Environment
+- The little grid icon to the right of Data objects opens a "view" screen.
+- `ls()` returns all the objects in the global environment.
+- `rm(x)` removes an object x.
+
+## Objects and Functions in R
+
+- There are several fundamental datatypes, which you will learn.
+    - Characters: strings enclosed in `"Colorado"`
+    - Numeric: integers and doubles `21.1`, `4L`,`9e2`  
+    - Logical: `TRUE`, `FALSE`, `NA`
+- You can learn about the type of an object by using `str()`.
+- Functions have a name, followed by ()
+    ```{r,echo=TRUE} 
+    rnorm(10)
+    ```
+
+## Useful Shortcuts
+
+| Purpose         | Keyboard shortcut   | Menu Path                        |
+|-----------------|:--------------------|---------------------------------:|
+| Run line        |  command - enter    | Code / Run Selected Line(s)      |
+| Code Completion |  tab                |                                  |
+| Clear Console   |  control - l        | Edit / clear console             |
+| Save Script     |  command - s        | File / save                      |
+| Reformat Script |  command - a        | Code / Reformat Code             |
+| list shortcuts  |  option - shift - k | Help / Keyboard Shortcuts        |
+
+
+# Workflow
+
+## Set-up for assignments in Rmarkdown
+
+- R markdown documents are created in the File menu and appears in the Console.
+- We have provided templates, with lots of code examples.
+- R markdown has embedded __r code__ and embedded __latex__ code.
+
+## LaTeX Code
+
+- LaTeX was invented to typeset mathematics:
+
+ `$\int_{i=1}^\infty \frac{1}{x} = \delta$` 
+ 
+ gives you
+ 
+ $\int_{i=1}^\infty \frac{1}{x} = \delta$ 
+ 
+- There is a template sheet available on Canvas with many useful commands.
+
+# How to get Help
+
+## Help in R
+
+- `?` + the command.  eg. `?plot`, `?'=='`,`?'%in%'` loads help for __loaded__ functions.
+- help( package="dplyr") gives the main page for a package.
+- `??` + command searches R help pages.
+
+## How to google it.
+
+- Add CRAN + google search term
+- Add [r] + google search term
+- Go to datacamp.com, stackoverflow
+
+
+## How ask for help online.
+
+- Isolate one issue.  Each issue gets it own minimal complete verifiable example.
+- Try to make the mistake happen in as few lines of code as possible (minimal/verifiable).
+- Then send the whole script (complete).
+
+## R session.
+
+- This Friday morning at 9:30 we will have a session in R going through things in detail.
+- Rather than your normal Lab space, Wieboldt Hall 130, we will meet in SHFE 146 (the econ building).

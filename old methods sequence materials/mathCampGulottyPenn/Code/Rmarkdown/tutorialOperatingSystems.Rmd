@@ -1,0 +1,67 @@
+---
+title: "File Paths in R"
+author: "Robert Gulotty"
+date: "September 30, 2014"
+output: pdf_document
+---
+
+## File Paths
+This is a tutorial on file paths and directories (folders).
+
+A directory indicates the location on the computer that you are saving your information, usually on your hard drive.  A path is a slash-separated list of directory names, followed by a file name or a directory (folder) name.  For example, `/Users/robertgulotty` suggests that there is a folder named `robertgulotty` in the `Users` folder.  
+
+If you look at the ___file path___ of some file in your computer, by right clicking on the file and selecting properties or get info, you will find that directory names are separated by `/` in Macs and other Unix based systems and `\` in Windows (PC).
+
+These slashes differ across Macs and PCs, and R has trouble with backslashes (`\`).  If you use R on a mac or a PC, you will see the path printed with a forwardslash (`/`).  This is because R is built for Unix, and backslash is a programming command in the R language.  
+
+On Windows machines to tell your computer where to look, you must either 
+
++ use the forwardslash (/)
++ use ___two___ backslashes (\\\\).
+
+Either one will work.
+
+## Working Directory
+
+The following command tells us what the `working directory' is:
+```{r}
+getwd()
+```
+
+A working directory is the default place for R to look for files and folders.  If you read out data into a csv, you will create a file in the working directory.  
+
+If my working directory is "/Users/robertgulotty/Google Drive/stuffforclass/" the following three commands are the same:
+```{r}
+# WBdta<-read.csv("/Users/robertgulotty/Google Drive/stuffforclass/WB_dta.csv")
+# WBdta<-read.csv("WB_dta.csv")
+# WBdta<-read.csv("~/Google Drive/stuffforclass/WB_dta.csv")
+```
+
+
+In the Mac operating systems, a directory usually begins with `/Users/yourname`  This can be replaced with a $\sim$, which is a shortcut for `/Users/yourname`
+
+In Windows operating systems, a directory usually begins with 
+`C:/Users/yourname/`
+
+\newpage
+
+## setwd() to change the Working Directory
+
+You can change directories as follows:
+
+```{r}
+## Mac change directory
+# setwd("/Users/robertgulotty/Google Drive/IPS2014/")
+## PC change directory (Version 1)
+# setwd("C:/Users/Google Drive/IPS2014/")
+## PC change directory (Version 2)
+# setwd("C:\\Users\\Google Drive\\IPS2014\\")
+
+```
+Where the bit in quotation markes is replaced by your preferred file.  Note that you can use the tab key to complete the file name!
+
+----------------------------------  
+__Expert Tip__
+
+If you need to share code, and you are often switching between different operating systems, remember to set your working directory at the top of the R script.  This will avoid having to write the path later on.
+----------------------------------

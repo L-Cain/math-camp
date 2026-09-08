@@ -1,0 +1,281 @@
+\documentclass[11pt]{article} 
+
+\usepackage{amsmath}
+
+\usepackage[super]{nth}
+
+\usepackage{epsfig}
+
+\usepackage{graphics}
+
+\usepackage{wasysym}
+
+\usepackage{times}
+
+\usepackage{natbib}
+
+%\usepackage{amssymb}
+
+\setlength{\topmargin}{0in}
+\setlength{\textwidth}{6.25in}
+
+\setlength{\oddsidemargin}{.125in}
+
+% 28 lectures total
+
+\usepackage{amscd}
+
+\begin{document}
+\begin{center}
+
+\large
+\textsc{Mathematical Foundations of Political Methodology: PLSC 43401}\\
+\end{center}
+
+\small
+
+\ \\ \begin{tabular} {ll} \multicolumn{2}{l}{Professor Robert Gulotty}\\
+Office: &Pick 326\\
+Phone: &2-5726\\
+Email: &gulotty@uchicago.edu\\
+\multicolumn{2}{l}{Office Hours: Tuesday morning signup www.wejoinin.com/sheets/ixkyx}
+\end{tabular}
+
+\vspace{.15in}
+
+\ \\ \begin{tabular} {ll} \multicolumn{2}{l}{Professor Maggie Penn}\\
+Office: &Pick 322\\
+Phone: &2-7664\\
+Email: &epenn@uchicago.edu\\
+\multicolumn{2}{l}{Office Hours: Fridays 1-2pm or by appointment}
+\end{tabular}
+
+\vspace{.15in}
+
+\ \\ \begin{tabular} {ll} \multicolumn{2}{l}{TA }\\
+Office: & Pick 507\\
+%Phone: & \\
+Email: &  \\
+%\multicolumn{2}{l}{R Lab: }\\
+\multicolumn{2}{l}{Office Hours: or by appointment }
+\end{tabular}
+
+\vspace{.5in}
+
+\ \\{\bf Course description}  
+
+\ \\This is a first course on the theory and practice of mathematical methods in social science research.  These mathematical and computer skills are needed for the quantitative and formal modeling courses offered in the political science department, and are increasingly necessary for courses in American Politics, Comparative Politics, and International Relations.   We will cover mathematical techniques (linear algebra, calculus, probability) and methods of logical and statistical inference (proofs and statistics).  A weekly computing lab will apply these methods, as well as introduce the R statistical computing environment.
+
+\vspace{.1in}
+
+\noindent {\bf Grading:} You will be graded on weekly problem sets (worth 20\% of your total grade), several programming assignments in R (also 20\%), and two, noncumulative exams (each worth 30\% of your grade).  
+
+\ \\{\bf Problem sets are due each Tuesday at midnight, starting October $\mathbf{3^{\text{rd}}}$.  Upload your problem sets to Canvas.}
+
+
+\ \\{\bf Required books:} \textit{ Mathematics for Economists, \nth{4} Edition},  by Pemberton \& Rau, and \textit{Introduction to Probability, \nth{2} Edition}, by Bertsekas \& Tsitsiklis.
+
+
+\newpage
+
+\ \\ \noindent \textsc{Sep 26: Introduction: Algebra, Sets, Functions, and Proofs}
+
+\begin{itemize}
+\item Pemberton \& Rau Ch, 1-4
+
+\item {\bf Week's R Goal:} Intro to R, data frames, Boolean logic, indexing, loops, functions.
+\item {\bf R application: } NYC Flights
+\end{itemize}
+
+
+\noindent \textsc{Sep 28: Sequences, Series, Limits \& Continuity}
+
+\begin{itemize}
+
+\item Pemberton \& Rau Ch. 5
+
+
+\end{itemize}
+
+\noindent \textsc{Oct 3: The Derivative \& Methods of differentiation}
+
+\begin{itemize}
+\item Pemberton \& Rau Ch. 6, 7
+
+\item {\bf Week's R Goal:} Vectorized code with dplyr, joins.
+\item {\bf R application: } Fearon Laitin and Religion 
+\end{itemize}
+
+
+
+\noindent \textsc{Oct 5: Optimization \& Integral calculus}
+
+\begin{itemize}
+
+\item Pemberton \& Rau Ch. 8, 19
+
+\end{itemize}
+
+
+
+\noindent \textsc{Oct 10: Linear Algebra }
+
+\begin{itemize}
+
+\item Pemberton \& Rau Ch. 11
+\item  {\bf Week's R Goal:} Graphical summary of data, histograms, bar plots, group\_by.
+\item {\bf R application: } Language and geography of Afghanistan's villages
+
+
+\end{itemize}
+
+
+\noindent \textsc{Oct 12: Systems of linear equations \& determinants }
+
+\begin{itemize}
+\item Pemberton \& Rau Ch. 12, 13.1
+
+
+\end{itemize}
+
+
+\noindent \textsc{Oct 17:  Multivariate calculus }
+
+\begin{itemize}
+\item Pemberton \& Rau Ch. 14, 16
+
+\item  {\bf Week's R Goal:}  tidyr
+\item {\bf R application: } Police shootings
+
+
+
+\end{itemize}
+
+
+\noindent \textsc{Oct 19:  Constrained optimization}
+
+\begin{itemize}
+
+\item Pemberton \& Rau Ch. 16, 17
+
+
+\end{itemize}
+\noindent \textsc{Oct 24:  \underline{In-Class Exam}}
+
+\begin{itemize}
+\item  {\bf Week's R Goal:} Purrr, advanced functions on lists
+\end{itemize}
+
+
+\newpage
+
+\noindent \textsc{Oct 26: Laws and Properties of Probability}
+
+\begin{itemize}
+
+\item Bertsekas-Tsitsiklis Ch. 1.1-1.2 
+
+
+\end{itemize}
+
+\noindent \textsc{Oct 31: Conditional Probability}
+
+\begin{itemize}
+
+\item Bertsekas-Tsitsiklis Ch. 1.3-1.7
+
+\item  {\bf Week's R Goal:} xtable, stargazer, reproducible code
+ \item  {\bf R Application:} Data vs model of World Series lengths 
+
+\end{itemize}
+
+\noindent \textsc{Nov 2: Discrete Random variables }
+
+\begin{itemize}
+
+ \item Bertsekas-Tsitsiklis Ch. 2  
+ 
+
+
+\end{itemize}
+
+
+\noindent \textsc{Nov 7: Continuous Random variables}
+
+\begin{itemize}
+\item Bertsekas-Tsitsiklis Ch. 3.1-3.3 
+%\item Bertsekas-Tsitsiklis Ch. 3
+
+ \item  {\bf Week's R Goal:} stringr, and other text tools
+ \item  {\bf R Application:}  Open Data Chicago: the Wage Gap
+\end{itemize}
+
+
+\noindent \textsc{Nov 9: Summarizing Random variables}
+
+\begin{itemize}
+\item Bertsekas-Tsitsiklis Ch. 3.4-3.7 
+
+\end{itemize}
+
+\noindent \textsc{Nov 14: Covariance and Correlation}
+
+\begin{itemize}
+
+ \item Bertsekas-Tsitsiklis Ch. 4.1-4.3
+ 
+ 
+\item  {\bf Week's R Goal:} ggmap and GIS
+ 
+\end{itemize}
+
+\noindent \textsc{Nov 16: Transformations of Random Variables}
+
+\begin{itemize}
+
+ \item Bertsekas-Tsitsiklis Ch. 4.4-4.4.6
+
+
+\end{itemize}
+
+\noindent \textsc{Nov 21: Inequalities and limits of sequences of Random Variables}
+
+\begin{itemize}
+
+ \item Bertsekas-Tsitsiklis Ch. 5
+ 
+  
+\item  {\bf Week's R Goal:} validate 
+ \item  {\bf R Application:} China's response to the TPP - a survey experiment
+
+\end{itemize}
+
+\noindent \textsc{Nov 28: Hypothesis testing}
+
+\begin{itemize}
+
+ \item Bertsekas-Tsitsiklis Ch. 9
+ \item Degroot and Schervish Chapter 8
+
+\end{itemize}
+
+\noindent \textsc{Nov 30: \underline{In-Class Exam}}
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

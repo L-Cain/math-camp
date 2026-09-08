@@ -1,0 +1,639 @@
+\documentclass{beamer}
+
+%\usepackage[table]{xcolor}
+\mode<presentation> {
+  \usetheme{Boadilla}
+%  \usetheme{Pittsburgh}
+%\usefonttheme[2]{sans}
+\renewcommand{\familydefault}{cmss}
+%\usepackage{lmodern}
+%\usepackage[T1]{fontenc}
+%\usepackage{palatino}
+%\usepackage{cmbright}
+  \setbeamercovered{transparent}
+\useinnertheme{rectangles}
+}
+%\usepackage{normalem}{ulem}
+%\usepackage{colortbl, textcomp}
+\setbeamercolor{normal text}{fg = black}
+\setbeamercolor{structure}{fg = blue}
+\definecolor{trial}{cmyk}{1,0,0, 0}
+\definecolor{trial2}{cmyk}{0.00,0,1, 0}
+\definecolor{darkgreen}{rgb}{0,.4, 0.1}
+\usepackage{array}
+\beamertemplatesolidbackgroundcolor{white}  \setbeamercolor{alerted
+text}{fg=red}
+
+\setbeamertemplate{caption}[numbered]\newcounter{mylastframe}
+
+\usepackage{color}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{colortbl}
+%\usepackage[usenames, dvipsnames]{color}
+%\setbeamertemplate{caption}[numbered]\newcounter{mylastframe}c
+%\newcolumntype{Y}{\columncolor[cmyk]{0, 0, 1, 0}\raggedright}
+%\newcolumntype{C}{\columncolor[cmyk]{1, 0, 0, 0}\raggedright}
+%\newcolumntype{G}{\columncolor[rgb]{0, 1, 0}\raggedright}
+%\newcolumntype{R}{\columncolor[rgb]{1, 0, 0}\raggedright}
+\setbeamercolor{normal text}{fg = black}
+\setbeamercolor{structure}{fg = blue}
+\definecolor{trial}{cmyk}{1,0,0, 0}
+\definecolor{trial2}{cmyk}{0.00,0,1, 0}
+\definecolor{darkgreen}{rgb}{0,.4, 0.1}
+\definecolor{mygray}{gray}{0.8}
+\definecolor{myblack}{rgb}{0, 0, 0}
+
+%\begin{beamerboxesrounded}[upper=uppercol,lower=lowercol,shadow=true]{Block}
+%$A = B$.
+%\end{beamerboxesrounded}}
+\renewcommand{\familydefault}{cmss}
+%\usepackage[all]{xy}
+
+\usepackage{tikz}
+\usepackage{lipsum}
+
+ \newenvironment{changemargin}[3]{%
+ \begin{list}{}{%
+ \setlength{\topsep}{0pt}%
+ \setlength{\leftmargin}{#1}%
+ \setlength{\rightmargin}{#2}%
+ \setlength{\topmargin}{#3}%
+ \setlength{\listparindent}{\parindent}%
+ \setlength{\itemindent}{\parindent}%
+ \setlength{\parsep}{\parskip}%
+ }%
+\item[]}{\end{list}}
+\usetikzlibrary{arrows}
+%\usepackage{palatino}
+%\usepackage{eulervm}
+\usecolortheme{lily}
+
+\newtheorem{com}{Comment}
+\newtheorem{lem} {Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{obs}{Observation}
+ \numberwithin{equation}{section}
+
+
+\title[PLSC 43401] % (optional, nur bei langen Titeln nötig)
+{Mathematical Foundations of Political Methodology}
+
+\author{Robert Gulotty}
+\institute[University of Chicago]{Associate Professor\\Department of Political Science \\  University of Chicago}
+\vspace{0.3in}
+\date{August 28th, 2017}
+
+\begin{document}
+
+
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+
+
+\begin{frame}
+
+\begin{itemize}
+\item \textcolor{myblack}{Set Theory}
+\item \textcolor{myblack}{Vectors and Order Lists}
+\item \textcolor{myblack}{Functions}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+
+\begin{itemize}
+\item \textcolor{myblack}{Set Theory}
+\item \textcolor{mygray}{Vectors and Order Lists}
+\item \textcolor{mygray}{Functions}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Set}
+
+\begin{defn}
+The set is a collection of objects viewed as a single entity.
+\end{defn}
+\pause
+
+\begin{itemize}
+\item If the objects in the set can be counted then it's common for the set to be written by enclosing the objects in curly braces $\{...\}$ \pause
+ 
+\begin{itemize}
+\item The curly braces are extremely important: $\{1, 4, 5\}\not=(1, 4, 5)$ \pause
+\end{itemize}
+ 
+\item Examples of sets: $\{$Maggie, Bobby$\}$, or $\{2, 5, 3, 8, 10\}$, or \\$\{$red, green, blue$\}$ \pause
+ 
+\item The elements of a set must all be unique: $\{1, 1, 3, 4, 4\}$ is not a set \\(it's a \textit{multiset}) \pause
+
+\item The ordering of elements in a set does not matter: \\$\{$red, blue, green$\}$=$\{$green, blue, red$\}$
+
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{In}
+
+\begin{defn}
+Is an element of is: $\in$.
+\end{defn}
+\pause
+
+{Examples: } \pause
+\begin{itemize}
+\item green $\in \{$red, green, blue$\}$
+\item magenta $\not\in \{$red, green, blue$\}$
+\end{itemize}
+   
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Subset}
+
+\begin{defn}
+Is a subset of is: $\subset$.
+\end{defn}
+\pause
+
+{Examples: } \pause
+\begin{itemize}
+\item $\{$green, red$\} \subset \{$red, green, blue$\}$ \pause
+\item Note that green $\not\subset \{$red, green, blue$\}$ because ``green" IS NOT a set! \pause
+\item However $\{$green$\}\subset \{$red, green, blue$\}$ because $\{$green$\}$ IS a set \pause
+\end{itemize}
+
+{Remark: }
+\begin{itemize}
+\item Sometimes a distinction is made between $\subset$ (strict subset) and \\ $\subseteq$ (weak subset); your book doesn't make the distinction
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Union}
+
+\begin{defn}
+Union is $\cup$, and represents the set of elements in \textit{either} set.
+\end{defn}
+\pause
+
+{Examples: }
+\begin{itemize}
+\item $\{$Maggie, Bobby$\} \cup \{2, 5, 3, 8, 10\}$ \\ =$\{$Maggie, Bobby$, 2, 5, 3, 8, 10\}$ \pause
+\item $\{$Maggie, Bobby$\} \cup \{2, 5, 3, 8, 10\} \cup \{$red, green, blue$\}$ \\ $=\{$Maggie, Bobby$, 2, 5, 3, 8, 10$, red, green, blue$\}$ \pause
+\item $\{$Maggie, Bobby$\} \cup \{$Maggie, Bobby$\} =\{$Maggie, Bobby$\}$
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Intersection}
+
+\begin{defn}
+Intersection is $\cap$, and represents the set of elements in \textit{both} sets.
+\end{defn}
+\pause
+
+{Examples: }
+\begin{itemize}
+\item $\{$Maggie, Bobby$\} \cap \{$Bobby, Bogdan$\}$=$\{$Bobby$\}$ \pause
+\item $\{$Maggie, Bobby$\} \cap \{2, 5, 3, 8, 10\}=\emptyset$ \pause
+\end{itemize}
+
+$\emptyset$ is the ``empty set" which is the set that contains nothing, or $\{\}$ 
+The output of union and intersection operations \textit{is always a set}! \pause
+
+\begin{itemize}
+\item $\{$Maggie, Bobby$\} \cap \{$Bobby, Bogdan$\} \not=$ Bobby \pause
+\end{itemize}
+
+If two sets have an empty intersection, they are \textit{disjoint} \pause
+
+\begin{itemize}
+\item $\{$Maggie, Bobby$\}$ and $  \{2, 5, 3, 8, 10\}$ are disjoint
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Concise Notation for Set}
+
+Oftentimes we don't want to (or can't) simply list all the items in a set, so we define sets in other ways (note  we \textit{always use the curly braces}) \pause
+
+\begin{itemize}
+\item The set of all the boys' names that start with a vowel: $\{x: x\hbox{ is a boy's name starting with a vowel}\}$
+\item The set of all real numbers greater than -17.5 and less than 4: $\{x\in \mathbb{R}:-17.5<x<4\}$ \pause
+\end{itemize}
+ 
+Using this notation, we can define the following:
+$$A\cup B=\{x: x\in A \hbox{ or } x\in B\}$$
+$$A\cap B=\{x: x\in A \hbox{ and } x\in B\}$$
+
+\end{frame}
+
+
+
+%\begin{frame}
+%\frametitle{Set Theory}
+
+%Claim:  The empty set $\emptyset$ is a subset of every set. \pause
+
+%\ \\\underline{Direct proof}: First, note that $B\subset A$ is equivalent to the statement that $$\forall x\in B \hbox{ we have }  x\in A.$$ \pause
+
+%We want to prove that $\emptyset \subset A$ for any set $A$. \pause
+
+%This is equivalent to saying that for all $x\in \emptyset$, we have $ x\in A$.  But we know that $\not\exists x\in \emptyset$.  Therefore the statement that these (nonexistent) $x$ are in $A$ is vacuously true.  $\Box$
+
+%\end{frame}
+
+
+
+%\begin{frame}
+%\frametitle{Set Theory}
+
+%Other vacuously true statements: \pause
+
+%\underline{Claim}: If the moon was purple, then rain would fall up.
+
+%\underline{Definition}: A binary relation is %、\textit{quasitransitive} if $a>b$ and $b>c$ implies that $a>c$.
+
+%\underline{Claim}: The binary relation with $a=b$ and $b>c$ and $a=c$ is quasitransitive.
+%\end{frame}
+
+
+
+%\begin{frame}
+%\frametitle{Set Theory}
+
+%Claim:  The empty set $\emptyset$ is a subset of every set. \pause
+
+%\underline{Proof by contradiction}: First, note that $B\not\subset A$ is equivalent to the statement that $$\exists x\in B \hbox{ such that } x\not\in A. $$ \pause
+
+%Suppose that $\emptyset \not\subset A$.  Then by the above statement we know that $\exists x\in \emptyset: x\not\in A$.  However, this contradicts the fact that $\not\exists x\in \emptyset$.  Thus, $\emptyset\subset A$.   $\Box$
+
+%\end{frame}
+
+
+\begin{frame}
+\frametitle{Family of Sets and Cardinality of Set}
+
+\begin{itemize}
+\item A \textit{family of sets} is a set whose elements are themselves sets
+\begin{itemize}
+\item $\{\{1, 2, 4\}, \{2, 6\}, \{\hbox{green}\}\}$ \pause
+\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+\item A well-known family of sets is the \textit{power set} of any set $X$: it is the set of all subsets of $X$, and is written $2^X$ 
+\begin{itemize}
+\item $2^{\{\hbox{cat, dog}\}}=\{\emptyset, \{\hbox{cat}\}, \{\hbox{dog}\}, \{\hbox{cat, dog}\}\}$ \pause
+\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+\item $|X|$ is the cardinality (size) of set $X$; the number of elements in $X$
+\begin{itemize}
+\item If $|X|=n$ then $|2^X|=2^n$
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+
+
+%\begin{frame}
+%\frametitle{Conditional Statement}
+
+%\begin{defn}
+%"If P then Q" is sometimes called a conditional statement, with P as its antecedent and Q as its consequent. We can also write it as $P \rightarrow Q$.
+%\end{defn} \pause
+
+%\begin{itemize}
+%\item Examples \pause
+%\begin{itemize}
+%\item If we are in the University of Chicago, then, we are in Chicago area. \pause
+%\item If you get good grades, then, you will get into a good college. \pause
+%\end{itemize}
+%\end{itemize}
+
+%\begin{itemize}
+%\item Remark: If antecedent is not true, then the conditional statement is vacuously true.
+%\end{itemize}
+
+%\end{frame}
+
+
+
+%\begin{frame}
+%\frametitle{Conditional Statement: Truth Table}
+
+%\begin{table}[]
+%\begin{tabular}{llc}
+%P & Q & \multicolumn{1}{l}{$P \rightarrow Q$} \\ \hline
+%F & F & T?                                    \\
+%F & T & ?                                     \\
+%T & F & F                                     \\
+%T & T & T                                    
+%\end{tabular}
+%\end{table}
+
+%\end{frame}
+
+
+
+%\begin{frame}
+%\frametitle{And, Or}
+
+
+%\begin{defn}
+%Logical conjunction is an operation on two logical values, typically the values of two propositions, that produces a value of true if and only if both of its operands are true. It's denoted by $A \land B$.
+%\end{defn}
+
+%\begin{defn}
+%Logical disjunction is an operation on two logical values, typically the values of two propositions, that has a value of false if and only if both of its operands are false. It's denoted by $A \lor B$.
+%\end{defn}
+
+%\end{frame}
+
+
+%\begin{frame}
+%\frametitle{Proof Strategies}
+
+%Quick aside on proof strategies:
+
+%\ \\Proof by contradiction: We want to show $A\Rightarrow B$.  Assume that both $A$ and $\neg B$ hold simultaneously.  Show that this implies a contradiction. \pause
+
+%\ \\Proof by contrapositive: We want to show $A\Rightarrow B$.  Prove that $\neg B \Rightarrow \neg A$. \pause
+
+%\ \\Proof by induction: We want to show that a property holds for all $n$, where $n$ is an integer.  (1) Prove it holds for $n=0$ (or $n=1$).  (2) \textit{Assume} it holds for arbitrary $n$.  (3) Prove it must hold for $n+1$.
+%\end{frame}
+
+
+
+%\begin{frame}
+%\frametitle{Proof Strategies}
+
+%Claim:  If $|X|=n$ then $|2^X|=2^n$ \pause
+
+%\ \\\underline{Proof by induction}: Suppose that $|X|=0$.  If $X$ has no elements, then $X=\emptyset$. It follows that  $2^{\{\}}=\{\{\}\}$: the set of all subsets of $\emptyset$ is just the set containing $\emptyset$.  Thus, $|2^{\{\}}|=2^{|X|}=2^0=1$, proving our statement for $n=0$. \pause
+
+%\ \\Suppose our statement holds for $|X|=n$, so $|2^X|=2^n$. \pause
+
+%\ \\Let $Y=X\cup \{x\}$, so that $|Y|=n+1$.  $2^Y$ is $2^X\cup\{S: S\subset Y \text{ and } x\in S\}$.  Note that $2^X$ and $\{S: S\subset Y \text{ and } x\in S\}$ are disjoint. \pause
+
+%\ \\The set $\{S: S\subset Y \text{ and } x\in S\}$ has $2^n$ elements: it is $\{S:  S=\{x\}\cup Z \text{ where } Z\in 2^X\}$.  Thus, $|2^Y| = 2^n+2^n=2*2^n=2^{n+1}$. This proves our result. $\Box$
+%\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Set Theory}
+
+\begin{itemize}
+\item If $A\subset B$ then the set of things that are in $B$ but not $A$ is the \textit{complement of $A$ in $B$} \pause
+
+$$B\setminus A= \hbox{ The complement of $A$ in $B$} = \{x\in B: x\not\in A\}$$ \pause
+
+\item A set with a finite number of elements is a finite set \pause
+
+\item A set with an infinite number of elements is an infinite set
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Set of Numbers}
+
+\begin{itemize}
+\item The real numbers, $\mathbb{R}$: All numbers that are positive, negative, or 0 \pause
+
+\item The natural numbers, $\mathbb{N}$: The set of all strictly positive integers \\$\mathbb{N}=\{1, 2, 3, 4, ...\}$ \pause
+
+\item The integers, $\mathbb{Z}: $ the natural numbers, their negatives, and 0\\$\mathbb{Z}=\{..., -2, -1, 0, 1, 2 ...\}$
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+
+\begin{itemize}
+\item \textcolor{mygray}{Set Theory}
+\item \textcolor{myblack}{Vectors and Order Lists}
+\item \textcolor{mygray}{Functions}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Ordered List}
+
+\begin{itemize}
+\item  Unlike sets, \textit{ordered lists} are denoted with smooth brackets $(c, a, b, d, e)$ \pause
+\begin{itemize}
+\item Elements can repeat \pause
+\end{itemize}
+\item The 2-dimensional plane is represented by $\mathbb{R}^2$, or $\mathbb{R}\times \mathbb{R}$
+
+$$\mathbb{R}^2=\{(x, y): x\in \mathbb{R} \hbox{ and }y\in \mathbb{R} \}$$
+
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Cartesian Product}
+
+\begin{itemize}
+\item The general idea of an ordered pair doesn't require it to consist of two real numbers (or even two elements  of the same set!)
+
+\item Given two sets $X$ and $Y$, the Cartesian product of $X$ and $Y$ is $\{(x, y): x\in X \hbox{ and }y\in Y\}$
+
+\begin{itemize}
+\item $\{\hbox{cat, dog}\}\times \{a, b\}= \{(\hbox{cat}, a), (\hbox{cat}, b), (\hbox{dog}, a), (\hbox{dog}, b)\}$ \pause
+\end{itemize}
+\end{itemize}
+
+\begin{itemize}
+\item $X_1\times X_2\times ... \times X_n=\{(x_1, x_2, ..., x_n):x_i\in X_i \hbox{ for }i=1, 2, ..., n\}$ \pause
+\end{itemize}
+
+\begin{itemize}
+\item $\mathbb{R}^n$ is the $n$-ary Cartesian product of $\mathbb{R}$
+$$\mathbb{R}^n=\{(x_1, x_2, ..., x_n): x_i\in \mathbb{R} \}$$
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Vector}
+
+\begin{defn}
+An ordered list of numbers is a \textit{vector}.
+\end{defn}
+\pause
+
+If the vector has $n$ elements, then it is an element of $n$-dimensional Euclidean space, or $\mathbb{R}^n$ \pause
+
+{Examples: }
+\begin{itemize}
+\item $(1, 5, 7)\in \mathbb{R}^3$
+\item $(3, 2, 7, 12, 65, 78787, 3)\in \mathbb{R}^7$ \pause
+\end{itemize}
+
+{Remark: }
+\begin{itemize}
+\item If $n\leq 3$, you can plot out the vector (as either on a line, the plane, or 3-D space). If $n>3$ you can't plot the vector out, but there is no other conceptual difference
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+
+\begin{itemize}
+\item \textcolor{mygray}{Set Theory}
+\item \textcolor{mygray}{Vectors and Order Lists}
+\item \textcolor{myblack}{Functions}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Functions}
+\begin{defn}
+A \textit{function} is a mapping from a set $X$ into a set $Y$
+\end{defn}
+\pause
+
+\begin{itemize}
+\item This means that for each element of $X$, $f$ assigns an element of $Y$, or $f: X\rightarrow Y$ \pause
+\end{itemize}
+
+\begin{itemize}
+\item The \textit{graph} of a function from $\mathbb{R} $ to $\mathbb{R}$ is the set $$\{(x, y)\in \mathbb{R}^2: y=f(x)\}$$ 
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Functions}
+
+\begin{defn}
+A function $f: X\rightarrow Y$ is \textit{one-to-one} (or injective) if every element of $X$ maps into a unique element of $Y$ ($f(a)=f(b)\Rightarrow a=b$)
+\end{defn}
+\pause
+
+\begin{defn}
+A function $f: X\rightarrow Y$ is \textit{onto} (or surjective) if every element of $Y$ is mapped into by some element of $X$ ($\forall y\in Y, \exists x\in X: f(x)=y$) \pause
+\end{defn}
+\pause
+
+\begin{defn}
+A function that is one-to-one and onto is bijective
+\end{defn}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Composite Functions}
+
+\begin{defn}
+Mappings can be combined so that if $f:B\rightarrow C$ and $g: A\rightarrow B$ then $f\circ g = f(g(x))$ is a mapping from $A$ to $C$: $x\in A$, $g(x)\in B$, and $f(g(x))\in C$
+\end{defn}
+\pause
+
+{Examples: } 
+\begin{itemize}
+\item $f: \mathbb{R}^2\rightarrow \mathbb{R}$, with $f(x, y)=x+2y$ \pause
+\end{itemize}
+
+\begin{itemize}
+\item $g: \mathbb{R}^3\rightarrow \mathbb{R}^2$, with $g(x, y, z)=(x^2+2y*z, 7)$ \pause
+\end{itemize}
+
+\begin{itemize}
+\item $$h=f(g): \mathbb{R}^3\rightarrow\mathbb{R}, \text{ with }$$
+$$h(x, y, z)=x^2+2y*z+14$$
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{In-class problems}
+
+\begin{itemize}
+
+\item[3.1.2] Let $A, B, C$ be sets such that $A\subset B$ and $A\cap C=\emptyset$.  Simplify the following, if possible:
+
+\begin{itemize}
+\item $A\cap(B\cup C)$ %A
+\item $(A\cap B)\cup C$ % A\cup C
+\item $A\cup(B\cap C)$ %No simplification 
+\item $(A\cup B)\cap C$ %B\cap C
+
+
+\end{itemize}
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{In-class problems}
+
+\begin{itemize}
+\item[3.4.1] Let $f:\mathbb{R}^2\rightarrow \mathbb{R}^2$. Interpret the mapping $f(x, y)=(x, -y)$ geometrically
+\begin{itemize}
+
+\item Which points remain unchanged under this mapping? %It's the reflection about the x-axis.  The x-axis is unchanged.
+
+\item Now answer both questions for $f(x, y)=(x, -4)$ % Projection onto line y=-1. Unchanged points are along the line y=-4.
+
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+
+\end{document}
