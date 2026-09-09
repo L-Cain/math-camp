@@ -9,27 +9,27 @@
 
 #----Setup----
 #Comments start with a #. Provide a comment any time the code is not completely obvious. 
-  ##comment:code < 1:10 (he is saying you should have one line of code per ten lines at least)
+  ##comment:code < 1:10
 
 #Clear environment  
 rm(list = ls())
 
-# Comment out
-# all
-# this
-# text with
-# 'ctrl (or cmd)+shift+c'
-# then undo with 'ctrl (or cmd) z'
+Comment out
+all
+this
+text with
+'ctrl (or cmd)+shift+c'
+then undo with 'ctrl (or cmd) z'
 
 #line numbers are to the left. Go to line 83
 
 #I forgot how to spell, correct all misspellings of 'apple' to 'apple'
-#(i.e., use find and replace if you want to, say, rename a variable across a script)
 
 #delineate sections like this, and they be collapsed
 
 #----Example section----
 #Hide this with the arrow
+
 
 #----Numbers and calculation----
 #Basic calculations (note they're going to the terminal)
@@ -49,6 +49,14 @@ abs(-38)
 ?log()
 
 
+
+seq(from = 0,
+    to = 10,
+    by =1)
+
+seq(0,10,1)
+?seq()
+stderr()
 #----Strings----
 'this is a string'
 "so, too, is 'this'"
@@ -90,8 +98,7 @@ FALSE
 NA
 NULL
 TRUE & FALSE
-T|F
-
+T | F
 
 
 
@@ -108,13 +115,12 @@ is.numeric('b')
 
 
 #order can matter
-8%%3 == 1 & a == a | b>a # is it true that 8 remainder 3 is equivalent to 1 OR a is equivalent to A OR is b > a
+8%%3 == 1 & a == a | b>a 
 8%%3 == 1 & (a ==a | b>a)
 
 
 #Exercise 1: test whether a variable, "c" is more than 30 and divisible by 12, or less than 800 and a perfect square
 
-(c > 30 & c %% 12 == 0) | (c < 800 & sqrt(c) %% 1 == 0)
 
 #booleans are also binary
 TRUE + TRUE
@@ -131,13 +137,13 @@ letter_vec<-c('x','y','apple','z')
 int_vec<- seq(0,90,3)
 
 mixed_vec<-c(a,'b',log(3),letter_vec,int_vec)
-typeof(mixed_vec) #if a vector has both numbers and characters in it, characters take precedent
+typeof(mixed_vec)
 
 
 #Index
 letter_vec[3]
 int_vec[4]*int_vec[9]
-letter_vec[3] <- 'banana' 
+letter_vec[3] <- 'banana'
 
 length(int_vec)
 
@@ -155,8 +161,10 @@ int_vec_subset<-int_vec[int_vec>b*2]
   
 
 #Exercise 2: Make every third entry in int_vec copy the entry before it. Make it robust to changes in the length of int_vec
-int_vec[(seq(3, length(int_vec), 3))] <- int_vec[(seq(2, length(int_vec)-1, 3))]
-  
+int_vec[3]<-int_vec[2]
+int_vec[seq(from =3,to = length(int_vec), by = 3)]<-int_vec[(seq(from =2, to = length(int_vec)-1, by = 3))]
+
+
 #Accessing "everything but" uses negative values
 letter_vec[-3]
 
