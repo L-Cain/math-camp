@@ -68,21 +68,15 @@ sum_and_square(num1= 3,
 
 #Functions can call other functions
 #I want to detect big numbers
-big_num_detector<-function(number, threshold){ #we start with arguments, then go into the body
-  #error if non-numeric
-  if (is.numeric(number) ==F){
-    print('Needs to be a number!')
-  } else{
-    #determine if big
-     if (number > threshold){ ##Hardcoded! We'll return to this
+big_num_detector<-function(number){ #we start with arguments, then go into the body
+      #determine if big
+     if (number > 8){ ##Hardcoded! We'll return to this
       print("wow, that's a big number!")
-     } else if (number ==threshold){
-       print("that's the threshold")
-     } else {
+     } else 
       print("that number isn't very big")
      } 
-  }
-}
+  
+
 
 #if we were serious, we'd include documentation
 #?big_num_detector()
@@ -155,8 +149,7 @@ analyze_grades(c(85, '92', 78, 88, 950))
   #c) check for updates
   #d) uninstall it
 
-install.packages('electoral')
-library(electoral)
+
 
 
 #let's assign some seats under different voting methods
