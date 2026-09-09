@@ -23,7 +23,7 @@ then undo with 'ctrl (or cmd) z'
 
 #line numbers are to the left. Go to line 83
 
-#I forgot how to spell, correct all misspellings of 'aple' to 'apple'
+#I forgot how to spell, correct all misspellings of 'apple' to 'apple'
 
 #delineate sections like this, and they be collapsed
 
@@ -49,6 +49,14 @@ abs(-38)
 ?log()
 
 
+
+seq(from = 0,
+    to = 10,
+    by =1)
+
+seq(0,10,1)
+?seq()
+stderr()
 #----Strings----
 'this is a string'
 "so, too, is 'this'"
@@ -89,7 +97,7 @@ TRUE
 FALSE
 NA
 NULL
-TRUE & TRUE
+TRUE & FALSE
 T | F
 
 
@@ -107,11 +115,12 @@ is.numeric('b')
 
 
 #order can matter
-8%%3 == 1 & a == a | b>a
+8%%3 == 1 & a == a | b>a 
 8%%3 == 1 & (a ==a | b>a)
 
 
-#Exercise 1: test whether a variable, "c" is more than 30 and divisble by 12, or less than 800 and a perfect square
+#Exercise 1: test whether a variable, "c" is more than 30 and divisible by 12, or less than 800 and a perfect square
+
 
 #booleans are also binary
 TRUE + TRUE
@@ -124,7 +133,7 @@ T+c
 
 
 #----Vectors----
-letter_vec<-c('x','y','aple','z')
+letter_vec<-c('x','y','apple','z')
 int_vec<- seq(0,90,3)
 
 mixed_vec<-c(a,'b',log(3),letter_vec,int_vec)
@@ -134,14 +143,14 @@ typeof(mixed_vec)
 #Index
 letter_vec[3]
 int_vec[4]*int_vec[9]
-letter_vec[3] = 'banana'
+letter_vec[3] <- 'banana'
 
 length(int_vec)
 
 #Vectors of logic
 letter_vec == 'y'
 
-letter_vec[3] == 'aple'
+letter_vec[3] == 'apple'
 
 int_vec > b
 
@@ -152,7 +161,8 @@ int_vec_subset<-int_vec[int_vec>b*2]
   
 
 #Exercise 2: Make every third entry in int_vec copy the entry before it. Make it robust to changes in the length of int_vec
-
+int_vec[3]<-int_vec[2]
+int_vec[seq(from =3,to = length(int_vec), by = 3)]<-int_vec[(seq(from =2, to = length(int_vec)-1, by = 3))]
 
 
 #Accessing "everything but" uses negative values
@@ -247,7 +257,7 @@ students[students$name=='Charlie',1:4]
 students[students$name=='Charlie',-5]
 
 #We can add new columns
-students$fruit<-c('aple','pear',NA,'banana')
+students$fruit<-c('apple','pear',NA,'banana')
 
 #and modify specific cells
 students[3,'fruit']<-'orange'
@@ -261,7 +271,7 @@ students[,-6]
 #----Lists----
 #lists can contain anything...much like sets!
 example_list<-list(students = students, 
-                   fruit = 'aple', 
+                   fruit = 'apple', 
                    numbers= int_vec)
 
 #indexing is a little more complicated. 
@@ -273,7 +283,7 @@ example_list[[1]][3,2]
 example_list$students$major
 
 #Lists can contain anything...even messes.
-big_list<-list(example_list,list(students,example_list,list('aple',example_list)))
+big_list<-list(example_list,list(students,example_list,list('apple',example_list)))
 
 
 #Lists are a lot like sets
