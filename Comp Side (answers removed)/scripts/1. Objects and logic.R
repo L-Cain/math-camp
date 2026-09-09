@@ -9,27 +9,27 @@
 
 #----Setup----
 #Comments start with a #. Provide a comment any time the code is not completely obvious. 
-  ##comment:code < 1:10
+  ##comment:code < 1:10 (he is saying you should have one line of code per ten lines at least)
 
 #Clear environment  
 rm(list = ls())
 
-Comment out
-all
-this
-text with
-'ctrl (or cmd)+shift+c'
-then undo with 'ctrl (or cmd) z'
+# Comment out
+# all
+# this
+# text with
+# 'ctrl (or cmd)+shift+c'
+# then undo with 'ctrl (or cmd) z'
 
 #line numbers are to the left. Go to line 83
 
-#I forgot how to spell, correct all misspellings of 'aple' to 'apple'
+#I forgot how to spell, correct all misspellings of 'apple' to 'apple'
+#(i.e., use find and replace if you want to, say, rename a variable across a script)
 
 #delineate sections like this, and they be collapsed
 
 #----Example section----
 #Hide this with the arrow
-
 
 #----Numbers and calculation----
 #Basic calculations (note they're going to the terminal)
@@ -89,8 +89,9 @@ TRUE
 FALSE
 NA
 NULL
-TRUE & TRUE
-T | F
+TRUE & FALSE
+T|F
+
 
 
 
@@ -107,11 +108,13 @@ is.numeric('b')
 
 
 #order can matter
-8%%3 == 1 & a == a | b>a
+8%%3 == 1 & a == a | b>a # is it true that 8 remainder 3 is equivalent to 1 OR a is equivalent to A OR is b > a
 8%%3 == 1 & (a ==a | b>a)
 
 
-#Exercise 1: test whether a variable, "c" is more than 30 and divisble by 12, or less than 800 and a perfect square
+#Exercise 1: test whether a variable, "c" is more than 30 and divisible by 12, or less than 800 and a perfect square
+
+(c > 30 & c %% 12 == 0) | (c < 800 & sqrt(c) %% 1 == 0)
 
 #booleans are also binary
 TRUE + TRUE
@@ -124,24 +127,24 @@ T+c
 
 
 #----Vectors----
-letter_vec<-c('x','y','aple','z')
+letter_vec<-c('x','y','apple','z')
 int_vec<- seq(0,90,3)
 
 mixed_vec<-c(a,'b',log(3),letter_vec,int_vec)
-typeof(mixed_vec)
+typeof(mixed_vec) #if a vector has both numbers and characters in it, characters take precedent
 
 
 #Index
 letter_vec[3]
 int_vec[4]*int_vec[9]
-letter_vec[3] = 'banana'
+letter_vec[3] <- 'banana' 
 
 length(int_vec)
 
 #Vectors of logic
 letter_vec == 'y'
 
-letter_vec[3] == 'aple'
+letter_vec[3] == 'apple'
 
 int_vec > b
 
@@ -152,9 +155,8 @@ int_vec_subset<-int_vec[int_vec>b*2]
   
 
 #Exercise 2: Make every third entry in int_vec copy the entry before it. Make it robust to changes in the length of int_vec
-
-
-
+int_vec[(seq(3, length(int_vec), 3))] <- int_vec[(seq(2, length(int_vec)-1, 3))]
+  
 #Accessing "everything but" uses negative values
 letter_vec[-3]
 
@@ -247,7 +249,7 @@ students[students$name=='Charlie',1:4]
 students[students$name=='Charlie',-5]
 
 #We can add new columns
-students$fruit<-c('aple','pear',NA,'banana')
+students$fruit<-c('apple','pear',NA,'banana')
 
 #and modify specific cells
 students[3,'fruit']<-'orange'
@@ -261,7 +263,7 @@ students[,-6]
 #----Lists----
 #lists can contain anything...much like sets!
 example_list<-list(students = students, 
-                   fruit = 'aple', 
+                   fruit = 'apple', 
                    numbers= int_vec)
 
 #indexing is a little more complicated. 
@@ -273,7 +275,7 @@ example_list[[1]][3,2]
 example_list$students$major
 
 #Lists can contain anything...even messes.
-big_list<-list(example_list,list(students,example_list,list('aple',example_list)))
+big_list<-list(example_list,list(students,example_list,list('apple',example_list)))
 
 
 #Lists are a lot like sets
