@@ -10,15 +10,16 @@
 #----Setup----
 #Clear environment  
 rm(list = ls())
-
+library(electoral)
 
 #----Functions----
 #take in objects as arguments, return other objects
 
-num_to_avg<-c(3,8)
+num_to_avg<-c(3,8,NA)
 
 ?mean()
-mean(num_to_avg)
+mean(x = num_to_avg,
+     na.rm = T)
 
 #if it's not self-evident, specify which argument is which
 plot(x = c(3,8),
@@ -68,11 +69,17 @@ sum_and_square(num1= 3,
 
 #Functions can call other functions
 #I want to detect big numbers
-big_num_detector<-function(number){ #we start with arguments, then go into the body
-      #determine if big
-     if (number > 8){ ##Hardcoded! We'll return to this
+big_num_detector<-function(number, threshold){ #we start with arguments, then go into the body
+      
+  if (is.numeric(number)==F){
+    print('error! Not a number')
+  } else
+  #determine if big
+     if (number > threshold){ ##Hardcoded! We'll return to this
       print("wow, that's a big number!")
-     } else 
+     } else if (number ==threshold) {
+       print('that number is threshold!')
+     } else
       print("that number isn't very big")
      } 
   
@@ -84,7 +91,7 @@ big_num_detector<-function(number){ #we start with arguments, then go into the b
 #we can inspect the function's code
 big_num_detector
 
-big_num_detector(number = 3)
+big_num_detector(number = '8')
 big_num_detector(num = 10)
 
 
@@ -127,8 +134,38 @@ n
 
 #----Returning multiple pieces of information----
 # Exercise 2: create a function that takes a vector of grades (0-100) and returns average, letter_grade, pass_fail, highest, lowest
-
-
+analyze_grades<-function(grades){
+  if (is.numeric(grades)==T & min(grades) >0 & max(grades)<100){
+    
+    
+    mean<-mean(grades)
+    pass<-if(mean > 50){
+      'pass'
+    } else 'fail'
+    
+    
+    letter<-if (mean>90){
+      'A'
+    } else if (mean>80){
+      'B'
+    }else if (mean>70){
+      'C'
+    }else if (mean>60){
+      'D'
+    }else 'F'
+    
+    
+    min<-min(grades)
+    max<-max(grades)
+      
+    return(list(mean = mean,
+                pass = pass,
+                letter_grade = letter,
+                min_grade = min,
+                max_grade = max))
+  }
+  else print('invalid grades')
+}
 
 #Test 1
 analyze_grades(c(85, 92, 78, 88, 95))
@@ -151,7 +188,7 @@ analyze_grades(c(85, '92', 78, 88, 950))
 
 
 
-
+?seats()
 #let's assign some seats under different voting methods
 seats(parties = c("A", "B", "C"), 
       votes = c(100, 150, 60), 
@@ -169,7 +206,10 @@ durbin<-volatility()
 duckworth<-volatility()
 
 
+
 #Exercise 5: Install the Development Version of 'ggdist" from github
+install_github('mjskay/ggdist')
+
 
 #Sometimes we want packages to be as up-to-date as possible...
 #other times we want to ensure the script uses the same version every time
