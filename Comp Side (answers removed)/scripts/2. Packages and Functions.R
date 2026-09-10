@@ -225,10 +225,11 @@ seats_df<-seats(parties = c("V", "W", "X", "Y", "Z"),
 
 #Exercise 4: Use this package's documentation and the internet to determine the electoral volatility in IL senate races in the past two elections
 #whose elections are more volatile, Duckworth or Durbin?
-durbin<-volatility()
-duckworth<-volatility()
+durbin<-volatility(votes_1 = c(53.55, 42.69), votes_2 = c(54.93, 38.87))
+duckworth<-volatility(votes_1 = c(54.86, 45.13), votes_2 = c(56.82, 43.18))
 
 ?volatility
+
 
 
 #Exercise 5: Install the Development Version of 'ggdist" from github
