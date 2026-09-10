@@ -14,12 +14,12 @@
 #Clear environment  
 rm(list = ls())
 
-Comment out
-all
-this
-text with
-'ctrl (or cmd)+shift+c'
-then undo with 'ctrl (or cmd) z'
+# Comment out
+# all
+# this
+# text with
+# 'ctrl (or cmd)+shift+c'
+# then undo with 'ctrl (or cmd) z'
 
 #line numbers are to the left. Go to line 83
 
@@ -119,8 +119,13 @@ is.numeric('b')
 8%%3 == 1 & (a ==a | b>a)
 
 
+<<<<<<< Updated upstream
 #Exercise 1: test whether a variable, "c" is more than 30 and divisible by 12, or less than 800 and a perfect square
 
+=======
+#Exercise 1: test whether a variable, "c" is more than 30 and divisble by 12, or less than 800 and a perfect square
+(c>30 & c%%12 == 0) | (c<800) & sqrt(c) %% 1 == 0
+>>>>>>> Stashed changes
 
 #booleans are also binary
 TRUE + TRUE
@@ -161,8 +166,17 @@ int_vec_subset<-int_vec[int_vec>b*2]
   
 
 #Exercise 2: Make every third entry in int_vec copy the entry before it. Make it robust to changes in the length of int_vec
+<<<<<<< Updated upstream
 int_vec[3]<-int_vec[2]
 int_vec[seq(from =3,to = length(int_vec), by = 3)]<-int_vec[(seq(from =2, to = length(int_vec)-1, by = 3))]
+=======
+
+to_replace <- seq(from = 3, to = length(int_vec), by = 3)
+replace_with <- seq(from = 2, to = length(int_vec), by = 3)
+new_int_vec <- int_vec
+new_int_vec[to_replace] <- int_vec[replace_with]
+
+>>>>>>> Stashed changes
 
 
 #Accessing "everything but" uses negative values

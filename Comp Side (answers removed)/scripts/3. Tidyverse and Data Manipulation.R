@@ -4,7 +4,7 @@
 #' output: pdf_document
 #' ---
 
-#Purpose: Explore the tidyverse https://r4ds.had.co.nz/
+#Purpose: Explore the tidyverse https://r4ds.had.co.nz/, data manipulation and merging, work with strings and dates
 
 #----Setup----
 #Clear environment  
@@ -34,18 +34,9 @@ students <- data.frame(
 nested1 <- toupper(str_trim(str_replace_all(paste(students$name, collapse = " | "), "\\s", "_")))
 nested2 <- summary(log(abs(scale(students$science_score))))
 
-piped1<-paste(students$name, collapse = " | ")%>%
-  str_replace_all(.,
-                  "\\s", 
-                  "_")%>%
-  str_trim(.)%>%
-  toupper(.)
+piped1<-
   
-piped2<-students$science_score%>%
-  scale(.)%>%
-  abs(.)%>%
-  log(.)%>%
-  summary()
+piped2<-
   
   
   
@@ -53,7 +44,7 @@ piped2<-students$science_score%>%
 #CSV (comma separated values)
 
 #find the absolute file path for acs2015_1percent
-filepath_acs<-'C:/Users/festi/Dropbox/Jobs/2025 Strezhnev Memorial Math Camp/Preliminary Content/Comp Side/data/acs2015_1percent.csv'
+filepath_acs<-'C:/Users/festi/Desktop/math-camp/Comp Side (answers removed)/data/acs2015_1percent.csv'
 acs_df<-read.csv(filepath_acs)
 
 #find the relative filepath for acs2015_1percent
@@ -181,18 +172,9 @@ mean(students_wide$science,
      na.rm =T)
 
 
-#Exercise :
+#Exercise 8:
 #option 1: remove all rows with NAs from the dataframe
 #option 2: ignore NAs in the function
-student_wide_nona<-na.omit(students_wide)
-drop_na(students_wide)
-
-students_wide%>%
-  filter(.,
-         is.na(science) == F)
-
-
-students_wide[is.na(students_wide)]<-999
 
 
 #----Strings-----
@@ -240,21 +222,9 @@ flights<-flights%>%
 
 
 #Exercise 8: Convert these to date-type objects
-flights$date_date<-as.Date(flights$date1)
 
 #Create a "season" variable, each row should be in a season.
-flights_seasonal<-flights%>%
-  mutate(season = 
-    case_when(date_date > as.Date('2013-09-01')~ 'fall',
-              date_date < as.Date('2013-03-01')~ 'winter',
-              date_date > as.Date('2013-06-01') & date_date < as.Date('2013-09-01') ~ 'summer',
-              date_date > as.Date('2013-03-01') & date_date < as.Date('2013-06-01') ~ 'spring'))%>%
-  group_by(season)%>%
-  summarise(mean_delay = mean(dep_delay,na.rm =T))
 
-
-
-unique(flights_seasonal$season)
 #Are flights departing with more delay in any season? Any day of the week? (summarize)
 
 
