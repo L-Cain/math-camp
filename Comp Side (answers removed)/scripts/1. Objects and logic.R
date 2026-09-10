@@ -223,8 +223,8 @@ diag_mat==0
 
 #Exercise 4: Create a 3x8 matrix that alternates between the first 3 positive integers and the first 3 letters
 
-
-
+vec_4 <- c(1, 2, 3, 'a', 'b', 'c')
+mat_4 <- matrix(vec_4, nrow = 3, ncol = 8, byrow = T)
 
 #----Data frames----
 # Create a data frame
@@ -246,6 +246,8 @@ ncol(students)
 # Column names
 names(students)
 colnames(students)
+?names
+
 
 # First and last few rows
 head(students)      # first 6 rows by default
@@ -266,6 +268,10 @@ students[4,]
   #c) indexing to the row with "Charlie" in it, and the 'age' column
   #d) same as c), but extract all of Charlie's information except whether he's graduated
 
+students[3,2]
+students$age[3]
+students$age[students$name == 'Charlie']
+c(students$age[students$name == 'Charlie'], students$major[students$name == 'Charlie'], students$gpa[students$name == 'Charlie'])
 
 students[students$name=='Charlie',1:4]
 students[students$name=='Charlie',-5]

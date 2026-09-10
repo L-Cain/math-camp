@@ -90,12 +90,47 @@ big_num_detector(num = 10)
 
 #Exercise 1: 
 #a) make the big number detector respond differently when the input is 8
+big_num_detector<-function(number){ 
+  if (number > 8){ 
+    print("wow, that's a big number!")
+  } else if (number == 8){
+    print('This is exactly 8.')
+  }
+  else 
+    print("that number isn't very big")
+} 
+
+big_num_detector(number = 8)
+
 #b) have the big number detector throw an error if the input is not numeric
+big_num_detector<-function(number){ 
+  if (is.numeric(number) == F){
+    print('error')
+  }
+    else if (number > 8){ 
+    print("wow, that's a big number!")
+  } 
+    else if (number == 8){
+    print('This is exactly 8.')
+  }
+     
+  else 
+    print("that number isn't very big")
+} 
+
+big_num_detector(number = 'mathcamp')
+
 #c) make the threshold for what constitutes a big number into an argument
 
-big_num_detector(number = 'number',
-                 threshold = 8)
+big_num_detector <- function(number, threshold) {
+  if(number <= threshold) {
+    print('not a big number')
+  }
+    else
+      print("that's a big number")
+}
 
+big_num_detector(number = 9, threshold = 7)
 
 #----Local Variables----
 #Sometimes it's helpful for a function to create a variable
@@ -128,7 +163,32 @@ n
 #----Returning multiple pieces of information----
 # Exercise 2: create a function that takes a vector of grades (0-100) and returns average, letter_grade, pass_fail, highest, lowest
 
-
+analyze_grades <- function(grades){
+  mean(grades)
+  letter <- if(mean(grades) >= 90){
+    print('A')
+  }
+    else if (mean(grades) >= 80){
+      print('B')
+    }
+      else if(mean(grades)>= 70){
+        print('C')
+      }
+        else if(mean(grades) >= 60){
+          print('D')
+        }
+          else print ('F')
+  
+  pf <- if(mean(grades) >= 60){
+    print('Pass')
+  }
+    else print ('Fail')
+  
+  max(grades)
+  min(grades)
+  
+  print(c('average' = mean(grades), 'letter grade' = letter, 'PF' = pf, 'highest' = max(grades), 'lowest' = min(grades)))
+}
 
 #Test 1
 analyze_grades(c(85, 92, 78, 88, 95))
@@ -149,7 +209,7 @@ analyze_grades(c(85, '92', 78, 88, 950))
   #c) check for updates
   #d) uninstall it
 
-
+library(electoral)
 
 
 #let's assign some seats under different voting methods
@@ -167,6 +227,8 @@ seats_df<-seats(parties = c("V", "W", "X", "Y", "Z"),
 #whose elections are more volatile, Duckworth or Durbin?
 durbin<-volatility()
 duckworth<-volatility()
+
+?volatility
 
 
 #Exercise 5: Install the Development Version of 'ggdist" from github
