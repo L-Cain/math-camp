@@ -12,9 +12,12 @@ rm(list = ls())
 
 #Last time: packages. Today: one crucial package!
 install.packages('tidyverse')
+install.packages('groundhog')
 library(tidyverse)
-library(nycflights13)
 
+#need an older version of the flights package
+library(groundhog)
+library(nycflights13)
 #----Pipes----
 #Pipes!
 c(3,8)%>%
@@ -221,34 +224,38 @@ gsub('a','@',x)
 
 
 #----Time!-----
-flights<-flights
+flights<-flights%>%
+  select(-time_hour)%>%
+  mutate(date = paste(year,month,day,sep = '-'))
   
 #I want to plot the flights' delay 
-plot(x = flights$date_date,
+plot(x = flights$date,
      y = flights$dep_delay)
-#...that can't be right...
+  #...that can't be right...
 
 
 flights<-flights%>%
-  mutate(date1 = paste(year,month,day,
-                       sep = '-'),
-         date2 = paste(month,day,year,
+  mutate(date2 = paste(month,day,year,
                        sep = '/'))%>%
   select(-c(day,month,year))
 
 
 
-#Exercise 8: Convert these to date-type objects
+#Exercise 8: 
+#a) Convert date2 to a date-type object
 
-#Create a "season" variable, each row should be in a season.
+#b) Create a "season" variable, each row should be in a season.
 
-#Are flights departing with more delay in any season? Any day of the week? (summarize)
+#c) Are flights departing with longer average delay in any particular? Any day of the week? 
 
 
 
+
+
+
+#Exercise 9: 
+#a) Create a new dataset with a daily average departure and arrival delays
+
+#b) this is going to be spiky, let's create a 4-day "rolling average"
 install.packages("zoo")
 library(zoo)
-
-
-#Exercise 9: Create a new dataset with a daily average departure and arrival delays
-#challenge: this is going to be spiky, let's create a "rolling average"
