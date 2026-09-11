@@ -89,12 +89,6 @@ delian<-read.csv('../data/ober_2018.csv')
 
 #1 scatterplot, fame and colonies
   #linear regression with confidence intervals
-ggplot(data = delian,
-       aes(x = Fame,
-           y = Colonies))+
-  geom_point()+
-  geom_smooth(method='lm') +
-  theme_minimal()
 
 
 #2 Histogram of fame
@@ -104,10 +98,7 @@ ggplot(data = delian,
 
 #3 stacked bar chart: size, delian league and not
   #what if I want to show bars of equal size and percent in delian
-ggplot(data = delian,
-       aes(x= Delian,
-           fill = Size))+
-  geom_bar(position = 'dodge')
+
 #4 Map of the region
   #color the league differently and use different shapes
   #change the size of the points to reflect actual size
@@ -116,19 +107,7 @@ ggplot(data = delian,
 library(maps)
 world <- map_data("world")
 
-worldplot <- ggplot() +
-  geom_polygon(data = world, aes(x=long, y = lat, group = group)) + 
-  geom_point(data = delian, aes(x = Longitude,
-                                y = Latitude, 
-                                color = Delian,
-                                size = Size,
-                                alpha = .0005)) +
-  coord_fixed(1.3) +
-  xlim(0,40) +
-  ylim(25,50)+
-  scale_color_manual(values = c("in Delian League" = 'blue',
-                           "not in Delian League" = 'red'))
-worldplot
+
 #5 Define your own theme and apply it to the above https://stackoverflow.com/questions/23173915/can-ggplot-theme-formatting-be-saved-as-an-object
 
 #6 Using sample_polity.csv, animated bar chart of polity2 over time by country
