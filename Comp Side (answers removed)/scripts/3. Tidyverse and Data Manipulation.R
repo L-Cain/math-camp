@@ -12,14 +12,18 @@ rm(list = ls())
 
 #Last time: packages. Today: one crucial package!
 install.packages('tidyverse')
+install.packages('groundhog')
 library(tidyverse)
-library(nycflights13)
 
+#need an older version of the flights package
+library(groundhog)
+library(nycflights13)
 #----Pipes----
 #Pipes!
 c(3,8)%>%
   mean(.)%>%
   paste0("The above outputs: ",.)
+
 
 #Exercise 1: pipe it up. What does each component do?
 students <- data.frame(
@@ -96,13 +100,19 @@ major_city_count<-acs_df%>%
 
 
 #Exercise 3: Create a column showing the percent of the total sample in each city
+total<-nrow(acs_edu_df)
 
-#Exercise 4: What's the average age of those in each education group and sex? (ignore perwt. use the original dataset, not the working age subset)
+acs_edu_df%>%
+  group_by(city)%>%
+  summarise(count = n())%>%
+  mutate(100*count / total)
 
 
 #Write out to data folder
 write_csv(major_city_count,
           '../data/major_city.csv')
+
+
 
 #----Group and Summary, more explicitly----
 
@@ -112,14 +122,25 @@ df<-acs_df%>%
   summarize(mean = mean(age,na.rm = T),
             sd = sd(age, na.rm =T))
 
-#Exercise 5: What if we wanted to do the same by education and gender?
+#Exercise 4: What's the average age of those in each education group and sex? (ignore perwt. use the original dataset, not the working age subset)
+
+#Exercise 5: Using `iris` dataset, find the mean sepal length and width, and the standard deviation of petal width by species
+b<-iris%>%
+  group_by(Species)%>%
+  summarise(mean_length = mean(Sepal.Length),
+            mean_swidth = mean(Sepal.Width),
+            sd_pwidth = sd(Petal.Width))
 
 
-#Exercise 6: find the mean sepal length and width, and the standard deviation of petal width by species
+#Within each species, what is the proportion of sepal widths larger than 3.25?
 
-#What's the proportion of sepal widths above 3.25 by species?
+iris%>%
+  mutate(wide_sepal =Sepal.Width>3.25)%>%
+  group_by(Species)%>%
+  summarize(p_wide_sepal = mean(wide_sepal))
 
 
+rm(list = ls())
 #----Manipulating Dataframes----
 #Creating a dataframe
 students_wide <- data.frame(
@@ -142,8 +163,7 @@ students_long <- students_wide %>%
 students_wide<-students_long%>%
   pivot_wider(names_from = subject,
               values_from = score)
-
-
+ 
 #Merging data
 student_fruit <- data.frame(
   student_id = c(1, 2, 3, 4),
@@ -164,7 +184,7 @@ students_long_f<-merge(students_long,
                        student_fruit,
                        by = 'student_id')
 
-#Exercise 7: Which variable(s) in student_fruit can we not use to merge? Why not?
+#Exercise 6: Which variable(s) in student_fruit can we not use to merge? Why not?
 
 
 #Aside: dealing with NAs
@@ -172,7 +192,7 @@ mean(students_wide$science,
      na.rm =T)
 
 
-#Exercise 8:
+#Exercise 7:
 #option 1: remove all rows with NAs from the dataframe
 #option 2: ignore NAs in the function
 
@@ -204,34 +224,38 @@ gsub('a','@',x)
 
 
 #----Time!-----
-flights<-flights
+flights<-flights%>%
+  select(-time_hour)%>%
+  mutate(date = paste(year,month,day,sep = '-'))
   
 #I want to plot the flights' delay 
-plot(x = flights$date_date,
+plot(x = flights$date,
      y = flights$dep_delay)
-#...that can't be right...
+  #...that can't be right...
 
 
 flights<-flights%>%
-  mutate(date1 = paste(year,month,day,
-                       sep = '-'),
-         date2 = paste(month,day,year,
+  mutate(date2 = paste(month,day,year,
                        sep = '/'))%>%
   select(-c(day,month,year))
 
 
 
-#Exercise 8: Convert these to date-type objects
+#Exercise 8: 
+#a) Convert date2 to a date-type object
 
-#Create a "season" variable, each row should be in a season.
+#b) Create a "season" variable, each row should be in a season.
 
-#Are flights departing with more delay in any season? Any day of the week? (summarize)
+#c) Are flights departing with longer average delay in any particular? Any day of the week? 
 
 
 
+
+
+
+#Exercise 9: 
+#a) Create a new dataset with a daily average departure and arrival delays
+
+#b) this is going to be spiky, let's create a 4-day "rolling average"
 install.packages("zoo")
 library(zoo)
-
-
-#Exercise 9: Create a new dataset with a daily average departure and arrival delays
-#challenge: this is going to be spiky, let's create a "rolling average"
