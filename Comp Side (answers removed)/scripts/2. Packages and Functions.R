@@ -205,6 +205,7 @@ seats_df<-seats(parties = c("V", "W", "X", "Y", "Z"),
 durbin<-volatility()
 duckworth<-volatility()
 
+?volatility()
 
 
 #Exercise 5: Install the Development Version of 'ggdist" from github
