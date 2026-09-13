@@ -100,12 +100,6 @@ major_city_count<-acs_df%>%
 
 
 #Exercise 3: Create a column showing the percent of the total sample in each city
-total<-nrow(acs_edu_df)
-
-acs_edu_df%>%
-  group_by(city)%>%
-  summarise(count = n())%>%
-  mutate(100*count / total)
 
 
 #Write out to data folder
@@ -125,19 +119,10 @@ df<-acs_df%>%
 #Exercise 4: What's the average age of those in each education group and sex? (ignore perwt. use the original dataset, not the working age subset)
 
 #Exercise 5: Using `iris` dataset, find the mean sepal length and width, and the standard deviation of petal width by species
-b<-iris%>%
-  group_by(Species)%>%
-  summarise(mean_length = mean(Sepal.Length),
-            mean_swidth = mean(Sepal.Width),
-            sd_pwidth = sd(Petal.Width))
 
 
 #Within each species, what is the proportion of sepal widths larger than 3.25?
 
-iris%>%
-  mutate(wide_sepal =Sepal.Width>3.25)%>%
-  group_by(Species)%>%
-  summarize(p_wide_sepal = mean(wide_sepal))
 
 
 rm(list = ls())

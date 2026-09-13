@@ -47,19 +47,8 @@ for (i in 1:length(fruits)){
 #Exercise 1: For the states of interest, print the percentage of the state's population that is male, rounded to 0.01.
 cen10 <- read_csv("../data/usc2010_001percent.csv", col_types = cols())
 
-states_of_interest <- c("California", "Massachusetts", "New Hampshire", "Washington")
-p_men_vec<-c()
-for( state in 1:length(states_of_interest)){
-  state_data <- cen10[cen10$state == states_of_interest[state],]
-  nmen <- sum(state_data$sex == "Male")
-  
-  n <- nrow(state_data)
-  men_perc <- round(100*(nmen/n), digits=2)
-
-  p_men_vec[state]<-men_perc
-}
-
 #Now change it so that this information is stored in a vector, not printed.
+
 
 #We can also write loops inside of other loops (nested)
 race_state_df<-data.frame(state = NA,
@@ -343,11 +332,7 @@ check_strong_password <- function(password) {
 #apply() works on data frames and matrices, processing by row by default, or by column if specified.
 
 #Exercise 5: read in the polity dataframe and convert it to wide format
-polity<-read.csv('../data/sample_polity.csv')%>%
-  pivot_wider(names_from = 'year',
-              values_from = 'polity2')%>%
-  filter(country != 'Germany')%>%
-  select(-(1:3))
+polity<-read.csv('../data/sample_polity.csv')
 
 #If we want the mean of each country:
 apply(polity, 1,mean)
