@@ -89,15 +89,31 @@ delian<-read.csv('../data/ober_2018.csv')
 
 #1 scatterplot, fame and colonies
   #linear regression with confidence intervals
+?ggplot()
 
+ggplot(data = delian,
+       aes(x = Colonies,
+           y = Fame))+
+  geom_point()+
+  geom_smooth(method = 'lm')
 
 #2 Histogram of fame
   #make them density plots instead
 
+ggplot(data = delian)+
+  geom_histogram(aes(x = Fame ))
+
+
+ggplot(data = delian)+
+  geom_density(aes(x = Fame ))
 
 
 #3 stacked bar chart: size, delian league and not
   #what if I want to show bars of equal size and percent in delian
+
+ggplot(data = delian)+
+  geom_bar(aes(x = Size,fill = Delian))
+
 
 #4 Map of the region
   #color the league differently and use different shapes
@@ -107,9 +123,40 @@ delian<-read.csv('../data/ober_2018.csv')
 library(maps)
 world <- map_data("world")
 
+ggplot(data = delian)+
+  geom_point(aes(x = Latitude, y = Longitude, shape = Delian, size = Size))+
+ # geom_polygon(data = world,aes(x = long, y = lat)) +
+  xlim(c(25,50))
 
-#5 Define your own theme and apply it to the above https://stackoverflow.com/questions/23173915/can-ggplot-theme-formatting-be-saved-as-an-object
+ggplot(data = world)+
+  geom_polygon(aes(x = long, y = lat, group = group, alpha = 0))+
+  xlim(c(0,50))+
+  ylim(c(20,50))+
+  geom_point(data = delian, aes(x = Longitude, y = Latitude, color = Delian), size = .1)
+
+
+
+s#5 Define your own theme and apply it to the above https://stackoverflow.com/questions/23173915/can-ggplot-theme-formatting-be-saved-as-an-object
 
 #6 Using sample_polity.csv, animated bar chart of polity2 over time by country
+
+plot_animated <- read.csv('../data/sample_polity.csv')%>%
+ # filter(year == 2000)%>%
+  ggplot(data = .)+
+  geom_col(aes(x = country, y = polity2))+
+  transition_states(
+    # Animate over the 'year' variable
+    year, 
+    # Duration of transitions between states (in frames)
+    transition_length = 10,
+    # Duration each state (year) is held on screen
+    state_length      = 4
+  ) +
+  
+  # Smooth fade-in for each year's frame
+  enter_fade() +
+  
+  # Smooth fade-out when switching years
+  exit_fade()
 
 #7 Make the ugliest plot possible

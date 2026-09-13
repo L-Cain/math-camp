@@ -228,8 +228,11 @@ flights<-flights%>%
   select(-time_hour)%>%
   mutate(date = paste(year,month,day,sep = '-'))
   
+
+flights$date_corrected<-as.Date(flights$date)
+
 #I want to plot the flights' delay 
-plot(x = flights$date,
+plot(x = flights$date_corrected,
      y = flights$dep_delay)
   #...that can't be right...
 
@@ -240,17 +243,15 @@ flights<-flights%>%
   select(-c(day,month,year))
 
 
-
+?as.Date()
 #Exercise 8: 
 #a) Convert date2 to a date-type object
 
 #b) Create a "season" variable, each row should be in a season.
+flights$month<-month(flights$date_corrected)%%12
+
 
 #c) Are flights departing with longer average delay in any particular? Any day of the week? 
-
-
-
-
 
 
 #Exercise 9: 
