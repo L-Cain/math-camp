@@ -38,7 +38,7 @@ for (i in 1:length(fruits)){
 
 
 #why does this only show 'grape'?
-for (i in 1:length(fruits)){
+for (i in length(fruits)){
   print(fruits[i])
 }
 
@@ -46,16 +46,22 @@ for (i in 1:length(fruits)){
 
 #Exercise 1: For the states of interest, print the percentage of the state's population that is male, rounded to 0.01.
 cen10 <- read_csv("../data/usc2010_001percent.csv", col_types = cols())
+states_of_interest <- c("California", "Massachusetts", "New Hampshire", "Washington")
 
 #Now change it so that this information is stored in a vector, not printed.
 
+#Exercise 2: store this information in a dataframe instead of printing. Hint: initialize an empty dataframe of the correct size first.
+
+
 
 #We can also write loops inside of other loops (nested)
+#What is each line doing?
 race_state_df<-data.frame(state = NA,
                           race = NA,
                           percentage = NA)
-row<-1
 
+
+row<-1
 states_of_interest <- c("California", "Massachusetts", "New Hampshire", "Washington")
 for (state in states_of_interest) {
   for (race in unique(cen10$race)) {
@@ -71,7 +77,7 @@ for (state in states_of_interest) {
     race_state_df[row,2]<-race
     race_state_df[row,3]<-race_perc
     
-    counter<-counter+1
+    row<-row+1
   }
 }
 
@@ -95,13 +101,14 @@ for (state in states_of_interest) {
                race = race,
                percentage = race_perc)
     
+    #binding at every step
     race_state_df2<-rbind(race_state_df2,temp)%>%na.omit()
   }
 }
 
 
 
-state_race_df <- data.frame(expand.grid(states_of_interest, unique(cen10$race))) %>% 
+race_state_df3 <- data.frame(expand.grid(states_of_interest, unique(cen10$race))) %>% 
   rename(state = Var1,
          race = Var2) %>% 
   mutate(race_perc = as.numeric(rep("", 36)))
@@ -114,7 +121,7 @@ for (state in states_of_interest) {
     race_perc <- round(100*(race_state_num/(state_pop)), digits=2)
     
     # Find the row that matches current state and race, then assign percentage
-    state_race_df[state_race_df$state == state & state_race_df$race == race, "race_perc"] <- race_perc
+    race_state_df3[race_state_df3$state == state & race_state_df3$race == race, "race_perc"] <- race_perc
     
   }
 }
@@ -125,7 +132,7 @@ n_states <- length(states_of_interest)
 n_races <- cen10 %>% pull(race) %>% unique() %>% length()
 races <- cen10 %>% pull(race) %>% unique()
 
-my_data <- data.frame(state = rep(states_of_interest, each=n_races), 
+race_state_df4 <- data.frame(state = rep(states_of_interest, each=n_races), 
                       race = rep(races, times=n_states), 
                       perc = rep(NA, each=n_states*n_races))
 
@@ -133,12 +140,11 @@ for (state in states_of_interest) {
   for (race in unique(cen10$race)) {
     race_state_num <- nrow(cen10[cen10$race == race & cen10$state == state, ])
     state_pop <- nrow(cen10[cen10$state == state, ])
-    my_data$perc[my_data$state==state & my_data$race==race] <- round(100*(race_state_num/(state_pop)),digits=2)
+    race_state_df4$perc[race_state_df4$state==state & race_state_df4$race==race] <- round(100*(race_state_num/(state_pop)),digits=2)
   }
 }
 
 
-#Exercise 2: store this information in a dataframe instead of printing. Hint: initialize an empty dataframe of the correct size first.
 
 
 #----Conditionals----
@@ -173,37 +179,6 @@ for (num in numbers){
   #a) Re-create this using ifelse() from tidyverse. 
   #b) what about with case_when()
 
-ifelse(num<3,
-       'small',
-       ifelse(num>8,
-              'big',
-              'medium'))
-
-message<-case_when(
-  num < 3 ~ "That's a small number", 
-  num > 8 ~ "that's a BIG number!", 
-  ...
-  ...
-  ...
-  .default =  "That's a medium number"
-)
-
-
-
-
-
-
-
-for (num in numbers){
-  
-  #round number
-  round(num,
-        2)%>%
-    #concatenate
-    paste0(.,'? ',message)%>%
-    #print it
-    print(.)
-}
 
 
 #----While Loops----
@@ -231,12 +206,13 @@ while(Sys.time() < start_time + seconds(30)){
 }
 
 
-#Exercise 4: Password checker
 
 #readline() will ask you to enter a response in the terminal, like so:
 readline_example<-readline(prompt = 'Please enter an example:')
 
-#Please create a "while" loop that utilizes readline to have the user generate a strong password
+#Exercise 4: Password checker
+
+#a) Please create a "while" loop that utilizes readline to have the user generate a strong password
 #The password must contain a capital, a special character, a number, and be at least 8 characters long.
 #The checker should give an appropriate response when encountering a weak password
 
@@ -250,78 +226,43 @@ password<-''
 while (password_good ==0){
   
   #enter password
-  password_attempt<-readline(prompt = 'PASSWORD:')
+  
   
   #test if capital
-  if (tolower(password_attempt) == password_attempt){
-    #not capital
-    password_cap<-0
-    print('password declined. Needs capital letter')
-  } else {
-    #includes capital
-    password_cap<-1
-  }
+  
 
   #test if numeric
-  if (!grepl("\\d", password_attempt)){
-    #not numeric
-    password_num<-0
-    print('password declined. Needs numeric')
-  } else {
-    #includes numeric
-    password_num<-1
-  }
   
   
   #test if special
-  if (!grepl('[[:punct:]]', password_attempt)){
-    #not special
-    password_spec<-0
-    print('password declined. Needs special character')
-  } else {
-    #includes special
-    password_spec<-1
-  }
-  
+ 
   
   #test if length
-  if (nchar(password_attempt) <8 ){
-    #not length
-    password_length<-0
-    print('password declined. Needs to be longer than 8 characters')
-  } else {
-    #includes length
-    password_length<-1
-  }
   
   #All conditions met?
   if (password_cap *password_num *password_spec *password_length ==1){
     
     #congratulate
-    print('password accepted')
-    
+   
     #set password
-    password<-password_attempt
-    
+
     #end loop
-    password_good<-1
   }
 }
 
 
 
-
+#b) Create a function that does all the checking in one go, then build a "while" loop around that function instead
 check_strong_password <- function(password) {
-  uppercase <- grepl("[A-Z]", password)
-  special <- grepl("[!@#$%^&*(),.?\":{}|<>]", password)
-  number <- grepl("[0-9]", password)
-  length <- nchar(password) >= 8
   
-  return(uppercase & special & number & length)
 }
 
 
-#challenge: Have the password checker store previous passwords and reject any attempt to use a password from a previous run. 
+while(){
+  
+}
+
+#c) Have the password checker store previous passwords and reject any attempt to use a password from a previous run. 
 #Lock users out for 30 seconds after 5 failed attempts to generate a password. Track and display remaining attempts
 
 
