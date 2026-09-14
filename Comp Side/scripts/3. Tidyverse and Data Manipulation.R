@@ -1,4 +1,4 @@
-#' ---
+zz#' ---
 #' title: "3. Tidyverse and Data Manipulation"
 #' author: "Luke Cain"
 #' output: pdf_document
@@ -10,9 +10,7 @@
 #----Setup----
 #Clear environment  
 rm(list = ls())
-library(tidyverse)
-library(nycflights13)   
-pacman::p_load(tidyverse,nycflights13,readxl, haven)
+pacman::p_load(tidyverse,nycflights13,readxl, haven,lubridate)
 
 #----Pipes----
 #Pipes!
@@ -276,21 +274,52 @@ gsub('a','@',x)
 
 #----Time!-----
 #I want to plot the flights' delay 
-plot(flights$date,
-     flights$dep_delay)
-#...that can't be right...
 
-
-flights<-flights%>%
-  mutate(date1 = paste(year,month,day,
-                       sep = '-'),
-         date2 = paste(month,day,year,
-         sep = '/'))%>%
+flight <-flights%>%
+  mutate(date = as.Date(paste(year,month,day,
+                      sep = '-')))%>%
   select(-c(day,month,year))
+
+plot(flight$date,
+     flight$dep_delay)
+#...that can't be right...
+?as.Date()
+
+flights2<-flights%>%
+  mutate(date1 = as.Date(paste(year,month,day,
+                       sep = '-')),
+         date2 = as.Date(paste(year,month,day,
+         sep = '/'))) %>%
+  select(-c(day,month,year))
+
+plot(flights2$date2,
+     flights2$dep_delay)
+
+plot(flights2$date1,
+     flights2$dep_delay)
+
+flight3 <- flights %>% mutate(date3 = lubridate::ymd(paste(year,month,day)))
 
 #Exercise 7: Convert these to date-type objects
 #Create a "season" variable, each row should be in a season. 
 #Are flights departing with more delay in any season? Any day of the week?
+
+
+flight3 <-flights %>% 
+  mutate(date3 = lubridate::ymd(paste(year,month,day)),
+         season = case_when(
+           month %in% c(12, 1, 2) ~ "Winter",
+           month %in% c(3, 4, 5) ~ "Spring",
+           month %in% c(6, 7, 8) ~ "Summer",
+           month %in% c(9, 10, 11) ~ "Fall"
+         ),
+         day_of_week = wday(date3, label = TRUE)) %>% 
+  group_by(season, day_of_week) %>%
+  summarize(mean_dep_delay = mean(dep_delay, na.rm = TRUE),
+            mean_arr_delay = mean(arr_delay, na.rm = TRUE)) %>% 
+  filter(mean_dep_delay==max(mean_dep_delay), mean_arr_delay==max(mean_arr_delay))
+
+
 
 #Exercise 8: Create a new dataset with a daily average departure and arrival delays
 #challenge: this is going to be spiky, let's create a "rolling average"
