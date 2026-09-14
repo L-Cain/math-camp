@@ -13,7 +13,7 @@
 
 #Clear environment  
 rm(list = ls())
-# 
+
 # Comment out
 # all
 # this
@@ -121,7 +121,6 @@ is.numeric('b')
 
 #Exercise 1: test whether a variable, "c" is more than 30 and divisible by 12, or less than 800 and a perfect square
 
-
 #booleans are also binary
 TRUE + TRUE
 T*F
@@ -161,8 +160,14 @@ int_vec_subset<-int_vec[int_vec>b*2]
   
 
 #Exercise 2: Make every third entry in int_vec copy the entry before it. Make it robust to changes in the length of int_vec
-int_vec[3]<-int_vec[2]
-int_vec[seq(from =3,to = length(int_vec), by = 3)]<-int_vec[(seq(from =2, to = length(int_vec)-1, by = 3))]
+
+
+to_replace <- seq(from = 3, to = length(int_vec), by = 3)
+replace_with <- seq(from = 2, to = length(int_vec), by = 3)
+new_int_vec <- int_vec
+new_int_vec[to_replace] <- int_vec[replace_with]
+
+>>>>>>> Stashed changes
 
 
 #Accessing "everything but" uses negative values
@@ -208,11 +213,8 @@ diag_mat+examp_mat
 diag_mat==0
 
 #Exercise 4: Create a 3x8 matrix that alternates between the first 3 positive integers and the first 3 letters
-entries<-c(1,2,3,'a','b','c')
-matrix(entries,
-       nrow = 3,
-       ncol = 8,
-       byrow = TRUE)
+
+
 
 
 #----Data frames----
@@ -251,16 +253,13 @@ students[4,]
 
 #Exercise 5: Extract Charlie's age by 
   #a) indexing numerically
-students[3,2]
   #b) extracting his entry from the age vector
-students$age[3]
   #c) indexing to the row with "Charlie" in it, and the 'age' column
-students[students$name == 'Charlie','age']
-#d) same as c), but extract all of Charlie's information except whether he's graduated
-students[students$name == 'Charlie',-5]
+  #d) same as c), but extract all of Charlie's information except whether he's graduated
 
 
-
+students[students$name=='Charlie',1:4]
+students[students$name=='Charlie',-5]
 
 #We can add new columns
 students$fruit<-c('apple','pear',NA,'banana')
@@ -271,7 +270,7 @@ students[3,'fruit']<-'orange'
 #Exercise 6: Boost every bio major's GPA by 10%
 
 #Fruits are irrelevant, let's remove them
-students<-students[,-6]
+students[,-6]
 
 
 #----Lists----

@@ -77,7 +77,4 @@ abline(h = dnorm(0), lty=2, col = "red") # a horizontal dotted line
 #'  can look up for things like styling text and creating lists. 
 #'  
 #'  Let's compile the document now.
-#'  
-#'  Exercise 1: We hit an error, so let's find and correct it. 
-#'  Now that it's working, what if we want to change where the compiled output lives?
 

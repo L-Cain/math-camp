@@ -57,14 +57,6 @@ sample(c("Head", "Tail"),
 #Exercise 1: Our census dataset (usc2010_001percent) is too big. Sample 1/10 of the rows of the following, without replacement:
 usc<-read.csv('../data/usc2010_001percent.csv')
 
-sample(1:nrow(usc),
-       size = nrow(usc)/10,
-       replace=F)
-
-usc_subset<-usc[sample(1:nrow(usc),
-       size = nrow(usc)/10,
-       replace =T),
-]
 #----Boot Strap----
 
 #The bootstrap is a concept you will encounter lots in upccoming classes. In brief, what if we 'resampled' the data from the superpopulation from which it was drawn, and did [analysis] again. 
@@ -95,9 +87,7 @@ for (i in 1:resamples){
 
 #EXercise 2: Plot a histogram of the coefficients. Make vertical lines at 0 and at the original result
 #add lines for the 25th and 975th largest values
-ggplot()+
-  geom_histogram(aes(x = coefs))+
-  geom_vline(aes(xintercept = original$coefficients[2]))
+
 
 
 
