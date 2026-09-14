@@ -68,25 +68,18 @@ sum_and_square(num1= 3,
 
 #Functions can call other functions
 #I want to detect big numbers
-big_num_detector<-function(number){ #we start with arguments, then go into the body
-      #determine if big
-     if (number > 8){ ##Hardcoded! We'll return to this
-      print("wow, that's a big number!")
-     } else 
-      print("that number isn't very big")
-     } 
+big_num_detector<-function(number, threshold =8){
+  if (is.numeric(number)==F){print("that's not a number")}
+  else if (number > threshold){print("wow, that's a big number!")}
+  else if (number == threshold){print("that's the threshold")}
+  else if (number < threshold){print("that number isn't very big")}
+    }
   
-
-
 #if we were serious, we'd include documentation
 #?big_num_detector()
 
 #we can inspect the function's code
 big_num_detector
-
-big_num_detector(number = 3)
-big_num_detector(num = 10)
-
 
 #Exercise 1: 
 #a) make the big number detector respond differently when the input is 8
@@ -96,6 +89,17 @@ big_num_detector(num = 10)
 big_num_detector(number = 'number',
                  threshold = 8)
 
+big_num_detector(3, 8)
+big_num_detector(8, 8)
+big_num_detector(10, 8)
+
+big_num_detector('a')
+
+big_num_detector(9, 10)
+big_num_detector(10, 10)
+big_num_detector(11, 10)
+
+big_num_detector(9)
 
 #----Local Variables----
 #Sometimes it's helpful for a function to create a variable
@@ -128,7 +132,33 @@ n
 #----Returning multiple pieces of information----
 # Exercise 2: create a function that takes a vector of grades (0-100) and returns average, letter_grade, pass_fail, highest, lowest
 
+letter_grade<-function(grades){
+  if (mean(grades)<60){print('F')}
+  else if (mean(grades)<70){print('D')}
+  else if (mean(grades)<80){print('C')}
+  else if (mean(grades)<90){print('B')}
+  else if (mean(grades)<100){print('A')}
+}
 
+pass_fail<-function(grades){
+  if (mean(grades)<60){print('FAIL')}
+  else {print('PASS')}
+}
+
+analyze_grades<-function(grades){
+  
+  list(
+    mean(grades),
+    letter_grade(grades),
+    pass_fail(grades),
+    max(grades),
+    min(grades)
+  )
+}
+
+
+
+pass_fail(c(85, 92, 78, 88, 95))
 
 #Test 1
 analyze_grades(c(85, 92, 78, 88, 95))
@@ -165,9 +195,14 @@ seats_df<-seats(parties = c("V", "W", "X", "Y", "Z"),
 
 #Exercise 4: Use this package's documentation and the internet to determine the electoral volatility in IL senate races in the past two elections
 #whose elections are more volatile, Duckworth or Durbin?
-durbin<-volatility()
-duckworth<-volatility()
 
+#durbin, 2014 and 2020
+durbin<-volatility(c(53.5,42.7,3.8,0,0),c(54.9,38.9,4,1.3,1))
+
+sum(56.8,41.5,1.7,0)
+
+#duckworth, 2016 and 2022
+duckworth<-volatility(c(54.9,39.8,3.2,2.1),c(56.8,41.5,1.7,0))
 
 #Exercise 5: Install the Development Version of 'ggdist" from github
 

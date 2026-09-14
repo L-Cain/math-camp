@@ -11,7 +11,7 @@
 rm(list = ls())
 library(tidyverse)
 
-siena_df<-rio::import('../data/upshot-siena-polls.csv')
+siena_df<-rio::import('C:/Users/Brasesco/Downloads/math-camp/Comp Side (answers removed)/data/upshot-siena-polls.csv')
 siena_df
 #----Example----
 #the underlying structure
@@ -89,46 +89,87 @@ delian<-read.csv('../data/ober_2018.csv')
 
 #1 scatterplot, fame and colonies
   #linear regression with confidence intervals
-ggplot(data = delian,
-       aes(x = Fame,
-           y = Colonies))+
-  geom_point()+
-  geom_smooth(method='lm') +
-  theme_minimal()
 
+ggplot(data = delian,
+       aes(x=Fame,y=Colonies))+
+  geom_point()+
+  geom_smooth(method = lm)+
+  theme_minimal()
 
 #2 Histogram of fame
   #make them density plots instead
 
-
+ggplot(data=delian,aes(x=Fame))+
+  geom_histogram()+
+  theme_minimal()
 
 #3 stacked bar chart: size, delian league and not
   #what if I want to show bars of equal size and percent in delian
-ggplot(data = delian,
-       aes(x= Delian,
-           fill = Size))+
-  geom_bar(position = 'dodge')
+
+value <- abs(rnorm(12 , 0 , 15))
+
+filter(delian, Size != '')%>%
+  ggplot(data=.,aes(fill=Delian, y=Delian,x=Size))+
+  geom_bar(position="stack",stat="identity")+
+  theme_minimal()
+
+
 #4 Map of the region
   #color the league differently and use different shapes
   #change the size of the points to reflect actual size
   #add a dotted line segment connecting Athens and Sparta, annotate it
 
-library(maps)
-world <- map_data("world")
 
-worldplot <- ggplot() +
-  geom_polygon(data = world, aes(x=long, y = lat, group = group)) + 
-  geom_point(data = delian, aes(x = Longitude,
-                                y = Latitude, 
-                                color = Delian,
-                                size = Size,
-                                alpha = .0005)) +
-  coord_fixed(1.3) +
-  xlim(0,40) +
-  ylim(25,50)+
-  scale_color_manual(values = c("in Delian League" = 'blue',
-                           "not in Delian League" = 'red'))
-worldplot
+ggplot(data = world, aes(x = long, y = lat, group = group)) + 
+  geom_polygon(fill = "white", color = "black") +
+  coord_quickmap()
+
+world_map <- map_data("world")
+
+greece_map <- subset(world_map, region == "Greece")
+
+points <- data.frame(
+  Longitude = c(delian$Longitude),
+  Latitude = c(delian$Latitude),
+  Name = c(delian$Name))
+
+
+
+
+#map of greece
+ggplot(greece_map, aes(x = long, y = lat, group = group)) + 
+  geom_polygon(fill = "white", color = "black") + 
+  coord_fixed(1.3) +  # Adjust ratio to fit Greece's shape
+  theme_void()+
+  #points below
+geom_point(data = points, 
+           aes(x = Longitude, y = Latitude, group = Name), 
+           size = 0.3) +
+  coord_fixed(ratio = 1.3) +
+  theme_void()
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+med_countries <- world[world$name %in% c("Spain", "France", "Italy", "Greece", 
+                                         "Turkey", "Egypt", "Libya", "Tunisia", 
+                                         "Algeria", "Morocco", "Croatia", "Slovenia", 
+                                         "Bosnia and Herzegovina", "Montenegro", 
+                                         "Albania", "Bulgaria", "Romania", "Ukraine", 
+                                         "Syria", "Lebanon", "Israel", "Palestine","Russia", "Cyprus","Northern Cyprus"),]
+
+ggplot(med_countries) +
+  geom_sf(fill = "lightgray", color = "black") +
+  coord_sf(xlim = c(12, 37), ylim = c(30, 46)) +
+  theme_void()+
+  #cities
+  geom_point(data = points, 
+             aes(x = Longitude, y = Latitude, group = Name), 
+             size = 0.3) +
+  coord_sf(xlim = c(12, 37), ylim = c(30, 46)) +
+  theme_void()
+
+install.packages("ggOceanMaps")
+
+
 #5 Define your own theme and apply it to the above https://stackoverflow.com/questions/23173915/can-ggplot-theme-formatting-be-saved-as-an-object
 
 #6 Using sample_polity.csv, animated bar chart of polity2 over time by country
