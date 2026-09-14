@@ -90,19 +90,38 @@ delian<-read.csv('../data/ober_2018.csv')
 #1 scatterplot, fame and colonies
   #linear regression with confidence intervals
 
+ggplot(data = delian, aes(x = Fame, y = Colonies)) + 
+  geom_line() + 
+    geom_smooth(method = 'lm')
+
 
 #2 Histogram of fame
   #make them density plots instead
 
+ggplot(data = delian, aes(x = Fame)) + 
+  geom_histogram()
 
+ggplot(data = delian, aes(x = Fame)) + 
+  geom_density()
 
 #3 stacked bar chart: size, delian league and not
   #what if I want to show bars of equal size and percent in delian
+
+delian$inLeague <- ifelse(delian$Delian == "not in Delian League", 0, 1)
+ggplot(delian, aes(x = Size, y = Delian, fill = inLeague)) + 
+  geom_col()
 
 #4 Map of the region
   #color the league differently and use different shapes
   #change the size of the points to reflect actual size
   #add a dotted line segment connecting Athens and Sparta, annotate it
+
+delian$inLeague <- ifelse(delian$Delian == "not in Delian League", "N", "Y")
+greece <- ggplot(delian, aes(x = Longitude, y = Latitude, shape = inLeague, size = Size)) + 
+  geom_point(aes(colour = inLeague))
+
+greece + geom_text(aes(label = Name[Name == "Athenai" | Name == "Sparta/Lakedaimon"]), size = 4)
+    
 
 library(maps)
 world <- map_data("world")

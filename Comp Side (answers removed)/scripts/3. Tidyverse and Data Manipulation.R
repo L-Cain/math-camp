@@ -222,29 +222,40 @@ str_view(x, "a$")
 #replace
 gsub('a','@',x)
 
-
 #----Time!-----
 flights<-flights%>%
-  select(-time_hour)%>%
   mutate(date = paste(year,month,day,sep = '-'))
-  
+
+ 
 #I want to plot the flights' delay 
 plot(x = flights$date,
      y = flights$dep_delay)
+as.Date(flights$date)
   #...that can't be right...
 
 
 flights<-flights%>%
-  mutate(date2 = paste(month,day,year,
+  mutate(date2=paste(month,day,year,
                        sep = '/'))%>%
   select(-c(day,month,year))
 
 
-
 #Exercise 8: 
 #a) Convert date2 to a date-type object
+flights <- flights%>%
+  as.Date(flights$date2)%>%
+    format(flights$date2, format = c("%m/%d/%Y"))
+    
 
 #b) Create a "season" variable, each row should be in a season.
+as.Date(flights$date)
+flights$month <- month(flights$date)
+flights$season <- if(
+  flights$month == "1" | flights$month == "2" | flights$month == "12" "Winter") else if(
+    flights$month == 3 | flights$month == 4 | flights$month == 5 "Spring") else if(
+      flights$month == 6 | flights$month == 7 | flights$month == 8 "Summer" else "Autumn")
+
+?if
 
 #c) Are flights departing with longer average delay in any particular? Any day of the week? 
 
