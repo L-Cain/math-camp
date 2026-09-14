@@ -186,6 +186,9 @@ seats_df<-seats(parties = c("V", "W", "X", "Y", "Z"),
 
 #Exercise 4: Use this package's documentation and the internet to determine the electoral volatility in IL senate races in the past two elections
 #whose elections are more volatile, Duckworth or Durbin?
+?volatility()
+
+
 
 #Duckworth
 volatility(c(3012940,2184693),

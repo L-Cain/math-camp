@@ -1,4 +1,4 @@
-#' ---
+zz#' ---
 #' title: "3. Tidyverse and Data Manipulation"
 #' author: "Luke Cain"
 #' output: pdf_document
@@ -10,11 +10,7 @@
 #----Setup----
 #Clear environment  
 rm(list = ls())
-
-#Last time: packages. Today: one crucial package!
-install.packages('tidyverse')
-library(tidyverse)
-library(nycflights13)
+pacman::p_load(tidyverse,nycflights13,readxl, haven,lubridate)
 
 #----Pipes----
 #Pipes!
@@ -36,9 +32,16 @@ students <- data.frame(
 nested1 <- toupper(str_trim(str_replace_all(paste(students$name, collapse = " | "), "\\s", "_")))
 nested2 <- summary(log(abs(scale(students$science_score))))
 
-piped1<-
+piped1<-paste(students$name, collapse = " | ") %>% 
+  str_replace_all("\\s", "_") %>%
+  str_trim() %>%
+  toupper()
   
-piped2<-
+piped2<-students$science_score %>%
+  scale() %>%
+  abs() %>%
+  log() %>%
+  summary()
   
   
   
@@ -46,13 +49,9 @@ piped2<-
 #CSV (comma separated values)
 
 #find the absolute file path for acs2015_1percent
-filepath_acs<-'C:/Users/festi/Dropbox/Jobs/2025 Strezhnev Memorial Math Camp/Preliminary Content/Comp Side/data/acs2015_1percent.csv'
+filepath_acs<-'~/Documents/GitHub/math-camp/Comp Side/data/acs2015_1percent.csv'
 acs_df<-read.csv(filepath_acs)
 
-
-#find the relative filepath for acs2015_1percent
-filepath_acs<-'../data/acs2015_1percent.csv'
-acs_df<-read.csv(filepath_acs)
 
 #Exercise 2: figure out how to read in the following files:
 #  `data/input/ober2018.xlsx`: A one percent sample of the American Community Survey
@@ -60,6 +59,20 @@ acs_df<-read.csv(filepath_acs)
 #  `data/input/gapminder_wide.Rds`: A Rds version of the Gapminder (What is a Rds file? What's the difference?)
 #  `data/input/Nunn_Wantchekon_sample.dta`: A sample from the Afrobarometer survey (which we'll explore tomorrow). `.dta` is a Stata format. 
 #  `data/input/german_credit.sav`: A hypothetical dataset on consumer credit. `.sav` is a SPSS format. 
+
+filepath_ober<-'~/Documents/GitHub/math-camp/Comp Side/data/ober_2018.xlsx'
+ober<-read_excel(filepath_ober)
+
+filepath_gapwide<-'~/Documents/GitHub/math-camp/Comp Side/data/gapminder_wide.tab'
+gapwide<-read.table(filepath_gapwide)
+
+filepath_gapwide2<-'~/Documents/GitHub/math-camp/Comp Side/data/gapminder_wide.Rds'
+gapwide2<-read_rds(filepath_gapwide2)
+
+filepath_num<-'~/Documents/GitHub/math-camp/Comp Side/data/Nunn_Wantchekon_sample.dta'
+num<-read_dta(filepath_num)
+
+
 
 #Remove all but acs
 rm(list = setdiff(ls(), "acs_df"))
@@ -87,8 +100,6 @@ acs_edu_df<-acs_edu_df%>%
 city_count<-acs_edu_df%>%
   group_by(city)%>%
   summarise(n())
-
-
 #Alternatively, I could have done all this in one big pipe:
 major_city_count<-acs_df%>%
   filter(age<65 & age>18)%>% #working age
@@ -97,13 +108,52 @@ major_city_count<-acs_df%>%
     city == '(other)',0,1))%>%
   group_by(major_city)%>% #group
   summarise(n()) #count
-  
-
 
 #Exercise 3: Create a column showing the percent of the total sample in each city
 
+major_city_percent <- acs_df %>%
+  filter(age < 65 & age > 18) %>% 
+  select(serial, sex, age, educ, city) %>%
+  group_by(city) %>% 
+  summarise(n = n()) %>%
+  mutate(percent = n / sum(n) * 100) 
+  
 #Exercise 4: What's the average age of those in each education group and sex? (ignore perwt. use the original dataset, not the working age subset)
 
+age_edu <- acs_df %>%
+  filter(age < 65 & age > 18) %>% 
+  select(serial, sex, age, educ, city) %>%
+  group_by(educ) %>% 
+  mutate(age_edu = mean(age)) %>% 
+  distinct(educ, age_edu)
+
+age_edu2 <- acs_df %>%
+  filter(age < 65 & age > 18) %>% 
+  select(serial, sex, age, educ, city) %>%
+  group_by(educ) %>% 
+  summarize(mean(age))
+
+
+age_sex <- acs_df %>%
+  filter(age < 65 & age > 18) %>% 
+  select(serial, sex, age, educ, city) %>%
+  group_by(sex) %>% 
+  mutate(age_sex = mean(age)) %>% 
+  distinct(sex, age_sex) 
+
+age_sex2 <- acs_df %>%
+  filter(age < 65 & age > 18) %>% 
+  select(serial, sex, age, educ, city) %>%
+  group_by(sex) %>% 
+  summarize(mean_age=mean(age))
+
+age_sex_edu <- acs_df %>%
+  filter(age < 65 & age > 18) %>% 
+  select(serial, sex, age, educ, city) %>%
+  group_by(sex, educ) %>% 
+  mutate(age_sex_educ = mean(age)) %>% 
+  distinct(sex, educ, age_sex_educ) %>% 
+  arrange(desc(age_sex_educ))
 
 #Write out to data folder
 write_csv(major_city_count,'../data/major_city.csv')
@@ -118,10 +168,28 @@ acs_df%>%
 
 #Exercise : What if we wanted to do the same by age and gender?
 
+hello <- acs_df %>% 
+  filter(age < 65 & age > 18) %>% 
+  select(serial, sex, age, educ, city) %>%
+  group_by(age, sex) %>%
+  summarize(mean_age = mean(age))
+
 #Exercise: find the mean sepal length and width, and the standard deviation of petal width by species
 iris
 
 #What's the proportion of sepal widths above 3.25 by species?
+
+iris_spewid <- iris %>% 
+  mutate(sepal_width_above_3.25 = ifelse(Sepal.Width > 3.25, 1, 0)) %>%
+  group_by(Species) %>%
+  mutate(percent = sum(sepal_width_above_3.25) / sum(n()) * 100) %>% 
+  distinct(Species, percent)
+
+iris_spewid2 <- iris %>% 
+  mutate(sepal_width_above_3.25 = ifelse(Sepal.Width > 3.25, 1, 0)) %>%
+  group_by(Species) %>%
+  summarize(percent = sum(sepal_width_above_3.25) / n() * 100)
+
 
 
 #----Manipulating Dataframes----
@@ -206,21 +274,52 @@ gsub('a','@',x)
 
 #----Time!-----
 #I want to plot the flights' delay 
-plot(flights$date,
-     flights$dep_delay)
-#...that can't be right...
 
-
-flights<-flights%>%
-  mutate(date1 = paste(year,month,day,
-                       sep = '-'),
-         date2 = paste(month,day,year,
-         sep = '/'))%>%
+flight <-flights%>%
+  mutate(date = as.Date(paste(year,month,day,
+                      sep = '-')))%>%
   select(-c(day,month,year))
+
+plot(flight$date,
+     flight$dep_delay)
+#...that can't be right...
+?as.Date()
+
+flights2<-flights%>%
+  mutate(date1 = as.Date(paste(year,month,day,
+                       sep = '-')),
+         date2 = as.Date(paste(year,month,day,
+         sep = '/'))) %>%
+  select(-c(day,month,year))
+
+plot(flights2$date2,
+     flights2$dep_delay)
+
+plot(flights2$date1,
+     flights2$dep_delay)
+
+flight3 <- flights %>% mutate(date3 = lubridate::ymd(paste(year,month,day)))
 
 #Exercise 7: Convert these to date-type objects
 #Create a "season" variable, each row should be in a season. 
 #Are flights departing with more delay in any season? Any day of the week?
+
+
+flight3 <-flights %>% 
+  mutate(date3 = lubridate::ymd(paste(year,month,day)),
+         season = case_when(
+           month %in% c(12, 1, 2) ~ "Winter",
+           month %in% c(3, 4, 5) ~ "Spring",
+           month %in% c(6, 7, 8) ~ "Summer",
+           month %in% c(9, 10, 11) ~ "Fall"
+         ),
+         day_of_week = wday(date3, label = TRUE)) %>% 
+  group_by(season, day_of_week) %>%
+  summarize(mean_dep_delay = mean(dep_delay, na.rm = TRUE),
+            mean_arr_delay = mean(arr_delay, na.rm = TRUE)) %>% 
+  filter(mean_dep_delay==max(mean_dep_delay), mean_arr_delay==max(mean_arr_delay))
+
+
 
 #Exercise 8: Create a new dataset with a daily average departure and arrival delays
 #challenge: this is going to be spiky, let's create a "rolling average"

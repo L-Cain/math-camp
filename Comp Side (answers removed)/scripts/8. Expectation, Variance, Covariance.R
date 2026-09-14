@@ -200,15 +200,6 @@ attach(expanded_titanic)
 table(Survived,Class,Sex,Age)%>%
   prop.table()
 
-
-survival_prop<-expanded_titanic%>%
-  group_by(Age,Class,Sex)%>%
-  summarise(mean(survived_bin))
-
-
-expanded_titanic%>%
-  group_by(Class)%>%
-  summarise(mean(survived_bin))
 #What's the probability of being in 2nd class given that you've survived P(Class = 2nd|Survived)?
 
 
@@ -216,6 +207,8 @@ expanded_titanic%>%
   filter(Survived == 'Yes') %>%
   summarise(prob_2nd = mean(Class == '2nd'))
   #Johnson et al, 2019...
+
+
 
 set.seed(3)
 customers <- data.frame(
@@ -227,10 +220,9 @@ customers <- data.frame(
 )
 
 #What's the probability of making a purchase?
-mean(customers$purchase_made == 'Yes')
 
 #What's the probability of making a purchase for those in the youngest category?
-mean(customers$purchase_made[customers$age_group== '18-25'] == 'Yes')
+
 
 #Exercise 7: Do this with tidyverse
 
