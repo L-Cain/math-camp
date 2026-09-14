@@ -12,14 +12,18 @@ rm(list = ls())
 
 #Last time: packages. Today: one crucial package!
 install.packages('tidyverse')
+install.packages('groundhog')
 library(tidyverse)
-library(nycflights13)
 
+#need an older version of the flights package
+library(groundhog)
+library(nycflights13)
 #----Pipes----
 #Pipes!
 c(3,8)%>%
   mean(.)%>%
   paste0("The above outputs: ",.)
+
 
 #Exercise 1: pipe it up. What does each component do?
 students <- data.frame(
@@ -35,32 +39,21 @@ nested1 <- toupper(str_trim(str_replace_all(paste(students$name, collapse = " | 
 nested2 <- summary(log(abs(scale(students$science_score))))
 
 piped1<-
-  paste(students$name, collapse = " | ")%>%
-  str_replace_all(., "\\s", "_")%>%
-  str_trim(.)%>%
-  toupper(.)
-  
   
 piped2<-
-  scale(students$science_score)%>%
-  abs(.)%>%
-  log(.)%>%
-  summary(.)
+  
+  
   
 #----Reading Data----
 #CSV (comma separated values)
 
 #find the absolute file path for acs2015_1percent
-filepath_acs<-'C:/Users/Brasesco/Downloads/math-camp/Comp Side (answers removed)/data/acs2015_1percent.csv'
+filepath_acs<-'C:/Users/festi/Desktop/math-camp/Comp Side (answers removed)/data/acs2015_1percent.csv'
 acs_df<-read.csv(filepath_acs)
 
 #find the relative filepath for acs2015_1percent
 filepath_acs<-'../data/acs2015_1percent.csv'
 acs_df<-read.csv(filepath_acs)
-
-install.packages("readxl")
-install.packages("haven")
-library(haven)
 
 #Exercise 2: figure out how to read in the following files:
 #  `data/ober_2018.xlsx`: A one percent sample of the American Community Survey
@@ -68,21 +61,6 @@ library(haven)
 #  `data/gapminder_wide.Rds`: A Rds version of the Gapminder (What is a Rds file? What's the difference?)
 #  `data/Nunn_Wantchekon_sample.dta`: A sample from the Afrobarometer survey (which we'll explore tomorrow). `.dta` is a Stata format. 
 #  `data/german_credit.sav`: A hypothetical dataset on consumer credit. `.sav` is a SPSS format. 
-
-filepath_ober<-'C:/Users/Brasesco/Downloads/math-camp/Comp Side (answers removed)/data/ober_2018.xlsx'
-ober_df<-read_excel(filepath_ober)
-
-filepath_gaptab<-'C:/Users/Brasesco/Downloads/math-camp/Comp Side (answers removed)/data/gapminder_wide.tab'
-gaptab_df<-read_tsv(filepath_gaptab)
-
-filepath_gaprds<-'C:/Users/Brasesco/Downloads/math-camp/Comp Side (answers removed)/data/gapminder_wide.Rds'
-gaprds_df<-readRDS(filepath_gaprds)
-
-filepath_nunn<-'C:/Users/Brasesco/Downloads/math-camp/Comp Side (answers removed)/data/Nunn_Wantchekon_sample.dta'
-nunn_df<-read_dta(filepath_nunn)
-
-filepath_german<-'C:/Users/Brasesco/Downloads/math-camp/Comp Side (answers removed)/data/german_credit.sav'
-german_df<-read_sav(filepath_german)
 
 #Remove all but acs
 rm(list = setdiff(ls(), "acs_df"))
@@ -123,32 +101,12 @@ major_city_count<-acs_df%>%
 
 #Exercise 3: Create a column showing the percent of the total sample in each city
 
-city_count_percent<-city_count%>%
-  mutate(city_count_percent = (city_count$`n()`/ sum(city_pop))*100)
-
-city_pop<-city_count$`n()`
-
-sum(city_pop)
-
-#Exercise 4: What's the average age of those in each education group and sex? (ignore perwt. use the original dataset, not the working age subset)
-
-acs_agebysex<-sum(acs_df$age, na.rm = TRUE)/nrow(ac
-
-                                                 
-acs_four<-acs_df%>%
-  group_by(educ, sex)%>%
-  summarize(mean=mean(age,na.rm = T))
-
-                                                 
-                                                                                                  
-df<-acs_df%>%
-  group_by(state)%>%
-  summarize(mean = mean(age,na.rm = T),
-            sd = sd(age, na.rm =T))                                                 
 
 #Write out to data folder
 write_csv(major_city_count,
           '../data/major_city.csv')
+
+
 
 #----Group and Summary, more explicitly----
 
@@ -158,34 +116,16 @@ df<-acs_df%>%
   summarize(mean = mean(age,na.rm = T),
             sd = sd(age, na.rm =T))
 
-#Exercise 5: What if we wanted to do the same by education and gender?
+#Exercise 4: What's the average age of those in each education group and sex? (ignore perwt. use the original dataset, not the working age subset)
 
-exfivedf<-acs_df%>%
-  group_by(educ,sex)%>%
-  summarize(mean = mean(age,na.rm = T),
-            sd = sd(age, na.rm =T))
+#Exercise 5: Using `iris` dataset, find the mean sepal length and width, and the standard deviation of petal width by species
 
-#Exercise 6: find the mean sepal length and width, and the standard deviation of petal width by species
 
-#What's the proportion of sepal widths above 3.25 by species?
-iris<-iris
+#Within each species, what is the proportion of sepal widths larger than 3.25?
 
-b<-iris%>%
-  group_by(Species)%>%
-  summarize(meanlength = mean(Sepal.Length,na.rm = T),
-            meanwidth = mean(Sepal.Width,na.rm = T),
-            sd_petalwidth = sd(Petal.Width, na.rm =T))
 
-exsix<-iris%>%
-  group_by(Species)%>%
-  mutate(mean_swidth=(iris$Sepal.Width`/ colSums(2)))*100
 
-exercise<-iris%>%
-  group_by(Species)%>%
-  summarize(meanwidth = mean(Sepal.Width,na.rm = T))
-prop.table()
-a=3
-  
+rm(list = ls())
 #----Manipulating Dataframes----
 #Creating a dataframe
 students_wide <- data.frame(
@@ -208,8 +148,7 @@ students_long <- students_wide %>%
 students_wide<-students_long%>%
   pivot_wider(names_from = subject,
               values_from = score)
-
-
+ 
 #Merging data
 student_fruit <- data.frame(
   student_id = c(1, 2, 3, 4),
@@ -230,7 +169,7 @@ students_long_f<-merge(students_long,
                        student_fruit,
                        by = 'student_id')
 
-#Exercise 7: Which variable(s) in student_fruit can we not use to merge? Why not?
+#Exercise 6: Which variable(s) in student_fruit can we not use to merge? Why not?
 
 
 #Aside: dealing with NAs
@@ -238,7 +177,7 @@ mean(students_wide$science,
      na.rm =T)
 
 
-#Exercise 8:
+#Exercise 7:
 #option 1: remove all rows with NAs from the dataframe
 #option 2: ignore NAs in the function
 
@@ -270,34 +209,38 @@ gsub('a','@',x)
 
 
 #----Time!-----
-flights<-flights
+flights<-flights%>%
+  select(-time_hour)%>%
+  mutate(date = paste(year,month,day,sep = '-'))
   
 #I want to plot the flights' delay 
-plot(x = flights$date_date,
+plot(x = flights$date,
      y = flights$dep_delay)
-#...that can't be right...
+  #...that can't be right...
 
 
 flights<-flights%>%
-  mutate(date1 = paste(year,month,day,
-                       sep = '-'),
-         date2 = paste(month,day,year,
+  mutate(date2 = paste(month,day,year,
                        sep = '/'))%>%
   select(-c(day,month,year))
 
 
 
-#Exercise 8: Convert these to date-type objects
+#Exercise 8: 
+#a) Convert date2 to a date-type object
 
-#Create a "season" variable, each row should be in a season.
+#b) Create a "season" variable, each row should be in a season.
 
-#Are flights departing with more delay in any season? Any day of the week? (summarize)
+#c) Are flights departing with longer average delay in any particular? Any day of the week? 
 
 
 
+
+
+
+#Exercise 9: 
+#a) Create a new dataset with a daily average departure and arrival delays
+
+#b) this is going to be spiky, let's create a 4-day "rolling average"
 install.packages("zoo")
 library(zoo)
-
-
-#Exercise 9: Create a new dataset with a daily average departure and arrival delays
-#challenge: this is going to be spiky, let's create a "rolling average"
