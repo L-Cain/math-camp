@@ -28,7 +28,7 @@ plot(x = c(3,8),
 #if you don't specify an argument, many functions have a default
 plot(x = c(3,8),
      y = c(5,10),
-     type = 'l')
+     type = 'p')
 
 
 #we can nest functions
@@ -73,7 +73,7 @@ big_num_detector<-function(number){ #we start with arguments, then go into the b
      if (number > 8){ ##Hardcoded! We'll return to this
       print("wow, that's a big number!")
      } else 
-      print("that number isn't very big")
+      print("that number isn't very big :(")
      } 
   
 
@@ -93,6 +93,52 @@ big_num_detector(num = 10)
 #b) have the big number detector throw an error if the input is not numeric
 #c) make the threshold for what constitutes a big number into an argument
 
+big_num_detector<-function(number){
+  if (number > 8){
+    print("wow, that's a big number!")
+  } else 
+    print("that number isn't very big :(")
+} 
+
+big_num_detector <- function(number) {
+  if (number > 8) {
+    print("wow, that's a big number!")
+  } else if (number < 8) {
+    print("that number isn't very big")
+  }
+    else if (number == 8) {
+    print("this number is 8")
+    }
+}
+
+big_num_detector <- function(number) {
+  if (!is.numeric(number)) {
+    stop("Error: Input is non-numerical")
+  }
+  else if (number > 8) {
+    print("wow, that's a big number!")
+  } else if (number < 8) {
+    print("that's a small number.")
+  }
+}
+
+big_num_detector <- function(number,
+                             threshold) {
+  if (!is.numeric(number)) {
+    stop("Input is non-numerical")
+  }
+  else if (number > threshold) {
+    print("wow, that's such a big number!")
+  } else if (number < threshold) {
+    print("this is a small number.")
+  } else if
+  (number == threshold) {
+    print("this number is threshold.")
+  }
+}
+
+big_num_detector(3, 8)
+  
 big_num_detector(number = 'number',
                  threshold = 8)
 
@@ -128,7 +174,42 @@ n
 #----Returning multiple pieces of information----
 # Exercise 2: create a function that takes a vector of grades (0-100) and returns average, letter_grade, pass_fail, highest, lowest
 
+letter_grade <- function(grades) {
+  
+  mean <- mean(grades)
+  
+  if (mean < 60) {
+    print("F")
+  } else if (mean < 70) {
+    print("D")
+  } else if (mean < 80) {
+    print("C")
+  } else if (mean < 90) {
+    print("B")
+  } else if (mean < 101) {
+    print("A")
+  }
+}
 
+letter_grade(c(85, 92, 78, 88, 95))
+
+analyze_grades <- function(grades) {
+mean <- mean(grades)
+max  <- max(grades)
+min  <- min(grades)
+letter <- letter_grade(grades)
+
+print(max)
+
+print(min)
+
+print(mean)
+
+if (mean > 60) {
+  print("Pass.")
+} else if (mean < 60)
+  print("Fail.")
+}
 
 #Test 1
 analyze_grades(c(85, 92, 78, 88, 95))
@@ -149,6 +230,10 @@ analyze_grades(c(85, '92', 78, 88, 950))
   #c) check for updates
   #d) uninstall it
 
+library(electoral)
+
+update.packages("electoral")
+
 
 
 
@@ -163,13 +248,25 @@ seats_df<-seats(parties = c("V", "W", "X", "Y", "Z"),
       n_seats = 15, 
       method = "droop") 
 
+seats_df
 #Exercise 4: Use this package's documentation and the internet to determine the electoral volatility in IL senate races in the past two elections
 #whose elections are more volatile, Duckworth or Durbin?
-durbin<-volatility()
-duckworth<-volatility()
 
+?volatility()
+
+durbin <- volatility(votes_1 = c(54.9, 38.9, 4.0),
+                     votes_2 = c(53.5, 42.7, 3.8))
+
+duckworth <- volatility(votes_1 = c(56.8, 41.5, 1.7),
+                        votes_2 = c(54.9, 39.8, 3.2))
+
+durbin
+
+duckworth
 
 #Exercise 5: Install the Development Version of 'ggdist" from github
+
+
 
 #Sometimes we want packages to be as up-to-date as possible...
 #other times we want to ensure the script uses the same version every time

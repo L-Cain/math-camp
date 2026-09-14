@@ -202,9 +202,13 @@ str_view(x, "a$")
 #replace
 gsub('a','@',x)
 
+rm(list = ls())
 
 #----Time!-----
+library(tidyverse)
 flights<-flights
+
+view(flights)
   
 #I want to plot the flights' delay 
 plot(x = flights$date_date,
@@ -213,19 +217,39 @@ plot(x = flights$date_date,
 
 
 flights<-flights%>%
-  mutate(date1 = paste(year,month,day,
-                       sep = '-'),
-         date2 = paste(month,day,year,
+  mutate(date2 = paste(month,day,year,
                        sep = '/'))%>%
   select(-c(day,month,year))
 
 
-
 #Exercise 8: Convert these to date-type objects
+
+
+
+flights$new_date <- as.Date(flights$date2, format = "%m/%d/%Y")
+
+?as.Date
+
+view(flights)
 
 #Create a "season" variable, each row should be in a season.
 
+flights <- flights |> 
+  mutate(season = case_when(
+    new_date < as.Date("2013-03-01", format = "%Y-%m-%d") ~ "winter",
+    new_date < as.Date("2013-06-01", format = "%Y-%m-%d") ~ "spring",
+    new_date < as.Date("2013-09-01", format = "%Y-%m-%d") ~ "summer",
+    new_date < as.Date("2013-12-01", format = "%Y-%m-%d") ~ "fall",
+    new_date > as.Date("2013-11-30", format = "%Y-%m-%d") ~ "winter"
+  ))
+
+view(flights)
+
 #Are flights departing with more delay in any season? Any day of the week? (summarize)
+flights |> 
+  group_by(season) |> 
+  summarise(avg_delay = mean(dep_delay, na.rm = TRUE)) |> 
+  select(avg_delay, season)
 
 
 

@@ -100,14 +100,20 @@ ggplot(data = delian,
 #2 Histogram of fame
   #make them density plots instead
 
+ggplot(data = delian,
+       aes(x = Fame)) +
+  geom_histogram()
 
+ggplot(data = delian,
+       aes(x = Fame)) +
+  geom_density()
 
 #3 stacked bar chart: size, delian league and not
   #what if I want to show bars of equal size and percent in delian
-ggplot(data = delian,
-       aes(x= Delian,
-           fill = Size))+
-  geom_bar(position = 'dodge')
+
+ggplot(data = delian) +
+  geom_bar(aes(x = Size, fill = Delian))
+
 #4 Map of the region
   #color the league differently and use different shapes
   #change the size of the points to reflect actual size
@@ -116,19 +122,18 @@ ggplot(data = delian,
 library(maps)
 world <- map_data("world")
 
-worldplot <- ggplot() +
-  geom_polygon(data = world, aes(x=long, y = lat, group = group)) + 
-  geom_point(data = delian, aes(x = Longitude,
-                                y = Latitude, 
-                                color = Delian,
-                                size = Size,
-                                alpha = .0005)) +
-  coord_fixed(1.3) +
-  xlim(0,40) +
-  ylim(25,50)+
-  scale_color_manual(values = c("in Delian League" = 'blue',
-                           "not in Delian League" = 'red'))
-worldplot
+view(world)
+
+greece <- map_data("world", region = c("Greece"))
+
+ggplot() +
+  geom_polygon(data = world,
+               aes(x = long, y = lat, group = group),
+               fill = "white", color = "black") +
+  geom_point(data = delian,
+             aes(x = Longitude, y = Latitude, color = Delian, size = Size)) +
+  coord_map(xlim = c(10, 45), ylim = c(30, 45))
+
 #5 Define your own theme and apply it to the above https://stackoverflow.com/questions/23173915/can-ggplot-theme-formatting-be-saved-as-an-object
 
 #6 Using sample_polity.csv, animated bar chart of polity2 over time by country
