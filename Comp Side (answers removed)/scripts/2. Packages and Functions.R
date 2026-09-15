@@ -195,6 +195,7 @@ seats_df<-seats(parties = c("V", "W", "X", "Y", "Z"),
 
 #Exercise 4: Use this package's documentation and the internet to determine the electoral volatility in IL senate races in the past two elections
 #whose elections are more volatile, Duckworth or Durbin?
+<<<<<<< Updated upstream
 
 #durbin, 2014 and 2020
 durbin<-volatility(c(53.5,42.7,3.8,0,0),c(54.9,38.9,4,1.3,1))
@@ -202,6 +203,9 @@ durbin<-volatility(c(53.5,42.7,3.8,0,0),c(54.9,38.9,4,1.3,1))
 sum(56.8,41.5,1.7,0)
 
 #duckworth, 2016 and 2022
+=======
+durbin<-volatility(c(53.5,42.7,3.8),c(54.9,38.9,4))
+>>>>>>> Stashed changes
 duckworth<-volatility(c(54.9,39.8,3.2,2.1),c(56.8,41.5,1.7,0))
 
 #Exercise 5: Install the Development Version of 'ggdist" from github

@@ -188,6 +188,10 @@ int_vec_subset+int_vec[-10]
 int_vec
 evens<-seq(0,30,2)
 
+intint_vec <- intersect(evens,int_vec)
+unint_vec <- union(evens,int_vec)
+
+intersect(intint_vec,unint_vec)
 
 #----Matrices----
 #Generating
@@ -214,8 +218,22 @@ diag_mat==0
 
 #Exercise 4: Create a 3x8 matrix that alternates between the first 3 positive integers and the first 3 letters
 
+ex_mat <- matrix(1:3, 
+                    nrow = 3, 
+                    ncol = 8)
 
+let_mat <- matrix(let_vec, 
+                 nrow = 3, 
+                 ncol = 8)
 
+let_vec<-c('a','b','c')
+
+both_vec <- union(ex_mat,let_mat)
+
+new_mat <- matrix(both_vec, 
+                 nrow = 3, 
+                 ncol = 8,
+                 byrow = TRUE)
 
 #----Data frames----
 # Create a data frame
@@ -257,8 +275,20 @@ students[4,]
   #c) indexing to the row with "Charlie" in it, and the 'age' column
   #d) same as c), but extract all of Charlie's information except whether he's graduated
 
+students[2]
+
+students[3,2]
+
+students$age[3]
+
+students[3,1:4]
+
+students[students$name=='Charlie',1:2]
+
+students[students$name=='Charlie',2]
 
 students[students$name=='Charlie',1:4]
+
 students[students$name=='Charlie',-5]
 
 #We can add new columns
@@ -269,8 +299,10 @@ students[3,'fruit']<-'orange'
 
 #Exercise 6: Boost every bio major's GPA by 10%
 
+students[students$major=='Biology','gpa']<-students[students$major=='Biology','gpa']*1.1
+
 #Fruits are irrelevant, let's remove them
-students[,-6]
+students<-students[,-6]
 
 
 #----Lists----
