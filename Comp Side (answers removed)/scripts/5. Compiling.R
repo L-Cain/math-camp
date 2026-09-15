@@ -40,6 +40,8 @@ rm(list = ls())
 #' &= \frac{1}{3}
 #' \end{aligned}
 #' \]
+#' 
+#' 
 #' \[
 #' \begin{aligned}
 #' X & = \frac{15 +30}{2} - \frac{15 + 20 + 20 + 10 + 15}{5}\\

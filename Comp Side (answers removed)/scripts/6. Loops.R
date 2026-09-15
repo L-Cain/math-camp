@@ -29,16 +29,17 @@ for (fruit in fruits){
   print(fruit)
 }
 
+
 #alternatively,
 
-i<-0
+
 for (i in 1:length(fruits)){
   print(fruits[i])
 }
 
 
 #why does this only show 'grape'?
-for (i in length(fruits)){
+for (i in 1:length(fruits)){
   print(fruits[i])
 }
 
@@ -48,7 +49,24 @@ for (i in length(fruits)){
 cen10 <- read_csv("../data/usc2010_001percent.csv", col_types = cols())
 states_of_interest <- c("California", "Massachusetts", "New Hampshire", "Washington")
 
+s<-'California'
+
+
+for (s in states_of_interest){
+temp<-cen10%>%filter(state == s)%>%
+  summarize(p_male = mean(sex == 'Male'))
+  
+  paste0(s, ' is ', round(100*temp[1,1],2), '% male')%>%
+  print(.)
+}
+
 #Now change it so that this information is stored in a vector, not printed.
+male_vec<-c()
+for (s in states_of_interest){
+  male_vec[s]<-cen10%>%filter(state == s)%>%
+    summarize(p_male = mean(sex == 'Male'))
+}
+
 
 #Exercise 2: store this information in a dataframe instead of printing. Hint: initialize an empty dataframe of the correct size first.
 
