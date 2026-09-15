@@ -7,6 +7,7 @@
 #Purpose: Understand loops (for, while, if). Basics of Monte Carlo. Some practice using Anton's example. Apply group
 #Clear environment  
 rm(list = ls())
+setwd('C:/Users/Brasesco/Downloads/math-camp/Comp Side (answers removed)/scripts')
 library(tidyverse)
 
 #----For Loops----
@@ -36,19 +37,62 @@ for (i in 1:length(fruits)){
   print(fruits[i])
 }
 
-
 #why does this only show 'grape'?
 for (i in length(fruits)){
   print(fruits[i])
 }
 
+cen10 <- read_csv("C:/Users/Brasesco/Downloads/math-camp/Comp Side (answers removed)/data/usc2010_001percent.csv", col_types = cols())
 
+getwd()
 
 #Exercise 1: For the states of interest, print the percentage of the state's population that is male, rounded to 0.01.
 cen10 <- read_csv("../data/usc2010_001percent.csv", col_types = cols())
 states_of_interest <- c("California", "Massachusetts", "New Hampshire", "Washington")
 
 #Now change it so that this information is stored in a vector, not printed.
+
+
+for (state in 1:length(states_of_interest)){
+  print(states_of_interest[state])
+}
+
+sex_state_df<-data.frame(state = NA,
+                          sex = NA,
+                          percentage = NA)
+
+x<-filter(cen10, state=="California")%>%
+  filter(., sex=="Male")%>%
+  nrow(.)
+
+
+
+y<-filter(cen10, state=="California")%>%
+  nrow(.)
+
+z<-(x/y)
+
+paste("California is", round((z*100),2),"% male.")
+
+for (s in 1:length(states_of_interest)){
+  pop_male<-filter(cen10, state==states_of_interest[s])%>%
+    filter(., sex=="Male")%>%
+    nrow(.)
+  
+  pop<-filter(cen10, state==states_of_interest[s])%>%
+    nrow(.)
+  
+  perc_male<-(pop_male/pop)
+  
+  paste(states_of_interest[s],"is", round((perc_male*100),2),"% male.")%>%
+    print(.)
+}
+
+male_vec<-c()
+for (s in states_of_interest){
+  male_vec[s]<-cen10%>%filter(state==s)%>%
+    summarize(p_male=mean(sex=='Male'))
+}
 
 #Exercise 2: store this information in a dataframe instead of printing. Hint: initialize an empty dataframe of the correct size first.
 
