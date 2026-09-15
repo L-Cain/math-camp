@@ -8,6 +8,8 @@
 #Clear environment  
 rm(list = ls())
 
+a <- 5
+
 ## compiling reports ----
 # We will compile reports for homework assignments using a method called 
 # "spinning." This shows your R code evaluated from start to finish, and shows

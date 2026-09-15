@@ -36,7 +36,6 @@ for (i in 1:length(fruits)){
   print(fruits[i])
 }
 
-
 #why does this only show 'grape'?
 for (i in length(fruits)){
   print(fruits[i])
@@ -48,11 +47,49 @@ for (i in length(fruits)){
 cen10 <- read_csv("../data/usc2010_001percent.csv", col_types = cols())
 states_of_interest <- c("California", "Massachusetts", "New Hampshire", "Washington")
 
+for (s in states_of_interest){
+
+  CA <- cen10 %>%
+    filter(state == s)
+  
+  i <- 0
+  camale <- 0
+  
+  for (i in 1:nrow(CA)) {
+    if (CA$sex[i] == "Male") {
+      camale <- camale + 1
+    }
+  }
+  
+  percentage <- camale / nrow(CA)
+  print(paste(s," is", percentage, "Male"))
+  }
+
 #Now change it so that this information is stored in a vector, not printed.
+
+male_percentage <- c(ca_percentage, ma_percentage, nh_percentage, wa_percentage)
 
 #Exercise 2: store this information in a dataframe instead of printing. Hint: initialize an empty dataframe of the correct size first.
 
+percentages <- c()
 
+for (s in states_of_interest) {
+  
+  CA <- cen10 %>%
+    filter(state == s)
+  
+  camale <- 0
+  
+  for (i in 1:nrow(CA)) {
+    if (CA$sex[i] == "Male") {
+      camale <- camale + 1
+    }
+  }
+  
+  percentage <- camale / nrow(CA)
+  
+  percentages <- c(percentages, percentage)
+}
 
 #We can also write loops inside of other loops (nested)
 #What is each line doing?
