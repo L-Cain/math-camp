@@ -70,6 +70,20 @@ for (s in states_of_interest){
 
 #Exercise 2: store this information in a dataframe instead of printing. Hint: initialize an empty dataframe of the correct size first.
 
+#initializes empty df
+male_df<-data.frame(states = NA,
+                    p_male = NA)
+
+
+#loop over all states
+for (s in 1:length(states_of_interest)){
+  #enters state name
+  male_df[s,1]<-states_of_interest[s]
+  
+  #enters proportion male
+  male_df[s,2] <-cen10%>%filter(state == states_of_interest[s])%>%
+    summarize(p_male = mean(sex == 'Male'))
+}
 
 
 #We can also write loops inside of other loops (nested)
@@ -129,7 +143,7 @@ for (state in states_of_interest) {
 race_state_df3 <- data.frame(expand.grid(states_of_interest, unique(cen10$race))) %>% 
   rename(state = Var1,
          race = Var2) %>% 
-  mutate(race_perc = as.numeric(rep("", 36)))
+  mutate(race_perc =rep(NA,36))
 
 states_of_interest <- c("California", "Massachusetts", "New Hampshire", "Washington")
 for (state in states_of_interest) {
@@ -143,7 +157,6 @@ for (state in states_of_interest) {
     
   }
 }
-
 
 
 n_states <- length(states_of_interest)
@@ -193,10 +206,48 @@ for (num in numbers){
     print(.)
 }
 
-#Exercise 3: 
-  #a) Re-create this using ifelse() from tidyverse. 
-  #b) what about with case_when()
 
+#Exercise 3: 
+  #a) Re-create this using ifelse() 
+for (num in numbers){
+  
+  #discern message
+  ifelse(num<3, 
+         "that's a small number",
+         ifelse(num>8, 
+                "that's a BIG number!", 
+                "That's a medium number"
+  ))
+
+  
+  #round number
+  round(num,
+        2)%>%
+    #concatenate
+    paste0(.,'? ',message)%>%
+    #print it
+    print(.)
+}
+
+
+
+  #b) what about with case_when()
+for (num in numbers){
+  
+  #discern  message
+  message<-case_when(num <3 ~"that's a small number",
+            num > 8 ~ "that's a BIG number!",
+            .default = "that's a medium number.")
+  
+  
+  #round number
+  round(num,
+        2)%>%
+    #concatenate
+    paste0(.,'? ',message)%>%
+    #print it
+    print(.)
+}
 
 
 #----While Loops----
@@ -291,7 +342,8 @@ while(){
 #apply() works on data frames and matrices, processing by row by default, or by column if specified.
 
 #Exercise 5: read in the polity dataframe and convert it to wide format
-polity<-read.csv('../data/sample_polity.csv')
+polity<-read.csv('../data/sample_polity.csv')%>%
+  pivot_wider()
 
 #If we want the mean of each country:
 apply(polity, 1,mean)
@@ -304,6 +356,11 @@ apply(polity,2,mean)
 numbers<-c(3,8,38,83)
 sapply(numbers,
        sqrt)
+
+for (num in numbers){
+  sqrt(num)%>%print()
+}
+
 
 #We can also write custom functions into sapply:
 sapply(numbers,

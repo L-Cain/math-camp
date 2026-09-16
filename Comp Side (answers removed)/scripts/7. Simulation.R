@@ -57,14 +57,34 @@ sample(c("Head", "Tail"),
 #Exercise 1: Our census dataset (usc2010_001percent) is too big. Sample 1/10 of the rows of the following, without replacement:
 usc<-read.csv('../data/usc2010_001percent.csv')
 
+#random row numbers
+rows<-sample(1:nrow(usc),
+       size = round(nrow(usc)/10),
+       replace =F)
+
+df<-data.frame()
+for (row in rows){
+  #keep random row
+  temp<-usc[row,]
+  
+  #append random row
+  df<-rbind(df,temp)
+}
+
+
+usc[sample(1:nrow(usc),
+           size = round(nrow(usc)/10),
+           replace =F),]
+
+
+
 #----Boot Strap----
 
 #The bootstrap is a concept you will encounter lots in upccoming classes. In brief, what if we 'resampled' the data from the superpopulation from which it was drawn, and did [analysis] again. 
 #We'll formalize this in upcoming courses. 
 
 siena<-read.csv('../data/upshot-siena-polls.csv')%>%
-  filter(gender == 'Male' | gender == 'Female')
-
+  filter(is.na(gender)==F)
 
 (original<-lm(data = siena,
    turnout_score ~ gender))
@@ -88,7 +108,9 @@ for (i in 1:resamples){
 #EXercise 2: Plot a histogram of the coefficients. Make vertical lines at 0 and at the original result
 #add lines for the 25th and 975th largest values
 
-
+ggplot()+
+  geom_histogram(aes(x = coefs))+
+  geom_vline(aes(xintercept = original))
 
 
 #----Distributions----
