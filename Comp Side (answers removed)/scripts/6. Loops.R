@@ -47,7 +47,7 @@ for (i in length(fruits)){
 
 #Exercise 1: For the states of interest, print the percentage of the state's population that is male, rounded to 0.01.
 
-cen10 <- read_csv("C:/Users/mtaylor03/Downloads/math-camp/usc2010_001percent.csv", col_types = cols())
+cen10 <- read_csv("C:/Users/Brasesco/Downloads/math-camp/usc2010_001percent.csv", col_types = cols())
 states_of_interest <- c("California", "Massachusetts", "New Hampshire", "Washington")
 
 
@@ -61,24 +61,28 @@ for (s in states_of_interest) {
 
 
 
-\
-
-  
-  
-
-
 
 #Now change it so that this information is stored in a vector, not printed.
 
-male_vec <- for (s in states_of_interest)
-  male_vec[s]<-cen10%%filter(state == s)%>%
-  summarize(male_pop - mean (sex == 'Male'))
+male_vec <- c()
+for (s in states_of_interest){
+  male_vec[s]<-cen10%>%filter(state == s)%>%
+  summarize(male_pop = mean (sex == 'Male'))
+  }
 
 
 
 #Exercise 2: store this information in a dataframe instead of printing. Hint: initialize an empty dataframe of the correct size first.
 
+#make empty data frame
+male_df<-data.frame(State=states_of_interest,MalePopulation=NA)
 
+#loop over all states
+for (s in 1:length(states_of_interest)){
+  #calculates proportion male
+  male_df[s,2]<-cen10%>%filter(state == states_of_interest[s])%>%
+    summarize(male_pop = mean (sex == 'Male'))
+}
 
 #We can also write loops inside of other loops (nested)
 #What is each line doing?
@@ -202,11 +206,47 @@ for (num in numbers){
 }
 
 #Exercise 3: 
-  #a) Re-create this using ifelse() from tidyverse. 
-  #b) what about with case_when()
+  #a) Re-create this using ifelse() from tidyverse.
+
+numbers<-runif(n= 20,
+               min = 0,
+               max = 10)
+
+for (num in numbers){
+  message<- ifelse(num > 8, "That's a BIG number!",
+              ifelse(num < 3, "that's a small number",
+                ifelse(is.numeric(num),"That's a medium number", "that's not a number")))
+  
+  round(num,
+        2)%>%
+    #concatenate
+    paste0(.,'? ',message)%>%
+    #print it
+    print(.)
+  
+}
+
+  #b) what about with 
+
+for (num in numbers){
+  message<-case_when(
+    num>8 ~ "That's a BIG number!",
+    num<3 ~ "that's a small number",
+    (num<8 & num>3) ~ "That's a medium number"
+      
+)
+
+  round(num,
+        2)%>%
+    #concatenate
+    paste0(.,'? ',message)%>%
+    #print it
+    print(.)
+  
+}
 
 
-
+.unmatched = "that's not a number"
 #----While Loops----
 #If you want to loop until an outcome, but you don't know how long that will take, use a "while" loop
 
@@ -299,7 +339,7 @@ while(){
 #apply() works on data frames and matrices, processing by row by default, or by column if specified.
 
 #Exercise 5: read in the polity dataframe and convert it to wide format
-polity<-read.csv('../data/sample_polity.csv')
+polity<-read.csv('C:/Users/Brasesco/Downloads/math-camp/Comp Side (answers removed)/data/sample_polity.csv')
 
 #If we want the mean of each country:
 apply(polity, 1,mean)
