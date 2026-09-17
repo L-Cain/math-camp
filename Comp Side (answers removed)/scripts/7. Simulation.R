@@ -55,33 +55,14 @@ sample(c("Head", "Tail"),
 
 
 #Exercise 1: Our census dataset (usc2010_001percent) is too big. Sample 1/10 of the rows of the following, without replacement:
-usc<-read.csv('C:/Users/Brasesco/Downloads/math-camp/Comp Side (answers removed)/data/usc2010_001percent.csv')
-
-usc_sample<-sample(nrow(usc), size = (length(usc)/10))
-
-
-rows<-sample(1:nrow(usc),
-size=round(nrow(usc)/10),
-replace=F)
-
-df<-data.frame()
-for (row in rows){
-  temp<-usc[row,]
-  df<-rbind(df,temp)
-}
-
-usc[rows,]
-
-usc[sample(1:nrow(usc),
-             size=round(nrow(usc)/10),
-             replace=F),]
+usc<-read.csv('../data/usc2010_001percent.csv')
 
 #----Boot Strap----
 
 #The bootstrap is a concept you will encounter lots in upccoming classes. In brief, what if we 'resampled' the data from the superpopulation from which it was drawn, and did [analysis] again. 
 #We'll formalize this in upcoming courses. 
 
-siena<-read.csv('C:/Users/Brasesco/Downloads/math-camp/Comp Side (answers removed)/data/upshot-siena-polls.csv')%>%
+siena<-read.csv('../data/upshot-siena-polls.csv')%>%
   filter(gender == 'Male' | gender == 'Female')
 
 
@@ -108,9 +89,6 @@ for (i in 1:resamples){
 #add lines for the 25th and 975th largest values
 
 
-ggplot()+
-  geom_histogram(aes(x=coefs))+
-  geom_vline(aes(xintercept=original$coefficients[2]))
 
 
 #----Distributions----
@@ -169,6 +147,7 @@ darts$circle<-ifelse(darts$x^2 + darts$y^2 > .5^2,
                      0,
                      1)
 
+library(tidyverse)
 #plotting it
 ggplot(darts,
        aes(x = x,
@@ -181,46 +160,10 @@ mean(darts$circle)
 pi*.5^2
   #pretty good!
 
-df<-data.frame(Day=('R'),Prob=(.2))%>%
-rbind(., data.frame(Day=('F'),Prob=(.11)))%>%
-rbind(., data.frame(Day=('S'),Prob=(.34)))%>%
-rbind(., data.frame(Day=('U'),Prob=(.02)))%>%
-rbind(., data.frame(Day=('M'),Prob=(.1)))%>%
-rbind(., data.frame(Day=('T'),Prob=(.4)))%>%
-rbind(., data.frame(Day=('W'),Prob=(.05)))
+rain<-c(T,F)
 
-
-?sample
-
-
-df_sample<-sample(df$Prob, size=10000, replace=T)%>%
-  mean(.)
-
-
-dfmat<-matrix(c(NA,NA,NA,NA,NA,NA,NA), nrow = 1, ncol = 7, byrow = F,
-                      dimnames = list(c(1),
-                                      c("R", "F", "S", "U", "M", "T", "W")))
-
-truefalse<-data.frame(Day=('R'),Rain=(1))%>%
-  rbind(., data.frame(Day=('F'),Rain=(0)))
-
-attempt<- data.frame('R'= sample(truefalse$Rain, size=10000, prob = c(.2,(1-.2)), replace = T), 
-           'F'= sample(truefalse$Rain, size=10000, prob = c(.11,(1-.11)), replace = T),
-           'S'= sample(truefalse$Rain, size=10000, prob = c(.34,(1-.34)), replace = T),
-           'U'= sample(truefalse$Rain, size=10000, prob = c(.02,(1-.02)), replace = T),
-           'M'= sample(truefalse$Rain, size=10000, prob = c(.1,(1-.1)), replace = T),
-           'T'= sample(truefalse$Rain, size=10000, prob = c(.4,(1-.4)), replace = T),
-           'W'= sample(truefalse$Rain, size=10000, prob = c(.05,(1-.05)), replace = T))%>%
-  
-  mutate(., Rain = attempt$R+attempt$F+attempt$S+attempt$U+attempt$M+attempt$T+attempt$W)%>%
-  mutate(Rained=Rain>0)
-
-mean(attempt$Rained)
-
-
-
-R<-sample(truefalse$Rain, size=100, prob = c(.2,.8), replace = T)
-R<-sample(truefalse$Rain, size=100, prob = c(.2,.8), replace = T)
+thurs<-sample(rain,replace = T, size =10000, prob= c(.2,.8))
+friday<-sample(rain,replace = T, size =10000, prob= c(.2,.8))
 
 
 
