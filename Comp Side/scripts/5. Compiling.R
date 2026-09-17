@@ -32,20 +32,20 @@ rm(list = ls())
 #' 
 #' You can also write multi-line equations:
 #' 
-#' \[
-#' \begin{aligned}
-#' \int_0^1 x^2\,dx &= \left.\frac{1}{3} x^3\right|_0^1 \\
-#' &= \frac{1}{3}1^3 - \frac{1}{3}0^3 \\
-#' &= \frac{1}{3}
-#' \end{aligned}
-#' \]
-#' \[
-#' \begin{aligned}
-#' X & = \frac{15 +30}{2} - \frac{15 + 20 + 20 + 10 + 15}{5}\\
-#' & = 6.5
-#' \end{aligned}
-#' \]
-#' 
+\[
+\begin{aligned}
+\int_0^1 x^2\,dx &= \left.\frac{1}{3} x^3\right|_0^1 \\
+&= \frac{1}{3}1^3 - \frac{1}{3}0^3 \\
+&= \frac{1}{3}
+\end{aligned}
+\]
+\[
+\begin{aligned}
+X & = \frac{15 +30}{2} - \frac{15 + 20 + 20 + 10 + 15}{5}\\
+& = 6.5
+\end{aligned}
+\]
+
 #' A convenient and helpful "cheatsheet" for LaTeX math is here: 
 #' http://reu.dimacs.rutgers.edu/Symbols.pdf
 #' 

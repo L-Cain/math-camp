@@ -7,7 +7,7 @@
 #Purpose: Understand loops (for, while, if). Basics of Monte Carlo. Some practice using Anton's example. Apply group
 #Clear environment  
 rm(list = ls())
-library(tidyverse)
+library(tidyverse, dplyr)
 
 
 #----For Loops----
@@ -47,6 +47,23 @@ for (i in length(fruits)){
 
 #Exercise 1: For the states of interest, print the percentage of the state's population that is male, rounded to 0.01.
 
+<<<<<<< HEAD
+
+  
+for (state in states_of_interest) {
+  print(paste0("The percentage of ",state, "that is male is ",
+    nrow(cen10[cen10$state == state & cen10$sex == "Male", ]) /
+      nrow(cen10[cen10$state == state, ]),
+    digits = 2
+  ))
+}
+  
+  
+cen10 <- read_csv("~/Documents/GitHub/math-camp/Comp Side (answers removed)/data/usc2010_001percent.csv", col_types = cols())
+states_of_interest <- c("California", "Massachusetts", "New Hampshire", "Washington")
+
+
+=======
 cen10 <- read_csv("C:/Users/mtaylor03/Downloads/math-camp/usc2010_001percent.csv", col_types = cols())
 states_of_interest <- c("California", "Massachusetts", "New Hampshire", "Washington")
 
@@ -68,7 +85,21 @@ for (s in states_of_interest) {
 
 
 
+>>>>>>> 8c49631c1901d0240852193a15afa0926099aed8
 #Now change it so that this information is stored in a vector, not printed.
+male_percent <- c() 
+for (state in states_of_interest) {
+  print <- nrow(cen10[cen10$state == state & cen10$sex == "Male", ]) /
+                 nrow(cen10[cen10$state == state, ])
+               
+  print2 <-  paste0("The percentage of ",state, "that is male is ", round(print * 100, 2), "%")
+              
+  male_percent <- c(male_percent, print2)
+}
+
+male_percent
+
+
 
 male_vec <- for (s in states_of_interest)
   male_vec[s]<-cen10%%filter(state == s)%>%
@@ -77,9 +108,49 @@ male_vec <- for (s in states_of_interest)
 
 
 #Exercise 2: store this information in a dataframe instead of printing. Hint: initialize an empty dataframe of the correct size first.
+male_percent <- c()
+
+for (state in states_of_interest){
+  print <- nrow(cen10[cen10$state == state & cen10$sex == "Male", ]) /
+    nrow(cen10[cen10$state == state, ])
+  print2 <-  paste0("The percentage of ",state, "that is male is ", round(print * 100, 2), "%")
+  male_percent <-  c(male_percent, print2)
+}
 
 
+male_percent2 <- data.frame(states = states_of_interest,
+                           percentage = male_percent,
+                           stringsAsFactors = FALSE)
 
+male_percent2
+class(male_percent2)
+
+----------------------------
+
+male_percent <- data.frame(
+  states = character(),
+  percentage = numeric(),
+  stringsAsFactors = FALSE
+)
+
+for (state in states_of_interest) {
+  
+  share <- nrow(cen10[cen10$state == state & cen10$sex == "Male", ]) /
+    nrow(cen10[cen10$state == state, ])
+  
+  male_percent <- rbind(
+    male_percent,
+    data.frame(
+      states = state,
+      percentage = round(share * 100, 2)
+    )
+  )
+}
+
+male_percent
+class(male_percent)
+
+male_percent <- male_percent2 %>% mutate(percentage2 = as.numeric(gsub(".*is ([0-9.]+)%", "\\1", percentage)))
 #We can also write loops inside of other loops (nested)
 #What is each line doing?
 race_state_df<-data.frame(state = NA,
@@ -134,7 +205,7 @@ for (state in states_of_interest) {
 
 
 
-race_state_df3 <- data.frame(expand.grid(states_of_interest, unique(cen10$race))) %>% 
+race_state_df3 <- expand.grid(states_of_interest, unique(cen10$race)) %>% 
   rename(state = Var1,
          race = Var2) %>% 
   mutate(race_perc = as.numeric(rep("", 36)))
@@ -203,8 +274,22 @@ for (num in numbers){
 
 #Exercise 3: 
   #a) Re-create this using ifelse() from tidyverse. 
+numbers<-runif(n= 20,
+               min = 0,
+               max = 10)
+numbers<-data.frame(num = numbers)
+numbers <- numbers %>% mutate(message = ifelse(num < 3, "that's a small number",
+                  ifelse(num > 8, "That's a BIG number!", "That's a medium number")))
+
   #b) what about with case_when()
 
+numbers<-runif(n= 20,
+               min = 0,
+               max = 10)
+numbers<-data.frame(num = numbers)
+numbers <- numbers %>% mutate(message = case_when(num < 3 ~ "that's a small number",
+                               num > 8 ~ "That's a BIG number!",
+                               TRUE ~ "That's a medium number"))
 
 
 #----While Loops----
