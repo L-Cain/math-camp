@@ -38,7 +38,7 @@ for (i in 1:length(fruits)){
 
 
 #why does this only show 'grape'?
-for (i in length(fruits)){
+for (i in length(fruits)){ # for i in the number 4 (which is length of fruits)
   print(fruits[i])
 }
 
@@ -48,11 +48,54 @@ for (i in length(fruits)){
 cen10 <- read_csv("../data/usc2010_001percent.csv", col_types = cols())
 states_of_interest <- c("California", "Massachusetts", "New Hampshire", "Washington")
 
+view(cen10_pop)
+
+cen10_pop <- cen10 |> 
+  mutate(male = ifelse(sex == "Male", 0, 1)) |>
+  group_by(state) |> 
+  summarise(percent_male = round(mean(male) * 100, 2)) 
+
+for (i in (states_of_interest)) {
+  cen10_pop_cal <- cen10_pop |> 
+    filter(state == i)
+  
+  cen10_pop_cal[1,2] |> 
+    print()
+}
+
 #Now change it so that this information is stored in a vector, not printed.
 
 #Exercise 2: store this information in a dataframe instead of printing. Hint: initialize an empty dataframe of the correct size first.
 
+states <- data.frame()
 
+for (i in (states_of_interest)) {
+  cen10_pop_cal <- cen10_pop |> 
+    filter(state == i)
+  
+  cen10_pop_cal[1,2] |> 
+    print()
+  states[i, 1] <- cen10_pop_cal[1, 2]
+}
+
+view(states)
+
+# what luke did
+
+for (s in states_of_interest) {
+  a <- cen10 |> filter(state == s) |> 
+    summarize(p_male = mean(sex == "Male"))
+  
+  paste0(s, ' is ', round(100 * a[1,1] ,2), '% male') |> 
+           print()
+}
+
+male_vec <- c()
+
+for (s in states_of_interest) {
+  male_vec[s] <- cen10 |> filter(state == s) |> 
+    summarize(p_male = mean(sex == 'Male'))
+}
 
 #We can also write loops inside of other loops (nested)
 #What is each line doing?
@@ -177,8 +220,30 @@ for (num in numbers){
 
 #Exercise 3: 
   #a) Re-create this using ifelse() from tidyverse. 
+
+for (num in numbers) {
+ 
+  message <-  ifelse(num > 8, "that's a big number",
+                    ifelse(num < 3, "that's a small number", "that's a medium number"))
+  
+  round(num, 2) %>% 
+    paste0(., '? ', message) %>%
+    print(.)
+}
+
   #b) what about with case_when()
 
+for (num in numbers) {
+  message <- case_when(
+    num > 8     ~ "that's a BIG number",
+    num > 3     ~ "that's a medium number",
+    num > 0     ~ "that's a small number"
+  )
+  
+  round(num, 2) %>% 
+    paste0(., '? ', message) %>%
+    print(.)
+}
 
 
 #----While Loops----
