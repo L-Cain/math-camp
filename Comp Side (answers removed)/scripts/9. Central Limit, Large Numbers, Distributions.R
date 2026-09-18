@@ -152,3 +152,14 @@ ggplot()+
 
 #Exercise 1: Find a distribution from which you can sample, take means, and those means don't distribute normally. Graph it!
 #Does this match any real-world situation?
+
+
+for (i in 1:n) {
+  #flip 20 coins
+  cauchy<-rcauchy(n=20)%>%
+    as.data.frame()
+  #store mean
+  mean[i]<-mean(cauchy$.)
+}
+
+means_c<-data.frame
