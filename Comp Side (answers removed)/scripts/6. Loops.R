@@ -9,6 +9,7 @@
 rm(list = ls())
 library(tidyverse)
 
+
 #----For Loops----
 #Sometimes we want to do the same operation multiple times. 
 
@@ -29,8 +30,8 @@ for (fruit in fruits){
   print(fruit)
 }
 
-#alternatively,
 
+#alternatively,
 i<-0
 for (i in 1:length(fruits)){
   print(fruits[i])
@@ -44,9 +45,11 @@ for (i in length(fruits)){
 
 
 #Exercise 1: For the states of interest, print the percentage of the state's population that is male, rounded to 0.01.
-cen10 <- read_csv("../data/usc2010_001percent.csv", col_types = cols())
+
+cen10 <- read_csv("C:/Users/mtaylor03/Downloads/math-camp/usc2010_001percent.csv", col_types = cols())
 states_of_interest <- c("California", "Massachusetts", "New Hampshire", "Washington")
 
+<<<<<<< HEAD
 for (s in states_of_interest){
 
   CA <- cen10 %>%
@@ -68,6 +71,33 @@ for (s in states_of_interest){
 #Now change it so that this information is stored in a vector, not printed.
 
 male_percentage <- c(ca_percentage, ma_percentage, nh_percentage, wa_percentage)
+=======
+
+for (s in states_of_interest) {
+  male_pop <- cen10 %>%
+    mutate(male_ID = ((ifelse(sex == "Male", 0, 1))))%>%
+    filter(., state == s)%>%
+    summarize(mean(male_ID))%>%
+  print(.)
+}
+
+
+
+\
+
+  
+  
+
+
+
+#Now change it so that this information is stored in a vector, not printed.
+
+male_vec <- for (s in states_of_interest)
+  male_vec[s]<-cen10%%filter(state == s)%>%
+  summarize(male_pop - mean (sex == 'Male'))
+
+
+>>>>>>> main
 
 #Exercise 2: store this information in a dataframe instead of printing. Hint: initialize an empty dataframe of the correct size first.
 

@@ -27,7 +27,16 @@ ggplot()+
 
 #'Exercise 1: How do we know $f(x) != 0 \all x$? But what if I want to be sure I'm within some bound, e, of 0?
 
+x <- rcauchy(10000)
 
+means <- numeric(10000)
+
+for(i in 1:10000) {
+  x <- rcauchy(100)
+  means[i] <- mean(x)
+}
+
+hist(means)
 #Why is this important?  
 #We rarely know the true process governing the events we see in the social world. 
 #It is helpful to understand how such unknown processes theoretically must behave and asymptotic theory helps us do this. 

@@ -55,7 +55,9 @@ sample(c("Head", "Tail"),
 
 
 #Exercie 1: Our census dataset (usc2010_001percent) is too big. Sample 1/10 of the rows of the following, without replacement:
-
+rows <- round((nrow(cen10)/10), digits = 0)
+n_cen10 <- sample(cen10, rows, replace = FALSE)
+?sample
 
 #----Boot Strap----
 

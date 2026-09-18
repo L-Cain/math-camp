@@ -101,6 +101,22 @@ for (state in states_of_interest) {
 
 #Exercise 3: store this information in a dataframe instead of printing. Hint: initialize an empty dataframe of the correct size first.
 
+states_of_interest <- c("California", "Massachusetts", "New Hampshire", "Washington")
+df <- data.frame(state = character(), percentage_of_male = numeric())
+
+for( state in states_of_interest){
+  state_data <- cen10[cen10$state == state,]
+  nmen <- sum(state_data$sex == "Male")
+  
+  n <- nrow(state_data)
+  men_perc <- round(100*(nmen/n), digits=2)
+
+df <- rbind(df, data.frame(state = state, percentage_of_male = men_perc))
+  
+}
+?character()
+
+
 
 #----Conditionals----
 #Often, we want to do one thing if a criterion is met, and another if not. We do this with "if" and "else".
@@ -132,9 +148,34 @@ for (num in numbers){
 
 #Exercise 4: 
   #a) Re-create this using ifelse() from tidyverse. 
+
+numbers<-runif(n= 20,
+               min = 0,
+               max = 10)
+
+for (num in numbers){
+  message <- ifelse(num < 3, "that's a small number", ifelse(num > 8, "that's a BIG number", "that's a medium number"))
+  round(num,
+        2)%>%
+    paste0(.,'? ',message)%>%
+    print(.)
+}
+
+
   #b) what about with case_when()
 
+numbers <- runif(n = 20,
+                 min = 0,
+                 max = 10)
 
+for (num in numbers){
+  message <- case_when(num < 3 ~ "that's a small number", num > 8 ~ "that's a BIG number", .default = "that's a medium number")
+  round(num, 2) %>%
+    paste0(., '? ', message) %>%
+    print(.)
+}
+?case_when
+?runif
 
 
 #----While Loops----
