@@ -1,0 +1,12 @@
+---
+title: 'JSON Data Report'
+output: pdf_document
+---
+
+```{r, echo=FALSE}
+library(jsonlite)
+library(knitr)
+
+data <- fromJSON('data.json')
+kable(data)
+```
