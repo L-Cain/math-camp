@@ -147,6 +147,7 @@ darts$circle<-ifelse(darts$x^2 + darts$y^2 > .5^2,
                      0,
                      1)
 
+library(tidyverse)
 #plotting it
 ggplot(darts,
        aes(x = x,
@@ -158,6 +159,12 @@ ggplot(darts,
 mean(darts$circle)
 pi*.5^2
   #pretty good!
+
+rain<-c(T,F)
+
+thurs<-sample(rain,replace = T, size =10000, prob= c(.2,.8))
+friday<-sample(rain,replace = T, size =10000, prob= c(.2,.8))
+
 
 
 #----Big Exercise 3----
